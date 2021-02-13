@@ -1,6 +1,6 @@
 <?php
 session_start();
-$mysqli = new mysqli("localhost","root","semad@cpd","GrandeJogo");
+$mysqli = new mysqli("localhost","root","semad@cpd","GrandeJog");
 
 if ($mysqli -> connect_errno) {
   echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
