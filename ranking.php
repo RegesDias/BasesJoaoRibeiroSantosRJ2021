@@ -2,13 +2,12 @@
 <html lang="en">
   <?php require_once("incl/head.php"); ?>
 <body>
-<?php 
-    require_once('incl/config.php');
-    require_once('incl/nav.php');
-  ?>      
-    <div class="container">
-                 
-<br>
+    <?php 
+        require_once('incl/config.php');
+        require_once('incl/nav.php');
+    ?>      
+    <div class="container">        
+    <br>
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">

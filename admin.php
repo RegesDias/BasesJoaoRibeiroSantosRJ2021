@@ -2,10 +2,10 @@
 <html lang="en">
   <?php require_once("incl/head.php"); ?>
 <body>
-<?php 
-    require_once('incl/config.php');
-    require_once('incl/nav.php');
-  ?>      
+    <?php 
+        require_once('incl/config.php');
+        require_once('incl/nav.php');
+    ?>      
 <div class="container">
 
 <div class="row">
