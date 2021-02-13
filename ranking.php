@@ -18,28 +18,35 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Possição</th>
+                                            <th>Posição</th>
                                             <th>Patrulha</th>
                                             <th>Pontos</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                  <?php  
+                                    $idUser = $_SESSION['idUser'];
+                                    $patrulhasql = "SELECT * FROM user WHERE admin = '0' AND chefeBase = '0' AND ativo = '1' ORDER BY notaTotal DESC";
+                                    $result = $mysqli->query($patrulhasql);
+                                    while ($patrulha = $result->fetch_object()) {
+                                        $cont++; ?>
                                         <tr>
-                                            <td>1</td>
-                                            <td>Castor</td>
-                                            <td>30</td>
+                                            <td><?=$cont?></td>
+                                            <td><?=$patrulha->nome?></td>
+                                            <td><?=$patrulha->notaTotal?></td>
                                         </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>crocodilo</td>
-                                            <td>20</td>
-                                        </tr>
+                                    <?php }?>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
     </div>
+    <script>
+        setTimeout(function(){
+            window.location.reload(1);
+        }, 50000);
+    </script>
                         <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
