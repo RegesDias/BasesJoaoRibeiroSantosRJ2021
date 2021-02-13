@@ -5,6 +5,7 @@
     <?php 
         require_once('incl/config.php');
         require_once('incl/nav.php');
+        
     ?>      
 <div class="container">
 
@@ -14,7 +15,7 @@
 
     <h1 class="my-4">Configurações Gerais</h1>
     <div class="list-group">
-      <a href="#" class="list-group-item">Criar Base</a>
+      <a href="base.php" class="list-group-item">Criar Base</a>
       <a href="#" class="list-group-item">Editar Base</a>
       <a href="#" class="list-group-item">Criar Usuario</a>
       <a href="#" class="list-group-item">Editar Usuaro</a>
