@@ -47,6 +47,7 @@
         </div>
         <div class="row">
         <?php
+                
           if($_SESSION['ativo'] == true){
             if($_SESSION['chefeBase'] == true){
               $idUser = $_SESSION['idUser'];
@@ -61,7 +62,8 @@
                       <a href="#"><img height="700" width="50" class="card-img-top img-fluid border-radius img-thumbnail" src="img/<?=$base->img?>" alt=""></a>
                         <div class="card-footer"><?php
                           $idUser = $_SESSION['idUser'];
-                          $feita = $mysqli->query("SELECT * FROM baseFeitas WHERE idBase = '$base->id' AND idUser = '$idUser'");
+                          $sql = "SELECT * FROM baseFeitas WHERE idBase = '$base->id' AND idUser = '$idUser'";
+                          $feita = $mysqli->query($sql);
                           $baseJaFeita = $feita->fetch_object();
                           if($baseJaFeita->ativo == 1){
                             echo "<button class='btn btn-large btn-block '  disabled href='#'>Nota ".retornaNota($_SESSION['idUser'],$base->id)."</button>";
@@ -81,7 +83,7 @@
                                       ?>
                                       <form method="post">
                                         <label>Avaliar Patrulha <?=retornaNome($base->idUser ,'user')?></label>
-                                        <input type="text" name='nota' class="form-control"  placeholder="Nota">
+                                        <input type="number" min="1" max="10" step="0.5" name='nota' class="form-control"  placeholder="Nota">
                                         <input type='hidden' name='acao' value='abrirBase'>
                                         <input type='hidden' name='status' value='<?=$base->status?>'>
                                         <input type='hidden' name='idUser' value='<?=$base->idUser?>'>
