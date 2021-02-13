@@ -82,6 +82,13 @@ if($respPost['acao'] == 'abrirBase'){
   $alterar = $mysqli->query("UPDATE base SET status = '$status' WHERE id = '$id'");
   $insertNota = "INSERT INTO notas(idBase, idUser,nota,avaliadoPor) VALUES ($id,$idUser,$nota,$avaliadoPor )";
   $in = $mysqli->query($insertNota);
+
+  //Atualiza nota total
+  $notaTotal = $mysqli->query("SELECT notaTotal FROM user WHERE id ='$idUser'");
+  $nt = $notaTotal->fetch_object();
+  $novoTotal = $nt->notaTotal+$nota;
+  $not = $mysqli->query("UPDATE user SET notaTotal = '$novoTotal' WHERE id = '$idUser'");
+  
 }
 //testes
 //echo '<br>';
