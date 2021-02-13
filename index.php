@@ -1,47 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <meta http-equiv=”refresh” content=”5" />
-  <title>Controle de Bases</title>
-
-  <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom styles for this template -->
-  <link href="css/shop-homepage.css" rel="stylesheet">
-
-</head>
-
+  <?php require_once("incl/head.php"); ?>
 <body>
-<?php 
-  require_once('config.php');
-?>
-<!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-    <?php
-     if($_SESSION['ativo'] == true){
-        if($_SESSION['admin'] === true){ ?>
-            <a class="navbar-brand" href="#">Bom vindo Chefe <?=$_SESSION['nome']?></a>
-        <?php }else{ ?>
-          <a class="navbar-brand" href="#">Patrulha <?=$_SESSION['nome']?> Alerta!</a>
-        <?php }
-      }?>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#"  data-toggle="modal" data-target="#modalExemplo">Entrar</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <!-- Page Content -->
+  <?php 
+    require_once('config.php');
+    require_once('incl/nav.php');
+  ?>
   <div class="container">
 
 <!-- Modal -->
