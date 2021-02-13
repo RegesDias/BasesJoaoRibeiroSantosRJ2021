@@ -1,5 +1,6 @@
 <?php
 session_start();
+error_reporting(0);
 $server = "localhost";
 //$server = "187.45.196.218";
 $mysqli = new mysqli($server,"basesgrandejog","ondeumvai@99T","basesgrandejog");
