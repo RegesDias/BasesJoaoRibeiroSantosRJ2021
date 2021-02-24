@@ -14,24 +14,19 @@
         }
     ?>  
     <div class="container">
-        <h1> Criar Base </h1>
-        <p> Por favor digite abaixo os dados da nova base </p>
+        <h1> Editar Base </h1>
+        <p> Por favor digite abaixo os dados da base</p>
         <hr>
         <form method="post">
             <div class="form-group">
-                <label for="Name">Nome</label>
+                <label for="Name">Digite o novo nome</label>
                 <input type="text" name="nome" class="form-control" id="Nome" aria-describedby="nameHelp" placeholder="Digite um nome">
-                
             </div>
 
-            <div class="form-group">
-                <label for="Password">Senha</label>
-                <input type="password" name="senha" class="form-control" id="Password" placeholder="Senha">
-            </div>
 
             <div class="form-group">
-                <label for="ConfirmPassword"> Confirme sua senha</label>
-                <input type="password" name="confirmSenha" class="form-control" id="ConfirmPassword" placeholder="Confirme sua senha">
+                <label for="ConfirmPassword"> Digite a nova senha</label>
+                <input type="password" name="novaSenha" class="form-control" id="newPassword" placeholder="Insira nova senha">
             </div>
 
                 <input type="hidden" valor="cadastroBase" name="acao">
@@ -55,7 +50,3 @@
         </form>
        
     <hr>
-
-    
-
-    

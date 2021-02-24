@@ -14,8 +14,8 @@
         }
     ?>  
     <div class="container">
-        <h1> Criar Base </h1>
-        <p> Por favor digite abaixo os dados da nova base </p>
+        <h1> Criar Usuário </h1>
+        <p> Por favor digite abaixo os dados do usuário </p>
         <hr>
         <form method="post">
             <div class="form-group">
@@ -34,28 +34,12 @@
                 <input type="password" name="confirmSenha" class="form-control" id="ConfirmPassword" placeholder="Confirme sua senha">
             </div>
 
-                <input type="hidden" valor="cadastroBase" name="acao">
+                <input type="hidden" valor="cadastroUsuario" name="acao">
            
-            
-            <div class="form-group">
-                <label for="Status">Selecione o status da base</label>
-                <select class="form-control"name="Status" id="Status">
-                    <option>Aberta</option>
-                    <option>Fechada</option>
-                    
-                </select>
-            </div>
-
-            <div class="form-group form-check">
-                <input type="checkbox" name="Ativa" class="form-check-input" id="checkMark">
-                <label class="form-check-label" for="checkMark">Ativa</label>
-            </div>
 
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
        
     <hr>
-
-    
 
     

@@ -16,9 +16,9 @@
     <h1 class="my-4">Configurações Gerais</h1>
     <div class="list-group">
       <a href="base.php" class="list-group-item">Criar Base</a>
-      <a href="#" class="list-group-item">Editar Base</a>
-      <a href="#" class="list-group-item">Criar Usuario</a>
-      <a href="#" class="list-group-item">Editar Usuaro</a>
+      <a href="editBase.php" class="list-group-item">Editar Base</a>
+      <a href="user.php" class="list-group-item">Criar Usuário</a>
+      <a href="editUser.php" class="list-group-item">Editar Usuário</a>
     </div>
 
   </div>
