@@ -50,7 +50,7 @@
           <input type="text" name='user' class="form-control"  placeholder="usuario">
           <label>Senha</label>
           <input type="password" name='passwd' class="form-control"  placeholder="senha">
-          <input type="hidden" name='acao' value='entrar'>
+          <input type="hidden" name='acao' value='logar'>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>

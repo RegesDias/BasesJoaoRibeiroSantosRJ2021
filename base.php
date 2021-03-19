@@ -4,6 +4,7 @@
 <body>
     <?php 
         require_once('incl/config.php');
+        require_once('class/base.php');
         require_once('incl/nav.php');
         print_r($respPost);
         if($respPost['acao']=='cadastroBase'){
