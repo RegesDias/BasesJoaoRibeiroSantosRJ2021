@@ -30,5 +30,13 @@ class Usuario extends UsuarioModel{
                 }
         }
     }
+    public function atualizaNotaTotal($nota) {
+            global $mysqli;
+            //Atualiza nota total
+            $notaTotal = $mysqli->query("SELECT notaTotal FROM user WHERE id ='".$nota->idUser."'");
+            //$nt = $notaTotal->fetch_object();
+            $novoTotal = $nt->notaTotal+$nota;
+            //$not = $mysqli->query("UPDATE user SET notaTotal = '$novoTotal' WHERE id = '$idUser'");
+    }
 }
 ?>

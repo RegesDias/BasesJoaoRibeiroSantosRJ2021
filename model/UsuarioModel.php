@@ -5,6 +5,7 @@ class UsuarioModel {
 	private $chave;
 	private $senha;
 	private $ativo;
+	private $notaTotal;
 	private $admin;
 	private $chefeBase;
 
@@ -17,6 +18,15 @@ class UsuarioModel {
 		$this->setNome($_SESSION['nome']);
 	}
 	//GET SET
+
+	public function getNotaTotal() {
+		return $this->notaTotal;
+	}
+
+	public function setNotaTotal($notaTotal) {
+		$this->notaTotal= $notaTotal;
+	}
+	
 	public function getAtivo() {
 		return $this->ativo;
 	}
@@ -30,7 +40,7 @@ class UsuarioModel {
 	}
 
 	public function setSenha($senha) {
-		$this->senha= $senha;
+		$this->senha=$senha;
 	}
 
 	public function getChave() {
@@ -62,11 +72,13 @@ class UsuarioModel {
 	}
 	
 	public function setIdUser($idUser) {
-		$this->idUser= $idUser;
+		$this->idUser=$idUser;
 	}
+
 	public function getAdmin() {
 		return $this->admin;
 	}
+	
 	public function setAdmin($admin) {
 		$this->admin= $admin;
 	}

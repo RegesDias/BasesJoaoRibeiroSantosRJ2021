@@ -52,28 +52,15 @@ class Base extends BaseModel {
     $atualizarBase = "UPDATE base SET status = '".$base->getStatus()."' WHERE id = '".$base->getId()."'";
     echo $atualizarBase;
     //$ab = $mysqli->query($atualizarBase);
-    $nota = new Nota(
+    $nota = new Nota;
+    $nota->novaNota(
       $base->getId(),
       $base->getIdUser(),
       $respObj->nota,
       $user->getIdUser()
     );
-    print_p($nota);
-        /*
-    //insere nota
-    
-                $bn->idBase,
-            $bn->idUser,
-            $bn->nota,
-            $bn->dataHora,
-            $bn->avaliadoPor
+    $user->atualizaNotaTotal($nota);
 
-    //Atualiza nota total
-    $notaTotal = $mysqli->query("SELECT notaTotal FROM user WHERE id ='$idUser'");
-    $nt = $notaTotal->fetch_object();
-    $novoTotal = $nt->notaTotal+$nota;
-    $not = $mysqli->query("UPDATE user SET notaTotal = '$novoTotal' WHERE id = '$idUser'");
-        */
  }
 
 
