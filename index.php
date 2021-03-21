@@ -9,7 +9,6 @@
         require_once('class/Usuario.php');
         $base = new Base;
         $user = new Usuario;
-        
         if($respObj->acao == 'logar'){
           $acao = $respObj->acao;
           $id = $respObj->id;
