@@ -10,6 +10,8 @@
         require_once('class/Evento.php');
         $base = new Base;
         $user = new Usuario;
+        $evento = new Evento;
+        $evento = $evento->buscarEvento();
         if($respObj->acao == 'logar'){
           $acao = $respObj->acao;
           $id = $respObj->id;
