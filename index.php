@@ -7,6 +7,7 @@
         require_once('incl/nav.php');
         require_once('class/Base.php');
         require_once('class/Usuario.php');
+        require_once('class/Evento.php');
         $base = new Base;
         $user = new Usuario;
         if($respObj->acao == 'logar'){
@@ -18,6 +19,8 @@
           $id = $respObj->id;
           $base->$acao($id);
         }
+        $evento = new Evento;
+        $evento = $evento->buscarEvento();
     ?>
   <div class="container">
     <div class="row">
@@ -27,6 +30,7 @@
         <div class="row">
         <?php
           if($_SESSION['ativo'] == true){
+            
             $bases = $mysqli->query($base->listar());
             while ($b = $bases->fetch_object()){
               $base = new Base;
@@ -44,19 +48,9 @@
               ?>
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100">
-                        <?php 
-                          $base->imagem();
-                        ?>
+                        <?php $base->imagem();?>
                         <div class="card-footer">
-                          <?php
-                              
-                              if($base->avaliado() == 1){
-                                $base->exibeNota($b->id); 
-                              }else{
-                                $base->botoes();
-                              }
-                              
-                            ?>
+                            <?php $base->botoes();?>
                         </div>
                     </div>
                 </div><?php 

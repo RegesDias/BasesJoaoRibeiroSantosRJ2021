@@ -2,8 +2,8 @@
     <div class="container">
     <?php
      if($_SESSION['ativo'] == true){
-        if($_SESSION['admin'] === true){ ?>
-            <a class="navbar-brand" href="#">Bom vindo Chefe <?=$_SESSION['nome']?></a>
+        if($_SESSION['admin'] === 1){ ?>
+            <a class="navbar-brand" href="#">Bem vindo Chefe <?=$_SESSION['nome']?></a>
         <?php }else{
               $idUser = $_SESSION['idUser'];
               $basesql = "SELECT * FROM notas WHERE idUser = '$idUser' ";
