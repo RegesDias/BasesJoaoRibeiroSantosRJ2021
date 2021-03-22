@@ -8,14 +8,16 @@ class UsuarioModel {
 	private $notaTotal;
 	private $admin;
 	private $chefeBase;
+	private $idEvento;
 
 	//CONSTRUTOR
 	public function __construct(){
 		$this->setChefeBase($_SESSION['chefeBase']);
-		$this->setAdmin($_SESSION['admin']);
 		$this->setIdUser($_SESSION['idUser']);
-		$this->setAtivo($_SESSION['ativo']);
 		$this->setNome($_SESSION['nome']);
+		$this->setAtivo($_SESSION['ativo']);
+		$this->setAdmin($_SESSION['admin']);
+		$this->setIdEvento($_SESSION['Evento']);
 	}
 	//GET SET
 
@@ -25,6 +27,14 @@ class UsuarioModel {
 
 	public function setNotaTotal($notaTotal) {
 		$this->notaTotal= $notaTotal;
+	}
+
+	public function getIdEvento() {
+		return $this->idEvento;
+	}
+
+	public function setIdEvento($idEvento) {
+		$this->idEvento= $idEvento;
 	}
 	
 	public function getAtivo() {

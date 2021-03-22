@@ -7,8 +7,11 @@
         require_once('incl/nav.php');
         require_once('class/Base.php');
         require_once('class/Usuario.php');
+        require_once('class/Evento.php');
         $base = new Base;
         $user = new Usuario;
+        $evento = new Evento;
+        $evento = $evento->buscarEvento();
         if($respObj->acao == 'logar'){
           $acao = $respObj->acao;
           $id = $respObj->id;
@@ -44,19 +47,9 @@
               ?>
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100">
-                        <?php 
-                          $base->imagem();
-                        ?>
+                        <?php $base->imagem();?>
                         <div class="card-footer">
-                          <?php
-                              
-                              if($base->avaliado() == 1){
-                                $base->exibeNota($b->id); 
-                              }else{
-                                $base->botoes();
-                              }
-                              
-                            ?>
+                            <?php $base->botoes();?>
                         </div>
                     </div>
                 </div><?php 

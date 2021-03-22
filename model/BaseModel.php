@@ -1,6 +1,7 @@
 <?php
 class BaseModel {
       private $id;
+	  private $ordem;
       private $idUser;
       private $ResposavelBase;
       private $nome;	
@@ -32,6 +33,14 @@ class BaseModel {
 		 $this->id = $id;
 	}
 
+	public function getOrdem(){
+		return $this->ordem;
+	}
+
+	public function setOrdem($ordem){
+		 $this->id = $ordem;
+	}
+
 	public function getIdUser(){
 		return $this->idUser;
 	}
@@ -49,39 +58,39 @@ class BaseModel {
 	}
 
 	public function getNome(){
-		return $this->nome	;
+		return $this->nome;
 	}
 
 	public function setNome($nome){
-		 $this->nome = $nome	;
+		 $this->nome = $nome;
 	}
 
 	public function getImg(){
-		return $this->img	;
+		return $this->img;
 	}
 
 	public function setImg($img){
-		 $this->img = $img	;
+		 $this->img = $img;
 	}
 
 	public function getLink(){
-		return $this->link	;
+		return $this->link;
 	}
 
-	public function setLink	($link)  {
-		 $this->link	 = $link	;
+	public function setLink($link)  {
+		 $this->link=$link;
 	}
 
-	public function getStatus	(){
-		return $this->status	;
+	public function getStatus(){
+		return $this->status;
 	}
 
 	public function setStatus($status)  {
-		 $this->status	 = $status	;
+		 $this->status	 = $status;
 	}
 
-	public function getAtiva	(){
-		return $this->ativa	;
+	public function getAtiva(){
+		return $this->ativa;
 	}
 
 	public function setAtiva($ativa)  {
