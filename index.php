@@ -4,25 +4,15 @@
 <body>
     <?php 
         require_once('incl/config.php');
-        require_once('incl/nav.php');
         require_once('class/Base.php');
-        require_once('class/Usuario.php');
-        require_once('class/Evento.php');
         $base = new Base;
-        $user = new Usuario;
-        $evento = new Evento;
-        $evento = $evento->buscarEvento();
-        if($respObj->acao == 'logar'){
-          $acao = $respObj->acao;
-          $id = $respObj->id;
-          $user->$acao($id);
-        }else if(isset($respObj->acao)){
+        if(isset($respObj->acao)AND($respObj->entrarSair != '1')){
           $acao = $respObj->acao;
           $id = $respObj->id;
           $base->$acao($id);
         }
         $evento = new Evento;
-        $evento = $evento->buscarEvento();
+        require_once('incl/nav.php');
     ?>
   <div class="container">
     <div class="row">
@@ -31,22 +21,11 @@
       <?php require_once('incl/carousel.php'); ?>
         <div class="row">
         <?php
-          if($_SESSION['ativo'] == true){
-            
-            $bases = $mysqli->query($base->listar());
+          if($user->getAtivo() == true){
+            $bases = $base->listar();
             while ($b = $bases->fetch_object()){
               $base = new Base;
-              $base->novaBase(
-                          $b->id, 
-                          $b->idUser,
-                          $b->ResposavelBase,
-                          $b->nome,
-                          $b->img,
-                          $b->link,
-                          $b->status,
-                          $b->ativa,
-                          $b->dataHora
-              );
+              $base->novaBase($b);
               ?>
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100">

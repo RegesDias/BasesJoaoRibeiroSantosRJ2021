@@ -8,39 +8,37 @@
     ?>      
     <div class="container">        
     <br>
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Ranking</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Posição</th>
-                                            <th>Patrulha</th>
-                                            <th>Pontos</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                  <?php  
-                                    $idUser = $_SESSION['idUser'];
-                                    $patrulhasql = "SELECT * FROM user WHERE admin = '0' AND chefeBase = '0' AND ativo = '1' ORDER BY notaTotal DESC";
-                                    $result = $mysqli->query($patrulhasql);
-                                    while ($patrulha = $result->fetch_object()) {
-                                        $cont++; ?>
-                                        <tr>
-                                            <td><?=$cont?></td>
-                                            <td><?=$patrulha->nome?></td>
-                                            <td><?=$patrulha->notaTotal?></td>
-                                        </tr>
-                                    <?php }?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Ranking</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Posição</th>
+                                <th>Patrulha</th>
+                                <th>Pontos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php  
+                        $result = $user->listaNotaTotal();
+                        while ($patrulha = $result->fetch_object()) {
+                            $cont++; ?>
+                            <tr>
+                                <td><?=$cont?></td>
+                                <td><?=$patrulha->nome?></td>
+                                <td><?=$patrulha->notaTotal?></td>
+                            </tr>
+                        <?php }?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
         setTimeout(function(){

@@ -12,16 +12,16 @@ class BaseModel {
       private $dataHora;
       
   //Construtor
-    public function novaBase($id,$idUser,$ResposavelBase,$nome,$img,$link,$status,$ativa,$dataHora){
-      $this->setId($id);
-      $this->setidUser($idUser);
-      $this->setResposavelBase($ResposavelBase);
-      $this->setNome($nome);
-      $this->setImg($img);
-      $this->setLink($link);
-      $this->setStatus($status);
-      $this->setAtiva($ativa);
-      $this->setDataHora($dataHora);
+    public function novaBase($base){
+      $this->setId($base->id);
+      $this->setidUser($base->idUser);
+      $this->setResposavelBase($base->ResposavelBase);
+      $this->setNome($base->nome);
+      $this->setImg($base->img);
+      $this->setLink($base->link);
+      $this->setStatus($base->status);
+      $this->setAtiva($base->ativa);
+      $this->setDataHora($base->dataHora);
     }
 
   //GET SET

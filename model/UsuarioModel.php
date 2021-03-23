@@ -18,7 +18,18 @@ class UsuarioModel {
 		$this->setAtivo($_SESSION['ativo']);
 		$this->setAdmin($_SESSION['admin']);
 		$this->setIdEvento($_SESSION['Evento']);
+		$this->setNotaTotal($_SESSION['notaTotal']);
 	}
+	public function novoUsuario ($usuario){
+        $this->setIdUser($usuario->id);
+        $this->setNome($usuario->nome);
+        $this->setChave($usuario->chave);
+        $this->setIdEvento($usuario->idEvento);
+        $this->setNotaTotal($usuario->notaTotal);
+        $this->setAdmin($usuario->admin);
+        $this->setChefeBase($usuario->chefeBase);
+        $this->setAtivo($usuario->ativo);
+      }
 	//GET SET
 
 	public function getNotaTotal() {

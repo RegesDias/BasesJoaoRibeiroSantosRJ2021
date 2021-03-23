@@ -6,16 +6,20 @@ require_once('model/BaseModel.php');
 class Base extends BaseModel {
     public function listar(){
         $user = new Usuario;
+        global $mysqli;
         if($user->getChefeBase() == true){
           $basesql = "SELECT * FROM base WHERE ResposavelBase = '$user->getIdUser()' AND idEvento = '".$user->getIdEvento()."' ORDER BY ordem ";
         }else{
           $basesql = "SELECT * FROM base WHERE idEvento = '".$user->getIdEvento()."' ORDER BY ordem";
         }
-        return $basesql;
+        $bases = $mysqli->query($basesql);
+        return $bases;
     }
  
     public function imagem(){
-      echo "<a href='#'><img height='700' width='50' class='card-img-top img-fluid border-radius img-thumbnail' src='img/".$this->getImg()."' alt=''></a>";
+      echo "<a href='#'>";
+      echo "<img height='700' width='50' class='card-img-top img-fluid border-radius img-thumbnail' src='img/".$this->getImg()."' alt=''>";
+      echo "</a>";
     }
     
     public function entrar($id){
@@ -73,7 +77,7 @@ class Base extends BaseModel {
 
  public function exibeNota($idBase){
     $nota = new Nota;
-    $nota = $nota->burcarNotaPorId($idBase);
+    $nota->burcarNotaPorId($idBase);
     echo "<button class='btn btn-large btn-block ' disabled href='#'>Nota ".$nota->getNota()."</button>";
  }
 
@@ -81,8 +85,7 @@ class Base extends BaseModel {
  function botoes(){
     $user = new Usuario;
     $nota = new Nota;
-    
-    if($nota->avaliado($this->getId()) == 1){
+    if($nota->avaliado($this->getId()) == true){
         $this->exibeNota($this->getId()); 
     }else{
       if(($user->getAdmin()!= true)){
@@ -128,17 +131,7 @@ class Base extends BaseModel {
   $buscaBase = $mysqli->query($sql);
   $bb = $buscaBase->fetch_object();
   $base = new Base;
-  $base->novaBase(
-      $bb->id, 
-      $bb->idUser,
-      $bb->ResposavelBase,
-      $bb->nome,
-      $bb->img,
-      $bb->link,
-      $bb->status,
-      $bb->ativa,
-      $bb->dataHora
-  );
+  $base->novaBase($bb);
   return $base;
 }
 

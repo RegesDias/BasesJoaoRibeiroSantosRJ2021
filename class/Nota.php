@@ -25,25 +25,16 @@ class Nota extends NotasModel{
     function burcarNotaPorId($idBase){
         global $mysqli;
         $user = new Usuario;
-        $sql = "SELECT * FROM notas WHERE idUser = ".$user->getidUser()." and idBase = '".$idBase."'";
+        $sql = "SELECT * FROM notas WHERE idUser = '".$user->getIdUser()."' and idBase = '".$idBase."'";
         $buscaNota = $mysqli->query($sql);
         $bn = $buscaNota->fetch_object();
-        $nota = new Nota;
-        $nota->novaNota(
-            $bn->idBase,
-            $bn->idUser,
-            $bn->nota,
-            $bn->dataHora,
-            $bn->avaliadoPor
-        );
-        return $nota;
+        $this->novaNota($bn);
     }
-    public function avaliado($id){
+    public function avaliado($idBase){
         global $mysqli;
         $user = new Usuario;
-        $sql = "SELECT nota FROM notas WHERE idUser = ".$user->getidUser()." and idBase = '".$id."'";
-        $rnome = $mysqli->query($sql);
-        if($rn = $rnome->fetch_object()){
+        $this->burcarNotaPorId($idBase);
+        if($this->getIdBase() != '' ){
             return true;
         }else{
             return false;

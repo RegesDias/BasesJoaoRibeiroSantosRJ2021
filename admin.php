@@ -5,7 +5,6 @@
     <?php 
         require_once('incl/config.php');
         require_once('incl/nav.php');
-        
     ?>      
 <div class="container">
 

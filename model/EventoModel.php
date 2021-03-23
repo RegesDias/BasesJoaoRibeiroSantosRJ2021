@@ -10,6 +10,19 @@ class EventoModel {
       private $ativo;	
       private $imgParticipante;	
       private $imgCoodenacao;	
+
+	  public function __construct(){
+        $this->setId($_SESSION['id']);
+        $this->setNome($_SESSION['nomeEvento']);
+        $this->setInicio($_SESSION['inicio']);
+        $this->setEnceramento($_SESSION['enceramento']);
+        $this->setContato($_SESSION['contato']);
+        $this->setInscricao($_SESSION['inscricoes']);
+        $this->setDataHora($_SESSION['datahora']);
+        $this->setAtivo($_SESSION['ativo']);
+        $this->setImgParticipante($_SESSION['imgParticipante']);
+        $this->setImgCoodenacao($_SESSION['imgCoodenacao']);
+	}
       public function novoEvento ($id,$nome,$inicio,$enceramento,$contato,$inscricao,$dataHora,$ativo,$imgParticipante,$imgCoodenacao){
         $this->setId($id);
         $this->setNome($nome);

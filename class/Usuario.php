@@ -1,27 +1,40 @@
 <?php
 require_once('Base.php');
 require_once('model/UsuarioModel.php');
+require_once('class/Evento.php');
 class Usuario extends UsuarioModel{
-    public function logar() {
+    
+    public function entrar() {
         global $respObj;
-        global $mysqli;
-        $senha  = md5($respObj->passwd);
-        if ($login = $mysqli->query("SELECT * FROM user WHERE senha = '$senha' AND chave = '$respObj->user'")) {
-            $acesso = $login->fetch_object();
-                if($acesso->ativo == 1){    
-                    $_SESSION['idUser'] = $acesso->id;
-                    $_SESSION['nome'] = $acesso->nome;
-                    $_SESSION['ativo'] = $acesso->ativo;
-                    $_SESSION['admin'] = $acesso->admin;
-                    $_SESSION['chefeBase'] = $acesso->chefeBase;
-                    $_SESSION['Evento'] = $acesso->idEvento;
-                }else{?>
-                    <div class="alert alert-danger">
-                    <button type="button" class="close" data-dismiss="alert">×</button>
-                    <h4>Alerta!</h4>
-                        Usuário ou senha incorretos...
-                    </div><?php
-                }
+        $this->setSenha(md5($respObj->passwd));
+        $this->setChave($respObj->user);
+        $this->buscaUsuarioPorChave();
+        if($this->getAtivo() == 1){   
+            $_SESSION['idUser'] = $this->getIdUser();
+            $_SESSION['nome'] = $this->getNome();
+            $_SESSION['ativo'] = $this->getAtivo();
+            $_SESSION['admin'] = $this->getAdmin();
+            $_SESSION['chefeBase'] = $this->getChefeBase();
+            $_SESSION['Evento'] = $this->getIdEvento();
+            $_SESSION['notaTotal'] = $this->getNotaTotal();
+            $evento = new Evento;
+            $evento = $evento->buscarEvento();
+            $_SESSION['id'] = $evento->getId();
+            $_SESSION['nomeEvento'] = $evento->getNome();
+            $_SESSION['inicio'] = $evento->getInicio();	
+            $_SESSION['enceramento'] = $evento->getEnceramento();	
+            $_SESSION['contato'] = $evento->getContato();
+            $_SESSION['inscricoes'] = $evento->getInscricao();
+            $_SESSION['datahora'] = $evento->getDataHora();
+            $_SESSION['ativo'] = $evento->getAtivo();
+            $_SESSION['imgParticipante'] = $evento->getImgParticipante();
+            $_SESSION['imgCoodenacao'] = $evento->getImgCoodenacao();
+        }else{?>
+            <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>Alerta!</h4>
+                Usuário ou senha incorretos...
+            </div><?php
         }
     }
     public function sair() {
@@ -31,20 +44,84 @@ class Usuario extends UsuarioModel{
         $_SESSION['admin'] = null;
         $_SESSION['chefeBase'] = null;
         $_SESSION['Evento'] = null;
+        $_SESSION['notaTotal'] = null;
+        session_destroy();
 
     }
-    public function atualizaNotaTotal($nota) {
+
+    public function buscaUsuarioPorChave(){
             global $mysqli;
-            $base = new Base;
-            $base = $base->burcarBasePorId($nota->getIdBase());
-            if($base->getStatus() == 'Fechada'){
-                $buscaNotaTotal = "SELECT notaTotal FROM user WHERE id ='".$nota->getIdUser()."'";
-                $notaTotal = $mysqli->query($buscaNotaTotal);
-                $nt = $notaTotal->fetch_object();
-                $novoTotal = $nt->notaTotal+$nota->getNota();
-                $atualizaNotaTotal = "UPDATE user SET notaTotal = '$novoTotal' WHERE id = '".$nota->getIdUser()."'";
-                $not = $mysqli->query($atualizaNotaTotal);
+            $slq = "SELECT * FROM user WHERE senha = '".$this->getSenha()."' AND chave = '".$this->getChave()."'";
+            $login = $mysqli->query($slq);
+            $acesso = $login->fetch_object();
+            return $this->novoUsuario($acesso);
+    }
+
+    public function listaNotaTotal(){
+        global $mysqli;
+        $evento = new Evento;
+        $patrulhasql = "SELECT * FROM user WHERE admin = '0' AND chefeBase = '0' AND ativo = '1' AND idEvento = '".$evento->getId()."'ORDER BY notaTotal DESC";
+        $result = $mysqli->query($patrulhasql);
+        return $result;
+}
+
+    public function usuarioLogado(){
+        if($this->getAtivo() == true){
+            if($this->getAdmin() == true){
+                echo "<a class='navbar-brand' href='#'>Bem vindo Chefe ".$this->getNome()."</a>";
+            }else{
+                echo "<a class='navbar-brand' href='#'> Patrulha ".$this->getNome();
+                if($this->getNotaTotal() > 0){
+                    echo " Alerta! - <b>Pontos:</b> <i>".$this->getNotaTotal()."</i></a>";
+                }else{
+                    echo "</a>";
+                }
             }
+        }
+    }
+    public function usuarioAdm(){
+
+        if( $this->getAdmin() == true){
+            echo"
+            <li class='nav-item'>
+            <a class='nav-link' href='admin.php'>Administrar</a>
+            </li>
+            <li class='nav-item'>
+            <a class='nav-link' href='ranking.php'>Ranking</a>
+            </li>";
+        }
+    }
+    public function entrarSair(){
+        if($this->getAtivo() == 1){
+            echo"
+                <li class='nav-item'>
+                    <a class='nav-link' href='index.php'>Bases</a>
+                </li>
+                <li class='nav-item'>
+                    <a class='nav-link' href='#'  data-toggle='modal' data-target='#Sair'>Sair</a>
+                </li>
+            ";
+        }else{
+            echo "
+                <li class='nav-item'>
+                    <a class='nav-link' href='#'  data-toggle='modal' data-target='#Entrar'>Entrar</a>
+                </li>";
+        }
+    }
+
+    public function atualizaNotaTotal($nota) {
+        global $mysqli;
+        $base = new Base;
+        $base = $base->burcarBasePorId($nota->getIdBase());
+        if($base->getStatus() == 'Fechada'){
+            $buscaNotaTotal = "SELECT notaTotal FROM user WHERE id ='".$nota->getIdUser()."'";
+            $notaTotal = $mysqli->query($buscaNotaTotal);
+            $evento = $notaTotal->fetch_object();
+            $novoTotal = $evento->notaTotal+$nota->getNota();
+            $atualizaNotaTotal = "UPDATE user SET notaTotal = '$novoTotal' WHERE id = '".$nota->getIdUser()."'";
+            $not = $mysqli->query($atualizaNotaTotal);
+            $_SESSION['notaTotal'] = $not;
+        }
     }
 }
 ?>

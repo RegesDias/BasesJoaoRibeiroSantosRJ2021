@@ -1,6 +1,5 @@
 <?php
 session_start();
-error_reporting(0);
 //$server = "localhost";
 $server = "187.45.196.218";
 
@@ -10,7 +9,17 @@ if ($mysqli -> connect_errno) {
   exit();
 }
 $respObj = (object) filter_input_array(INPUT_POST, FILTER_DEFAULT);
+require_once('class/Usuario.php');
+require_once('class/Evento.php');
+$user = new Usuario;
+$evento = new Evento;
 
+if($respObj->entrarSair == '1'){
+  $acao = $respObj->acao;
+  $id = $respObj->id;
+  $user->$acao($id);
+  $user = new Usuario;
+}
 
 function retornaNome($id ,$tabela){
     global $mysqli;
