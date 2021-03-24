@@ -17,6 +17,7 @@ class Usuario extends UsuarioModel{
             $_SESSION['chefeBase'] = $this->getChefeBase();
             $_SESSION['Evento'] = $this->getIdEvento();
             $_SESSION['notaTotal'] = $this->getNotaTotal();
+            $_SESSION['idBase'] = $this->getIdBase();
             $evento = new Evento;
             $evento = $evento->buscarEvento();
             $_SESSION['id'] = $evento->getId();
@@ -45,6 +46,7 @@ class Usuario extends UsuarioModel{
         $_SESSION['chefeBase'] = null;
         $_SESSION['Evento'] = null;
         $_SESSION['notaTotal'] = null;
+        $_SESSION['idBase'] = null;
         session_destroy();
 
     }
@@ -55,6 +57,28 @@ class Usuario extends UsuarioModel{
             $login = $mysqli->query($slq);
             $acesso = $login->fetch_object();
             return $this->novoUsuario($acesso);
+    }
+
+    public function AtualizaUsuarioBaseAtual(){
+        global $mysqli;
+        $slq = "SELECT idBase FROM user WHERE  id = '".$this->getIdUser()."'";
+        $login = $mysqli->query($slq);
+        $acesso = $login->fetch_object();
+        $_SESSION['idBase'] = $acesso->idBase;
+        return $user = new Usuario;
+    }
+
+    public function entrarUsuarioDaBase(){
+        global $mysqli;
+        $updateUserBase="UPDATE user SET idBase = '".$this->getIdBase()."' WHERE id = '".$this->getIdUser()."'";
+        $ub = $mysqli->query($updateUserBase);
+        $_SESSION['idBase'] = $this->getIdBase();
+    }
+
+    public function sairUsuarioDaBase($id){
+        global $mysqli;
+        $updateBase = "UPDATE user SET idBase = NULL WHERE id = '".$id."'";
+        $ub = $mysqli->query($updateBase);
     }
 
     public function listaNotaTotal(){
@@ -112,7 +136,7 @@ class Usuario extends UsuarioModel{
     public function atualizaNotaTotal($nota) {
         global $mysqli;
         $base = new Base;
-        $base = $base->burcarBasePorId($nota->getIdBase());
+        $base->burcarBasePorId($nota->getIdBase());
         if($base->getStatus() == 'Fechada'){
             $buscaNotaTotal = "SELECT notaTotal FROM user WHERE id ='".$nota->getIdUser()."'";
             $notaTotal = $mysqli->query($buscaNotaTotal);

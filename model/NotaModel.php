@@ -6,7 +6,7 @@ class NotasModel{
     private $dataHora;
     private $avaliadoPor;
 
-    public function novaNota($nota){
+	public function novaNota($nota){
         $this->setIdBase($nota->idBase);
         $this->setidUser($nota->idUser);
         $this->setNota($nota->nota);

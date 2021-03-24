@@ -12,6 +12,7 @@ $respObj = (object) filter_input_array(INPUT_POST, FILTER_DEFAULT);
 require_once('class/Usuario.php');
 require_once('class/Evento.php');
 $user = new Usuario;
+$user->AtualizaUsuarioBaseAtual();
 $evento = new Evento;
 
 if($respObj->entrarSair == '1'){

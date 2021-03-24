@@ -9,6 +9,7 @@ class UsuarioModel {
 	private $admin;
 	private $chefeBase;
 	private $idEvento;
+	private $idBase;
 
 	//CONSTRUTOR
 	public function __construct(){
@@ -19,6 +20,7 @@ class UsuarioModel {
 		$this->setAdmin($_SESSION['admin']);
 		$this->setIdEvento($_SESSION['Evento']);
 		$this->setNotaTotal($_SESSION['notaTotal']);
+		$this->setIdBase($_SESSION['idBase']);
 	}
 	public function novoUsuario ($usuario){
         $this->setIdUser($usuario->id);
@@ -29,6 +31,7 @@ class UsuarioModel {
         $this->setAdmin($usuario->admin);
         $this->setChefeBase($usuario->chefeBase);
         $this->setAtivo($usuario->ativo);
+		$this->setIdBase($usuario->idBase);
       }
 	//GET SET
 
@@ -102,6 +105,14 @@ class UsuarioModel {
 	
 	public function setAdmin($admin) {
 		$this->admin= $admin;
+	}
+
+	public function getIdBase() {
+		return $this->idBase;
+	}
+	
+	public function setIdBase($idBase) {
+		$this->idBase=$idBase;
 	}
 }
 ?>

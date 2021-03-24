@@ -24,13 +24,10 @@ class Base extends BaseModel {
     
     public function entrar($id){
           global $mysqli;
-          $user = new Usuario;
-          $base = new Base;
-          $base = $this->burcarBasePorId($id);
-          if($base->getStatus() == 'Aberta'){
-              $updateBase="UPDATE base SET status = 'Fechada', idUser = '".$user->getIdUser()."' WHERE id = '".$base->getId()."'";
-              $ub = $mysqli->query($updateBase);
-              header('Location: '.$base->getLink());
+          $this->burcarBasePorId($id);
+          if($this->getStatus() == 'Aberta'){
+              $this->fecharBase();
+              //header('Location: '.$base->getLink());
           }else{?>
               <div class="alert alert-warning">
               <button type="button" class="close" data-dismiss="alert">×</button>
@@ -39,33 +36,39 @@ class Base extends BaseModel {
               </div><?php
           }
     }
+
+    public function fecharBase(){
+      global $mysqli;
+      $user = new Usuario;
+      $updateBase="UPDATE base SET status = 'Fechada', idUser = '".$user->getIdUser()."' WHERE id = '".$this->getId()."'";
+      $ub = $mysqli->query($updateBase);
+      $user->setIdBase($this->getid());
+      $user->entrarUsuarioDaBase();
+    }
+
     public function abrirAvaliar($id){
         global $respObj;
-        global $mysqli;
         $user = new Usuario;
-
-        $base = new Base;
-        $base = $this->burcarBasePorId($id);
+        $this->burcarBasePorId($id);
 
         $nota = new Nota;
-        $nota->novaNota(
-            $base->getId(),
-            $base->getIdUser(),
-            $respObj->nota,
-            $user->getIdUser()
-        );
-        $user->atualizaNotaTotal($nota,$base);
+        $nota->setIdBase($this->getId(),);
+        $nota->setidUser($this->getIdUser(),);
+        $nota->setNota($respObj->nota,);
+        $nota->setAvaliadoP($user->getIdUser());
+        $user->atualizaNotaTotal($nota);
+        $user->sairUsuarioDaBase($this->getIdUser());
         $nota->insereNota();
-
         $basefeita = new BaseFeita;
         $basefeita->novaBaseFeita(
-          $base->getId(),
-          $base->getIdUser()
+          $this->getId(),
+          $this->getIdUser()
         );
+        
         $basefeita->insereBaseFeita();
 
-        $base->setStatus('Aberta');
-        $base->atualizaStatus();
+        $this->setStatus('Aberta');
+        $this->atualizaStatus();
 
     }
     public Function atualizaStatus (){
@@ -113,12 +116,17 @@ class Base extends BaseModel {
  }
 
  public function botaoAbertoFechado(){
-    if($this->getStatus() === 'Aberta'){?>
-        <form method="post">
-        <input type='hidden' name='acao' value='entrar'>
-        <input type='hidden' name='id' value='<?=$this->getId()?>'>
-        <input type='submit' value='Aberta!' class="btn btn-large btn-block btn-success">
-        </form><?php
+   $user = new usuario;
+  if($user->getIdBase() == Null){
+      if($this->getStatus() === 'Aberta'){?>
+          <form method="post">
+          <input type='hidden' name='acao' value='entrar'>
+          <input type='hidden' name='id' value='<?=$this->getId()?>'>
+          <input type='submit' value='Aberta!' class="btn btn-large btn-block btn-success">
+          </form><?php
+      }else{
+        echo "<button class='btn btn-large btn-block btn-danger' disabled href='#'>Fechada</button>";
+      }
     }else{
         echo "<button class='btn btn-large btn-block btn-danger' disabled href='#'>Fechada</button>";
     }
@@ -126,25 +134,13 @@ class Base extends BaseModel {
  
 
  public function burcarBasePorId($id){
-  global $mysqli;
-  $sql = "SELECT * FROM base WHERE id = '$id' ";
-  $buscaBase = $mysqli->query($sql);
-  $bb = $buscaBase->fetch_object();
-  $base = new Base;
-  $base->novaBase($bb);
-  return $base;
+    global $mysqli;
+    $sql = "SELECT * FROM base WHERE id = '$id' ";
+    $buscaBase = $mysqli->query($sql);
+    $bb = $buscaBase->fetch_object();
+    //$base = new Base;
+    $this->novaBase($bb);
 }
-
- //remover ##################################################
-
- public function getNota(){
-      global $mysqli;
-      $user = new Usuario;
-      $sql = "SELECT nota FROM notas WHERE idUser = ".$user->getidUser()." and idBase = '".$this->getId()."'";
-      $rnome = $mysqli->query($sql);
-      $rn = $rnome->fetch_object();
-      return $rn->nota;
- }
 
 }
 ?>
