@@ -27,7 +27,7 @@ class Base extends BaseModel {
           $this->burcarBasePorId($id);
           if($this->getStatus() == 'Aberta'){
               $this->fecharBase();
-              //header('Location: '.$base->getLink());
+              header('Location: '.$this->getLink());
           }else{?>
               <div class="alert alert-warning">
               <button type="button" class="close" data-dismiss="alert">×</button>
@@ -119,10 +119,10 @@ class Base extends BaseModel {
    $user = new usuario;
   if($user->getIdBase() == Null){
       if($this->getStatus() === 'Aberta'){?>
-          <form method="post">
-          <input type='hidden' name='acao' value='entrar'>
-          <input type='hidden' name='id' value='<?=$this->getId()?>'>
-          <input type='submit' value='Aberta!' class="btn btn-large btn-block btn-success">
+          <form method="post" target="_blank" action="redireciona.php">
+            <input type='hidden' name='acao' value='entrar'>
+            <input type='hidden' name='id' value='<?=$this->getId()?>'>
+            <input type='submit' value='Aberta!' class="btn btn-large btn-block btn-success">
           </form><?php
       }else{
         echo "<button class='btn btn-large btn-block btn-danger' disabled href='#'>Fechada</button>";
