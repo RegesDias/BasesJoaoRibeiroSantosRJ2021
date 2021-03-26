@@ -9,6 +9,7 @@ if ($mysqli -> connect_errno) {
   exit();
 }
 $respObj = (object) filter_input_array(INPUT_POST, FILTER_DEFAULT);
+$respGet = (object) filter_input_array(INPUT_GET, FILTER_DEFAULT);
 require_once('class/Usuario.php');
 require_once('class/Evento.php');
 $user = new Usuario;
@@ -33,5 +34,8 @@ function print_p($obj){
   echo "<pre>";
     print_r($obj);
   echo "</pre>";
+}
+function tirarAcentos($string){
+  return preg_replace(array("/(á|à|ã|â|ä)/","/(Á|À|Ã|Â|Ä)/","/(é|è|ê|ë)/","/(É|È|Ê|Ë)/","/(í|ì|î|ï)/","/(Í|Ì|Î|Ï)/","/(ó|ò|õ|ô|ö)/","/(Ó|Ò|Õ|Ô|Ö)/","/(ú|ù|û|ü)/","/(Ú|Ù|Û|Ü)/","/(ñ)/","/(Ñ)/"),explode(" ","a A e E i I o O u U n N"),$string);
 }
 ?>

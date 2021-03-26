@@ -19,7 +19,7 @@ class Usuario extends UsuarioModel{
             $_SESSION['notaTotal'] = $this->getNotaTotal();
             $_SESSION['idBase'] = $this->getIdBase();
             $evento = new Evento;
-            $evento = $evento->buscarEvento();
+            $evento = $evento->buscarEventoId();
             $_SESSION['id'] = $evento->getId();
             $_SESSION['nomeEvento'] = $evento->getNome();
             $_SESSION['inicio'] = $evento->getInicio();	
@@ -105,15 +105,21 @@ class Usuario extends UsuarioModel{
     }
     public function usuarioAdm(){
 
-        if( $this->getAdmin() == true){
-            echo"
+        if( $this->getAdmin() == true){?>
             <li class='nav-item'>
-            <a class='nav-link' href='admin.php'>Administrar</a>
+                <a class='nav-link' href='ranking.php'>Ranking</a>
             </li>
-            <li class='nav-item'>
-            <a class='nav-link' href='ranking.php'>Ranking</a>
-            </li>";
-        }
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Administrar
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="administrar.php?tp=Usuários">Usuários</a>
+                <a class="dropdown-item" href="administrar.php?tp=Bases">Bases</a>
+                <a class="dropdown-item" href="administrar.php?tp=Eventos">Eventos</a>
+                </div>
+            </li>
+        <?php }
     }
     public function entrarSair(){
         if($this->getAtivo() == 1){

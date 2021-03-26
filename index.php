@@ -19,10 +19,11 @@
       <div class="col-lg-12">
 
       <?php require_once('incl/carousel.php'); ?>
-        <div class="row">
+        
         <?php
           if($user->getAtivo() == true){
             $bases = $base->listar();
+            echo "<div class='row'>";
             while ($b = $bases->fetch_object()){
               $base = new Base;
               $base->novaBase($b);

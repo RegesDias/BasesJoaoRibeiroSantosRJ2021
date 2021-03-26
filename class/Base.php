@@ -6,13 +6,36 @@ require_once('model/BaseModel.php');
 class Base extends BaseModel {
     public function listar(){
         $user = new Usuario;
+        $evento = new Evento;
         global $mysqli;
         if($user->getChefeBase() == true){
-          $basesql = "SELECT * FROM base WHERE ResposavelBase = '$user->getIdUser()' AND idEvento = '".$user->getIdEvento()."' ORDER BY ordem ";
+          $basesql = "SELECT * FROM
+                                  base,
+                                  evento
+                                WHERE
+                                  base.idevento = evento.id AND
+                                  evento.ativo = '1' AND
+                                  ResposavelBase = '$user->getIdUser()' AND 
+                                  idEvento = '".$user->getIdEvento()."' 
+                                ORDER BY ordem ";
         }else{
-          $basesql = "SELECT * FROM base WHERE idEvento = '".$user->getIdEvento()."' ORDER BY ordem";
+          $basesql = "SELECT * FROM
+                                    base,
+                                    evento 
+                                  WHERE 
+                                    base.idevento = evento.id AND
+                                    evento.ativo = '1' AND
+                                    idEvento = '".$user->getIdEvento()."' 
+                                  ORDER BY ordem";
         }
         $bases = $mysqli->query($basesql);
+        if($bases->num_rows == 0){?>
+          <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>Alerta!</h4>
+            O Evento <b><?=$evento->getNome()?></b> encontra-se fechado.
+          </div><?php
+        }
         return $bases;
     }
  

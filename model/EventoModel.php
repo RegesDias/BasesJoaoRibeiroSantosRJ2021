@@ -23,17 +23,17 @@ class EventoModel {
         $this->setImgParticipante($_SESSION['imgParticipante']);
         $this->setImgCoodenacao($_SESSION['imgCoodenacao']);
 	}
-      public function novoEvento ($id,$nome,$inicio,$enceramento,$contato,$inscricao,$dataHora,$ativo,$imgParticipante,$imgCoodenacao){
-        $this->setId($id);
-        $this->setNome($nome);
-        $this->setInicio($inicio);
-        $this->setEnceramento($enceramento);
-        $this->setContato($contato);
-        $this->setInscricao($inscricao);
-        $this->setDataHora($dataHora);
-        $this->setAtivo($ativo);
-        $this->setImgParticipante($imgParticipante);
-        $this->setImgCoodenacao($imgCoodenacao);
+      public function novoEvento ($evento){
+        $this->setId($evento->id);
+        $this->setNome($evento->nome);
+        $this->setInicio($evento->inicio);
+        $this->setEnceramento($evento->enceramento);
+        $this->setContato($evento->contato);
+        $this->setInscricao($evento->inscricao);
+        $this->setDataHora($evento->dataHora);
+        $this->setAtivo($evento->ativo);
+        $this->setImgParticipante($evento->imgParticipante);
+        $this->setImgCoodenacao($evento->imgCoodenacao);
       }
   //GET SET
 	public function getImgParticipante(){
