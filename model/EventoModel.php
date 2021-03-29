@@ -3,7 +3,7 @@ class EventoModel {
       private $id;
       private $nome;
       private $inicio;	
-      private $enceramento;	
+      private $encerramento;	
       private $contato;	
       private $inscricao;	
       private $dataHora;
@@ -15,7 +15,7 @@ class EventoModel {
         $this->setId($_SESSION['id']);
         $this->setNome($_SESSION['nomeEvento']);
         $this->setInicio($_SESSION['inicio']);
-        $this->setEnceramento($_SESSION['enceramento']);
+        $this->setEncerramento($_SESSION['encerramento']);
         $this->setContato($_SESSION['contato']);
         $this->setInscricao($_SESSION['inscricoes']);
         $this->setDataHora($_SESSION['datahora']);
@@ -27,7 +27,7 @@ class EventoModel {
         $this->setId($evento->id);
         $this->setNome($evento->nome);
         $this->setInicio($evento->inicio);
-        $this->setEnceramento($evento->enceramento);
+        $this->setEncerramento($evento->encerramento);
         $this->setContato($evento->contato);
         $this->setInscricao($evento->inscricao);
         $this->setDataHora($evento->dataHora);
@@ -69,19 +69,19 @@ class EventoModel {
 	}
 
 	public function getInicio(){
-		return $this->inicio;
+		return DataHoraBr($this->inicio);
 	}
 
 	public function setInicio($inicio){
 		 $this->inicio = $inicio;
 	}
 
-	public function getEnceramento(){
-		return $this->enceramento;
+	public function getEncerramento(){
+		return DataHoraBr($this->encerramento);
 	}
 
-	public function setEnceramento($enceramento){
-		 $this->enceramento = $enceramento;
+	public function setEncerramento($encerramento){
+		 $this->encerramento = $encerramento;
 	}
 
   public function getContato(){

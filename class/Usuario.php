@@ -23,7 +23,7 @@ class Usuario extends UsuarioModel{
             $_SESSION['id'] = $evento->getId();
             $_SESSION['nomeEvento'] = $evento->getNome();
             $_SESSION['inicio'] = $evento->getInicio();	
-            $_SESSION['enceramento'] = $evento->getEnceramento();	
+            $_SESSION['encerramento'] = $evento->getEncerramento();	
             $_SESSION['contato'] = $evento->getContato();
             $_SESSION['inscricoes'] = $evento->getInscricao();
             $_SESSION['datahora'] = $evento->getDataHora();

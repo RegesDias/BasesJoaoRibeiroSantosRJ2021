@@ -1,16 +1,17 @@
-<form method="post">
-    <div class="form-group">
-        <label for="Name">Nome</label>
-        <input type="text" name="nome" class="form-control" id="Nome" aria-describedby="nameHelp" placeholder="Digite um nome">
-    </div>
-    <div class="form-group">
-        <label for="Password">Senha</label>
-        <input type="password" name="senha" class="form-control" id="Password" placeholder="Senha">
-    </div>
-    <div class="form-group">
-        <label for="ConfirmPassword"> Confirme sua senha</label>
-        <input type="password" name="confirmSenha" class="form-control" id="ConfirmPassword" placeholder="Confirme sua senha">
-    </div>
-    <input type="hidden" valor="cadastroUsuario" name="acao">
-    <button type="submit" class="btn btn-primary">Enviar</button>
-</form>
+<?php
+    $evento = new Evento;
+    $evento->novoEvento($b);
+    if(isset($respObj->alterar)){
+        $evento->setNome($respObj->nome);
+        $evento->setInicio($respObj->inicio);
+        $evento->setEncerramento($respObj->encerramento);
+        $evento->setAtivo($respObj->ativo);
+        $evento->setContato($respObj->contato);
+        $evento->setInscricao($respObj->inscricao);
+        $evento->CadastrarEvento();
+      }
+      ?>
+    <form method="post" method="POST" action="administrar.php?tp=Eventos&ac=Criar">
+        <?php require_once('incl/FormEventos.php'); ?>
+    </form>
+
