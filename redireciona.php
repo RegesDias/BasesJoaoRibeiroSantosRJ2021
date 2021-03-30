@@ -5,11 +5,9 @@
             require_once('incl/config.php');
             require_once('class/Base.php');
             $base = new Base;
-            if(isset($respObj->acao)AND($respObj->entrarSair != '1')){
             $acao = $respObj->acao;
-            $id = $respObj->id;
-            $base->$acao($id);
-            }
+
+            $base->$acao($respObj->id);
             $evento = new Evento;
         ?>
     </body>

@@ -9,7 +9,19 @@ class Base extends BaseModel {
         $evento = new Evento;
         global $mysqli;
         if($user->getChefeBase() == true){
-          $basesql = "SELECT * FROM
+          $basesql = "SELECT 
+                                base.id,
+                                base.ordem,
+                                base.idUser,
+                                base.idEvento,
+                                base.ResposavelBase,
+                                base.nome,
+                                base.img,
+                                base.link,
+                                base.status,
+                                base.ativa,
+                                base.dataHora
+                             FROM
                                   base,
                                   evento
                                 WHERE
@@ -19,7 +31,19 @@ class Base extends BaseModel {
                                   idEvento = '".$user->getIdEvento()."' 
                                 ORDER BY ordem ";
         }else{
-          $basesql = "SELECT * FROM
+          $basesql = "SELECT 
+                                base.id,
+                                base.ordem,
+                                base.idUser,
+                                base.idEvento,
+                                base.ResposavelBase,
+                                base.nome,
+                                base.img,
+                                base.link,
+                                base.status,
+                                base.ativa,
+                                base.dataHora          
+                          FROM
                                     base,
                                     evento 
                                   WHERE 
@@ -47,8 +71,9 @@ class Base extends BaseModel {
     
     public function entrar($id){
           global $mysqli;
+          $user = new Usuario;
           $this->burcarBasePorId($id);
-          if($this->getStatus() == 'Aberta'){
+          if(($this->getStatus() == 'Aberta') AND ($user->getIdBase() == Null)){
               $this->fecharBase();
               header('Location: '.$this->getLink());
           }else{?>
@@ -77,7 +102,8 @@ class Base extends BaseModel {
         $nota = new Nota;
         $nota->setIdBase($this->getId(),);
         $nota->setidUser($this->getIdUser(),);
-        $nota->setNota($respObj->nota,);
+        $nota->setNota($respObj->nota);
+        $nota->setDataHora(date("Y-m-d G:i:s"));
         $nota->setAvaliadoP($user->getIdUser());
         $user->atualizaNotaTotal($nota);
         $user->sairUsuarioDaBase($this->getIdUser());
@@ -142,10 +168,10 @@ class Base extends BaseModel {
    $user = new usuario;
   if($user->getIdBase() == Null){
       if($this->getStatus() === 'Aberta'){?>
-          <form method="post" target="_blank" action="redireciona.php">
+          <form method="post" target="_blank" action="redireciona.php" OnSubmit="recarregar()">
             <input type='hidden' name='acao' value='entrar'>
             <input type='hidden' name='id' value='<?=$this->getId()?>'>
-            <input type='submit' value='Aberta!' class="btn btn-large btn-block btn-success">
+            <input type='submit' value='Aberta' class="btn btn-large btn-block btn-success">
           </form><?php
       }else{
         echo "<button class='btn btn-large btn-block btn-danger' disabled href='#'>Fechada</button>";

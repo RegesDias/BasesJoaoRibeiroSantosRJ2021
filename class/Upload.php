@@ -28,7 +28,7 @@ class Upload{
 
     public function novoNomePasta(){
         $partes =explode('/',$this->type);
-        $ext = strtolower(".".$partes['1']);
+        $this->type = strtolower(".".$partes['1']);
         $this->name = md5(date("dmYHis")).$ext;
         $this->final_name = $this->pastaDestino."/".$this->name; 
     }

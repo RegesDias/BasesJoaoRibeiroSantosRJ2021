@@ -72,7 +72,7 @@ class Evento extends EventoModel{
                                     WHERE 
                                             id = '".$this->getId()."'";
         
-        //$ae = $mysqli->query($atualizarEvento);
+        $ae = $mysqli->query($atualizarEvento);
     }
     public function CadastrarEvento(){
         global $mysqli;

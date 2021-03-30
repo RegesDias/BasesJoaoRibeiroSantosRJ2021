@@ -26,7 +26,6 @@
       <?php
           require_once('class/Evento.php');
           if(isset($respObj->alterar)){
-            print_p($respObj);
             $evento->setNome($respObj->nome);
             $evento->setInicio($respObj->inicio);
             $evento->setEncerramento($respObj->encerramento);

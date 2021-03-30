@@ -1,7 +1,7 @@
 <?php
 session_start();
-//$server = "localhost";
-$server = "187.45.196.218";
+$server = "localhost";
+//$server = "187.45.196.218";
 
 $mysqli = new mysqli($server ,"basesgrandejog","ondeumvai@99T","basesgrandejog");
 if ($mysqli -> connect_errno) {
@@ -50,7 +50,7 @@ Function htmlSelectStatus($status){
   }
   $Html="
               <select class='form-control' name='ativo'>
-                  <option value='0'>Inativo</option>s
+                  <option value='0'>Inativo</option>
                   <option $status value='1'>Ativo</option>
               </select>";
   return $Html;

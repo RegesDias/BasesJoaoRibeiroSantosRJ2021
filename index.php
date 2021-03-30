@@ -52,6 +52,19 @@
   setTimeout(function(){
     window.location.reload(1);
   }, 50000);
+ function recarregar(){
+    var url_do_post;
+    var data;
+    $.ajax({
+          type: "POST",
+          url: url_do_post,
+          data: data,
+          success: function(){
+            location.reload();  
+          }
+        });
+ }
+
 </script>
 </body>
 
