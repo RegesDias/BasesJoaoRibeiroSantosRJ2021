@@ -1,6 +1,7 @@
       <input type="hidden" name='id' value="<?=$evento->getId()?>">
       <input type="hidden" name='acao' value="alterar">
       <input type="hidden" name='alterar' value="alterar">
+      <?php if($respObj->id > 0){?>
       <div class="container">
         <!-- Gallery -->
         <div class="row">
@@ -38,6 +39,7 @@
           </div>
         </div>
       </div>
+      <?php }?>
       <div class="container">
         <div class="form-group">
           <div class="row">

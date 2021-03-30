@@ -26,16 +26,15 @@
       <?php
           require_once('class/Evento.php');
           if(isset($respObj->alterar)){
+            $evento->setId($respObj->id);
             $evento->setNome($respObj->nome);
             $evento->setInicio($respObj->inicio);
             $evento->setEncerramento($respObj->encerramento);
             $evento->setAtivo($respObj->ativo);
             $evento->setContato($respObj->contato);
             $evento->setInscricao($respObj->inscricao);
-            $evento->carregarImagemEvento();
-            //$evento->setInscricao(carregarImagem($respObj->imgParticipante));
-            //$imgParticipante = carregarImagem($respObj->imgParticipante);
-            $evento->alterarDados();
+            $evento->carregarImagem();
+            $evento->Alterar();
           }
           $evento = new Evento;
           $evento->setNome($respObj->nome);

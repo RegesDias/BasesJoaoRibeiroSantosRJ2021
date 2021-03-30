@@ -37,30 +37,29 @@ class Evento extends EventoModel{
 
 
     }
-    public function carregarImagemEvento(){
+    public function carregarImagem(){
         global $_FILES;
         global $mysqli;
-        $upArquivo = new Upload($_FILES['imgParticipante']);
-        $upArquivo->pastaDestino = "img";
+        $upImgParticipante = new Upload($_FILES['imgParticipante']);
+        $upImgParticipante->pastaDestino = "img";
         
-        if($upArquivo->UploadArquivo()){
-            $atualizarImgEvento = " UPDATE evento SET imgParticipante = '$upArquivo->name' WHERE id = '".$this->getId()."'";
-            echo $atualizarImgEvento.'<br>';
-            $ae = $mysqli->query($atualizarImgEvento);
+        if($upImgParticipante->UploadArquivo()){
+            $sql = " UPDATE evento SET imgParticipante = '$upImgParticipante->name' WHERE id = '".$this->getId()."'";
+            $ae = $mysqli->query($sql);
         }
 
-        $upArquivo = new Upload($_FILES['imgCoodenacao']);
-        $upArquivo->pastaDestino = "img";
+        $upImgCoodenacao = new Upload($_FILES['imgCoodenacao']);
+        $upImgCoodenacao->pastaDestino = "img";
         
-        if($upArquivo->UploadArquivo()){
-            $atualizarImgEvento = " UPDATE evento SET imgCoodenacao = '$upArquivo->name' WHERE id = '".$this->getId()."'";
-            echo $atualizarImgEvento.'<br>';
-            $ae = $mysqli->query($atualizarImgEvento);
+        if($upImgCoodenacao->UploadArquivo()){
+            $sql = " UPDATE evento SET imgCoodenacao = '$upImgCoodenacao->name' WHERE id = '".$this->getId()."'";
+            $ae = $mysqli->query($sql);
         }
-        echo "<b><i>".$upArquivo->msn."</i></b>";
+        echo "<br><b><i>".$upImgCoodenacao->msn."</i></b>";
+        echo "<br><b><i>".$upImgParticipante->msn."</i></b>";
             
     }
-    public function alterarDados(){
+    public function Alterar(){
         global $mysqli;
         $atualizarEvento = " UPDATE evento SET 
                                             nome = '".$this->getNome()."',
@@ -71,12 +70,30 @@ class Evento extends EventoModel{
                                             ativo = '".$this->getAtivo()."' 
                                     WHERE 
                                             id = '".$this->getId()."'";
-        
         $ae = $mysqli->query($atualizarEvento);
     }
-    public function CadastrarEvento(){
+    public function Cadastrar(){
         global $mysqli;
-        echo teste;
+        global $respObj;
+        $slq="INSERT INTO evento(
+                                nome,
+                                inicio,
+                                encerramento, 
+                                inscricao, 
+                                contato,
+                                ativo
+                    )VALUES(
+                            '".$this->getNome()."',
+                            '".$this->getInicio()."',
+                            '".$this->getEncerramento()."',
+                            '".$this->getInscricao()."',
+                            '".$this->getContato()."',
+                            '".$this->getAtivo()."'
+                    )
+        ";
+        $ae = $mysqli->query($slq);
+        $this->setId($mysqli->insert_id);
+        $respObj->id = $mysqli->insert_id;
     }
 
 }

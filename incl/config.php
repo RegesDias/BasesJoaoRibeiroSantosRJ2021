@@ -1,6 +1,9 @@
 <?php
 session_start();
 $server = "localhost";
+//$server = "187.45.196.218";
+
+$mysqli = new mysqli($server ,"basesgrandejog","ondeumvai@99T","basesgrandejog");
 if ($mysqli -> connect_errno) {
   echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
   exit();
@@ -11,7 +14,6 @@ require_once('class/Usuario.php');
 require_once('class/Evento.php');
 $user = new Usuario;
 $user->AtualizaUsuarioBaseAtual();
-$user->AtualizaUsuarioNotaTotal();
 $evento = new Evento;
 
 if($respObj->entrarSair == '1'){

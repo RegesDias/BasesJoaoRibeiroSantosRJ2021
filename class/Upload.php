@@ -29,7 +29,7 @@ class Upload{
     public function novoNomePasta(){
         $partes =explode('/',$this->type);
         $this->type = strtolower(".".$partes['1']);
-        $this->name = md5(date("dmYHis")).$ext;
+        $this->name = md5(date("dmYHis")).$this->type;
         $this->final_name = $this->pastaDestino."/".$this->name; 
     }
     public function verificarExtencao(){
