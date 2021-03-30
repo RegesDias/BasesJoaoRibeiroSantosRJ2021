@@ -14,6 +14,7 @@ require_once('class/Usuario.php');
 require_once('class/Evento.php');
 $user = new Usuario;
 $user->AtualizaUsuarioBaseAtual();
+$user->AtualizaUsuarioNotaTotal();
 $evento = new Evento;
 
 if($respObj->entrarSair == '1'){

@@ -59,6 +59,14 @@ class Usuario extends UsuarioModel{
             return $this->novoUsuario($acesso);
     }
 
+    public function AtualizaUsuarioNotaTotal(){
+        global $mysqli;
+        $slq = "SELECT notaTotal FROM user WHERE  id = '".$this->getIdUser()."'";
+        $login = $mysqli->query($slq);
+        $acesso = $login->fetch_object();
+        $_SESSION['notaTotal'] = $acesso->notaTotal;
+        return $user = new Usuario;
+    }
     public function AtualizaUsuarioBaseAtual(){
         global $mysqli;
         $slq = "SELECT idBase FROM user WHERE  id = '".$this->getIdUser()."'";

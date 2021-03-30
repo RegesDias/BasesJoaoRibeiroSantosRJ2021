@@ -28,7 +28,8 @@
               $base = new Base;
               $base->novaBase($b);
               ?>
-                <div class="col-lg-4 col-md-6 mb-4">
+                <!--<div class="col-lg-3 col-md-6 mb-4">-->
+                <div class="col-lg-3 col-md-6 mb-4">
                     <div class="card h-100">
                         <?php $base->imagem();?>
                         <div class="card-footer">
