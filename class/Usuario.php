@@ -161,5 +161,18 @@ class Usuario extends UsuarioModel{
             $_SESSION['notaTotal'] = $not;
         }
     }
+
+    public function buscarUsuarioNomeId($id=null) {
+        global $mysqli;
+        if($id == null){
+            $buscaUsuario= "SELECT * FROM user WHERE nome like '%".$this->getNome()."%'";
+            
+        }else{
+            $buscaUsuario= "SELECT * FROM user WHERE id = '$id'";
+        }
+        $usuario = $mysqli->query($buscaUsuario);
+        return $usuario; 
+    }
+
 }
 ?>

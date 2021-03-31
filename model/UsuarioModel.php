@@ -10,6 +10,7 @@ class UsuarioModel {
 	private $chefeBase;
 	private $idEvento;
 	private $idBase;
+	private $grupo;
 
 	//CONSTRUTOR
 	public function __construct(){
@@ -23,7 +24,7 @@ class UsuarioModel {
 		$this->setIdBase($_SESSION['idBase']);
 	}
 	public function novoUsuario ($usuario){
-        $this->setIdUser($usuario->id);
+		$this->setIdUser($usuario->id);
         $this->setNome($usuario->nome);
         $this->setChave($usuario->chave);
         $this->setIdEvento($usuario->idEvento);
@@ -32,6 +33,8 @@ class UsuarioModel {
         $this->setChefeBase($usuario->chefeBase);
         $this->setAtivo($usuario->ativo);
 		$this->setIdBase($usuario->idBase);
+		$this->setGrupo($usuario->grupo);
+		$this->setChefeCoord($usuario->chefeCoord);
       }
 	//GET SET
 
@@ -113,6 +116,22 @@ class UsuarioModel {
 	
 	public function setIdBase($idBase) {
 		$this->idBase=$idBase;
+	}
+
+	public function getGrupo() {
+		return $this->grupo;
+	}
+	
+	public function setGrupo($grupo) {
+		$this->grupo=$grupo;
+	}
+
+	public function getChefeCoord() {
+		return $this->chefeCoord;
+	}
+	
+	public function setChefeCoord($chefeCoord) {
+		$this->chefeCoord=$chefeCoord;
 	}
 }
 ?>

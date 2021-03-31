@@ -1,4 +1,4 @@
-      <input type="hidden" name='id' value="<?=$evento->getId()?>">
+<input type="hidden" name='id' value="<?=$evento->getId()?>">
       <input type="hidden" name='acao' value="alterar">
       <input type="hidden" name='alterar' value="alterar">
       <?php if($respObj->id > 0){?>
