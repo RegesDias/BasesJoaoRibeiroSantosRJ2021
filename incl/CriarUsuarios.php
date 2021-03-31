@@ -1,16 +1,29 @@
-<form method="post">
-    <div class="form-group">
-        <label for="Name">Nome</label>
-        <input type="text" name="nome" class="form-control" id="Nome" aria-describedby="nameHelp" placeholder="Digite um nome">
-    </div>
-    <div class="form-group">
-        <label for="Password">Senha</label>
-        <input type="password" name="senha" class="form-control" id="Password" placeholder="Senha">
-    </div>
-    <div class="form-group">
-        <label for="ConfirmPassword"> Confirme sua senha</label>
-        <input type="password" name="confirmSenha" class="form-control" id="ConfirmPassword" placeholder="Confirme sua senha">
-    </div>
-    <input type="hidden" valor="cadastroUsuario" name="acao">
-    <button type="submit" class="btn btn-primary">Enviar</button>
-</form>
+<?php
+    $usuario = new Usuario;
+    $usuario->novoUsuario($respObj);
+    if(isset($respObj->alterar)){
+        $usuario->setIdUser($respObj->idUser);
+        $usuario->setNome($respObj->nome);
+        $usuario->setAtivo($respObj->ativo);
+        $usuario->setAdmin($respObj->admin);
+        $usuario->setChefeBase($respObj->chefeBase);
+        $usuario->setIdEvento($respObj->idEvento);
+        $usuario->setChefeCoord($respObj->chefeCoord);
+        $usuario->setGrupo($respObj->grupo);
+        if($respObj->id > 0){
+            $usuario->Alterar();
+            $usuarios = $usuario->buscarUsuarioNomeId($respObj->id);
+            $b = $usuarios->fetch_object();
+            $usuario->novoUsuario($b);
+        }else{
+          $usuario->Cadastrar();
+        }
+        
+      }
+      ?>
+
+<div class="container">
+    <form method="post" method="POST" action="administrar.php?tp=Usuarios&ac=Criar" enctype="multipart/form-data">
+       <?php require_once('incl/FormUsuarios.php'); ?>
+    </form>
+  </div>

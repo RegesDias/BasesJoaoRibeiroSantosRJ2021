@@ -1,8 +1,7 @@
-<input type="hidden" name='id' value="<?=$usuario->getIdUser()?>">
+<input type="hidden" name='idUser' value="<?=$usuario->getIdUser()?>">
       <input type="hidden" name='acao' value="alterar">
       <input type="hidden" name='alterar' value="alterar">     
       <div class="container">
-      <!--
         <div class="form-group">
           <div class="row">
             <div class="col-lg-10">
@@ -18,24 +17,32 @@
         <div class="form-group">
           <div class="row">
             <div class="col-lg-6">
-              <label>Início</label>
-              <input type="datetime-local" value="<?=$usuario->getInicio()?>" name="inicio" class="form-control" placeholder="Início">
+              <label>Administrador</label>
+              <input type="text" value="<?=$usuario->getAdmin()?>" name="admin" class="form-control" placeholder="Administrador">
             </div>
             <div class="col-lg-6">
-            <label>Encerramento</label>
-            <input type="datetime-local" value="<?=$usuario->getEncerramento()?>" name="encerramento" class="form-control" placeholder="Encerramento">
+            <label>Chefe de base</label>
+            <input type="text" value="<?=$usuario->getChefeBase()?>" name="chefeBase" class="form-control" placeholder="Chefe de base">
             </div>
           </div>
         </div>
         <div class="form-group">
           <div class="row">
             <div class="col-lg-6">
-              <label>Contato</label>
-              <input type="email" value="<?=$usuario->getContato()?>" name="contato" class="form-control" placeholder="Contato">
+              <label>Id do Evento</label>
+              <input type="text" value="<?=$usuario->getIdEvento()?>" name="idEvento" class="form-control" placeholder="Id do evento">
             </div>
             <div class="col-lg-6">
-              <label>Inscrição</label>
-              <input type="text" value="<?=$usuario->getInscricao()?>" name="inscricao" class="form-control" placeholder="inscricao">
+              <label>Chefe Coordenador</label>
+              <input type="text" value="<?=$usuario->getChefeCoord()?>" name="chefeCoord" class="form-control" placeholder="Chefe Coordenador">
+            </div>
+          </div>
+          <div class="form-group">
+          <div class="row">
+            
+            <div class="col-lg-6">
+              <label>Grupo Escoteiro</label>
+              <input type="text" value="<?=$usuario->getGrupo()?>" name="grupo" class="form-control" placeholder="Grupo Escoteiro">
             </div>
           </div>
         </div>
@@ -48,5 +55,4 @@
             </div>
           </div>
         </div>
-        -->
       </div>

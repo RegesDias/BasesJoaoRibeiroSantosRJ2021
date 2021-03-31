@@ -174,5 +174,49 @@ class Usuario extends UsuarioModel{
         return $usuario; 
     }
 
+    public function Cadastrar(){
+        global $mysqli;
+        global $respObj;
+        $slq="INSERT INTO user(
+                                nome,
+                                admin,
+                                chefeBase, 
+                                idEvento, 
+                                chefeCoord,
+                                ativo,
+                                grupo
+                                
+                    )VALUES(
+                            '".$this->getNome()."',
+                            '".$this->getAdmin()."',
+                            '".$this->getChefeBase()."',
+                            '".$this->getIdEvento()."',
+                            '".$this->getchefeCoord()."',
+                            '".$this->getAtivo()."',
+                            '".$this->getGrupo()."'
+                    )
+        ";
+        $ae = $mysqli->query($slq);
+        $this->setIdUser($mysqli->insert_id);
+        $respObj->id = $mysqli->insert_id;
+    }
+
+    public function Alterar(){
+        global $mysqli;
+        $atualizarUsuario = " UPDATE user SET 
+                                            nome = '".$this->getNome()."',
+                                            admin = '".$this->getAdmin()."', 
+                                            chefeBase = '".$this->getChefeBase()."', 
+                                            idEvento = '".$this->getIdEvento()."', 
+                                            chefeCoord = '".$this->getChefeCoord()."', 
+                                            ativo = '".$this->getAtivo()."',
+                                            grupo = '".$this->getGrupo()."' 
+                                    WHERE 
+                                            id = '".$this->getIdUser()."'";
+        $ae = $mysqli->query($atualizarUsuario);
+    }
+    
+
+
 }
 ?>

@@ -11,6 +11,7 @@ class UsuarioModel {
 	private $idEvento;
 	private $idBase;
 	private $grupo;
+	private $chefeCoord;
 
 	//CONSTRUTOR
 	public function __construct(){
