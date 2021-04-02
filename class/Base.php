@@ -9,7 +9,7 @@ class Base extends BaseModel {
         $evento = new Evento;
         global $mysqli;
         if($user->getChefeBase() == true){
-          $basesql = "SELECT 
+          $sql = "SELECT 
                                 base.id,
                                 base.ordem,
                                 base.idUser,
@@ -27,11 +27,11 @@ class Base extends BaseModel {
                                 WHERE
                                   base.idevento = evento.id AND
                                   evento.ativo = '1' AND
-                                  ResposavelBase = '$user->getIdUser()' AND 
+                                  ResposavelBase = '".$user->getIdUser()."' AND 
                                   idEvento = '".$user->getIdEvento()."' 
                                 ORDER BY ordem ";
         }else{
-          $basesql = "SELECT 
+          $sql = "SELECT 
                                 base.id,
                                 base.ordem,
                                 base.idUser,
@@ -52,8 +52,8 @@ class Base extends BaseModel {
                                     idEvento = '".$user->getIdEvento()."' 
                                   ORDER BY ordem";
         }
-        $bases = $mysqli->query($basesql);
-        if($bases->num_rows == 0){?>
+        $bases = $mysqli->query($sql);
+        if($evento->getAtivo() == 0){?>
           <div class="alert alert-danger">
             <button type="button" class="close" data-dismiss="alert">×</button>
             <h4>Alerta!</h4>
@@ -140,17 +140,17 @@ class Base extends BaseModel {
     if($nota->avaliado($this->getId()) == true){
         $this->exibeNota($this->getId()); 
     }else{
-      if(($user->getAdmin()!= true)){
-        $this->botaoAbertoFechado();
-      }else{
+      if($user->usuarioAvaliador()){
         $this->botaoVaziaAvaliar();
+      }else{
+        $this->botaoAbertoFechado();
       }
     }
  }
 
  public function botaoVaziaAvaliar(){
   $user = new Usuario;
-  if(($this->getStatus() == 'Aberta') and ($user->getAdmin() == true)){
+  if(($this->getStatus() == 'Aberta')){
       echo "<button class='btn btn-large btn-block btn-success' disabled href='#'>Vazia</button>";
   }else{ ?>
       <form method="post">

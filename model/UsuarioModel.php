@@ -18,7 +18,7 @@ class UsuarioModel {
 		$this->setChefeBase($_SESSION['chefeBase']);
 		$this->setIdUser($_SESSION['idUser']);
 		$this->setNome($_SESSION['nome']);
-		$this->setAtivo($_SESSION['ativo']);
+		$this->setAtivo($_SESSION['ativoUser']);
 		$this->setAdmin($_SESSION['admin']);
 		$this->setIdEvento($_SESSION['Evento']);
 		$this->setNotaTotal($_SESSION['notaTotal']);

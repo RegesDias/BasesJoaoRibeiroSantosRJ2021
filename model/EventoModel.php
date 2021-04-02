@@ -19,7 +19,7 @@ class EventoModel {
         $this->setContato($_SESSION['contato']);
         $this->setInscricao($_SESSION['inscricoes']);
         $this->setDataHora($_SESSION['datahora']);
-        $this->setAtivo($_SESSION['ativo']);
+        $this->setAtivo($_SESSION['ativoEvento']);
         $this->setImgParticipante($_SESSION['imgParticipante']);
         $this->setImgCoodenacao($_SESSION['imgCoodenacao']);
 	}

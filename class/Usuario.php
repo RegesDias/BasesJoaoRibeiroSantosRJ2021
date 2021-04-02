@@ -12,9 +12,10 @@ class Usuario extends UsuarioModel{
         if($this->getAtivo() == 1){   
             $_SESSION['idUser'] = $this->getIdUser();
             $_SESSION['nome'] = $this->getNome();
-            $_SESSION['ativo'] = $this->getAtivo();
+            $_SESSION['ativoUser'] = $this->getAtivo();
             $_SESSION['admin'] = $this->getAdmin();
             $_SESSION['chefeBase'] = $this->getChefeBase();
+            $_SESSION['ChefeCoord'] = $this->getChefeCoord();
             $_SESSION['Evento'] = $this->getIdEvento();
             $_SESSION['notaTotal'] = $this->getNotaTotal();
             $_SESSION['idBase'] = $this->getIdBase();
@@ -27,7 +28,7 @@ class Usuario extends UsuarioModel{
             $_SESSION['contato'] = $evento->getContato();
             $_SESSION['inscricoes'] = $evento->getInscricao();
             $_SESSION['datahora'] = $evento->getDataHora();
-            $_SESSION['ativo'] = $evento->getAtivo();
+            $_SESSION['ativoEvento'] = $evento->getAtivo();
             $_SESSION['imgParticipante'] = $evento->getImgParticipante();
             $_SESSION['imgCoodenacao'] = $evento->getImgCoodenacao();
         }else{?>
@@ -56,7 +57,8 @@ class Usuario extends UsuarioModel{
             $slq = "SELECT * FROM user WHERE senha = '".$this->getSenha()."' AND chave = '".$this->getChave()."'";
             $login = $mysqli->query($slq);
             $acesso = $login->fetch_object();
-            return $this->novoUsuario($acesso);
+            $this->novoUsuario($acesso);
+            return $this;
     }
 
     public function AtualizaUsuarioNotaTotal(){
@@ -96,10 +98,16 @@ class Usuario extends UsuarioModel{
         $result = $mysqli->query($patrulhasql);
         return $result;
 }
-
+    public function usuarioAvaliador(){
+        if(($this->getAdmin() == true) OR ($this->getChefeBase() == true) OR ($this->getChefeCoord() == true)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     public function usuarioLogado(){
         if($this->getAtivo() == true){
-            if($this->getAdmin() == true){
+            if($this->usuarioAvaliador()){
                 echo "<a class='navbar-brand' href='#'>Bem vindo Chefe ".$this->getNome()."</a>";
             }else{
                 echo "<a class='navbar-brand' href='#'> Patrulha ".$this->getNome();
