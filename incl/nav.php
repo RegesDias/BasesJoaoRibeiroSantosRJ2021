@@ -1,4 +1,9 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<?php
+if (!$user->getAtivo()){
+  header('Location:login.php');
+}
+?>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top navbar-inner">
     <div class="container">
       <?php $user->usuarioLogado()?>
       <div class="collapse navbar-collapse" id="navbarResponsive">

@@ -4,12 +4,13 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <meta http-equiv=”refresh” content=”5" />
-  <title>Controle de Bases</title>
+  <title>Semana Escoteira<</title>
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom styles for this template -->
   <link href="css/shop-homepage.css" rel="stylesheet">
+  <link href="css/estilo.css" rel="stylesheet">
 
 </head>

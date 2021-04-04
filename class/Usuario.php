@@ -49,6 +49,7 @@ class Usuario extends UsuarioModel{
         $_SESSION['notaTotal'] = null;
         $_SESSION['idBase'] = null;
         session_destroy();
+        header('Location:login.php');
 
     }
 
