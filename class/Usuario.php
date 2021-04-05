@@ -193,7 +193,8 @@ class Usuario extends UsuarioModel{
                                 idEvento, 
                                 chefeCoord,
                                 ativo,
-                                grupo
+                                grupo,
+                                chave
                                 
                     )VALUES(
                             '".$this->getNome()."',
@@ -202,7 +203,8 @@ class Usuario extends UsuarioModel{
                             '".$this->getIdEvento()."',
                             '".$this->getchefeCoord()."',
                             '".$this->getAtivo()."',
-                            '".$this->getGrupo()."'
+                            '".$this->getGrupo()."',
+                            '".$this->getChave()."'
                     )
         ";
         $ae = $mysqli->query($slq);
@@ -216,8 +218,9 @@ class Usuario extends UsuarioModel{
                                             nome = '".$this->getNome()."',
                                             admin = '".$this->getAdmin()."', 
                                             chefeBase = '".$this->getChefeBase()."', 
-                                            idEvento = '".$this->getIdEvento()."', 
                                             chefeCoord = '".$this->getChefeCoord()."', 
+                                            idEvento = '".$this->getIdEvento()."', 
+                                            chave = '".$this->getChave()."', 
                                             ativo = '".$this->getAtivo()."',
                                             grupo = '".$this->getGrupo()."' 
                                     WHERE 

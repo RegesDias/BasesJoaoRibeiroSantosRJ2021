@@ -35,6 +35,7 @@
             $usuario->setIdEvento($respObj->idEvento);
             $usuario->setChefeCoord($respObj->chefeCoord);
             $usuario->setGrupo($respObj->grupo);
+            $usuario->setChave($respObj->chave);
             $usuario->Alterar();
           }
           $usuario->setNome($respObj->nome);

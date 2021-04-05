@@ -1,6 +1,6 @@
 <?php
 session_start();
-//$server = "localhost";
+$server = "localhost";
 
 if ($mysqli -> connect_errno) {
   echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
@@ -34,6 +34,11 @@ function dataHoraBr($data){
   return $dt->format('Y-m-d\TH:i:s');
 }
 
+function exibeDataHoraBr($data){
+  $dt = new DateTime($data);
+  return $dt->format('d-m-Y H:i:s');
+}
+
 function print_p($obj){
   echo "<pre>";
     print_r($obj);
@@ -42,7 +47,7 @@ function print_p($obj){
 function tirarAcentos($string){
   return preg_replace(array("/(á|à|ã|â|ä)/","/(Á|À|Ã|Â|Ä)/","/(é|è|ê|ë)/","/(É|È|Ê|Ë)/","/(í|ì|î|ï)/","/(Í|Ì|Î|Ï)/","/(ó|ò|õ|ô|ö)/","/(Ó|Ò|Õ|Ô|Ö)/","/(ú|ù|û|ü)/","/(Ú|Ù|Û|Ü)/","/(ñ)/","/(Ñ)/"),explode(" ","a A e E i I o O u U n N"),$string);
 }
-Function htmlSelectStatus($status){
+function htmlSelectStatus($status){
   if($status == 1){
       $status = 'selected';
   }
@@ -50,6 +55,17 @@ Function htmlSelectStatus($status){
               <select class='form-control' name='ativo'>
                   <option value='0'>Inativo</option>
                   <option $status value='1'>Ativo</option>
+              </select>";
+  return $Html;
+}
+function htmlSelectSimNao($status, $name){
+  if($status == 1){
+      $status = 'selected';
+  }
+  $Html="
+              <select class='form-control' name='$name'>
+                  <option value='0'>Não</option>
+                  <option $status value='1'>Sim</option>
               </select>";
   return $Html;
 }

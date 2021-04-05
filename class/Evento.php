@@ -57,6 +57,15 @@ class Evento extends EventoModel{
             $sql = " UPDATE evento SET imgCoodenacao = '$upImgCoodenacao->name' WHERE id = '".$this->getId()."'";
             $ae = $mysqli->query($sql);
         }
+
+        $upImgChefeBase= new Upload($_FILES['imgChefeBase']);
+        $upImgChefeBase->pastaDestino = "img";
+        
+        if($upImgChefeBase->UploadArquivo()){
+            $sql = " UPDATE evento SET imgCoodenacao = '$upImgChefeBase->name' WHERE id = '".$this->getId()."'";
+            $ae = $mysqli->query($sql);
+        }
+        echo "<br><b><i>".$upImgChefeBase->msn."</i></b>";
         echo "<br><b><i>".$upImgCoodenacao->msn."</i></b>";
         echo "<br><b><i>".$upImgParticipante->msn."</i></b>";
             
@@ -96,6 +105,20 @@ class Evento extends EventoModel{
         $ae = $mysqli->query($slq);
         $this->setId($mysqli->insert_id);
         $respObj->id = $mysqli->insert_id;
+    }
+    public function htmlSelectEvento($id) {
+        global $mysqli;
+        $buscaEvento= "SELECT * FROM evento";
+        $be = $mysqli->query($buscaEvento);
+        echo "<select class='form-control' name='idEvento'>";
+        while ($nt = $be->fetch_object()){
+            $status = null;
+            if($id == $nt->id){
+                $status = 'selected';
+            }
+            echo "<option $status value='$nt->id'>$nt->nome</option>";
+        }
+        echo "</select>";
     }
 
 }

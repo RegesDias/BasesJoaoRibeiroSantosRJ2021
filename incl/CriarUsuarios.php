@@ -10,6 +10,7 @@
         $usuario->setIdEvento($respObj->idEvento);
         $usuario->setChefeCoord($respObj->chefeCoord);
         $usuario->setGrupo($respObj->grupo);
+        $usuario->setChave($respObj->chave);
         if($respObj->id > 0){
             $usuario->Alterar();
             $usuarios = $usuario->buscarUsuarioNomeId($respObj->id);

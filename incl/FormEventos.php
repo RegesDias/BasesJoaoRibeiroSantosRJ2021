@@ -5,6 +5,22 @@
       <div class="container">
         <!-- Gallery -->
         <div class="row">
+        <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
+            <div class="card">
+                <img
+                src="img/<?=$evento->getImgChefeBase()?>"
+                  class="card-img-top"
+                  alt="..."
+                />
+                <div class="card-body">
+                  <h5 class="card-title">Capa</h5>
+                  <p class="card-text">
+                    Esta imagem aparecera somente para os participantes
+                  </p>
+                  <input class="form-control-file" name="imgChefeBase" type="file" />
+                </div>
+            </div>
+          </div>
           <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
             <div class="card">
                 <img
@@ -21,6 +37,9 @@
                 </div>
             </div>
           </div>
+          
+        </div><br>
+          <div class="row">
           <div class="col-lg-6 mb-4 mb-lg-0">
             <div class="card">
                 <img
@@ -38,7 +57,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div><br>
       <?php }?>
       <div class="container">
         <div class="form-group">
@@ -68,8 +87,8 @@
         <div class="form-group">
           <div class="row">
             <div class="col-lg-6">
-              <label>Contato</label>
-              <input type="email" value="<?=$evento->getContato()?>" name="contato" class="form-control" placeholder="Contato">
+              <label>Coordenação</label>
+              <input type="text" value="<?=$evento->getContato()?>" name="contato" class="form-control" placeholder="Contato">
             </div>
             <div class="col-lg-6">
               <label>Inscrição</label>

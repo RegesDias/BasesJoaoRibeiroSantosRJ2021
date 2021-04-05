@@ -26,7 +26,6 @@ class Base extends BaseModel {
                                   evento
                                 WHERE
                                   base.idevento = evento.id AND
-                                  evento.ativo = '1' AND
                                   ResposavelBase = '".$user->getIdUser()."' AND 
                                   idEvento = '".$user->getIdEvento()."' 
                                 ORDER BY ordem ";
@@ -48,7 +47,6 @@ class Base extends BaseModel {
                                     evento 
                                   WHERE 
                                     base.idevento = evento.id AND
-                                    evento.ativo = '1' AND
                                     idEvento = '".$user->getIdEvento()."' 
                                   ORDER BY ordem";
         }
@@ -166,8 +164,9 @@ class Base extends BaseModel {
 
  public function botaoAbertoFechado(){
    $user = new usuario;
+   $evento = new Evento;
   if($user->getIdBase() == Null){
-      if($this->getStatus() === 'Aberta'){?>
+      if(($this->getStatus() === 'Aberta')AND($evento->getAtivo() == 1)){?>
           <form method="post" target="_blank" action="redireciona.php" OnSubmit="recarregar()">
             <input type='hidden' name='acao' value='entrar'>
             <input type='hidden' name='id' value='<?=$this->getId()?>'>
