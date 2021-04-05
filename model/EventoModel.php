@@ -10,6 +10,7 @@ class EventoModel {
       private $ativo;	
       private $imgParticipante;	
       private $imgCoodenacao;	
+	  private $imgChefeBase;	
 
 	  public function __construct(){
         $this->setId($_SESSION['id']);
@@ -22,6 +23,7 @@ class EventoModel {
         $this->setAtivo($_SESSION['ativoEvento']);
         $this->setImgParticipante($_SESSION['imgParticipante']);
         $this->setImgCoodenacao($_SESSION['imgCoodenacao']);
+		$this->setImgChefeBase($_SESSION['imgChefeBase']);
 	}
       public function novoEvento ($evento){
         $this->setId($evento->id);
@@ -34,8 +36,17 @@ class EventoModel {
         $this->setAtivo($evento->ativo);
         $this->setImgParticipante($evento->imgParticipante);
         $this->setImgCoodenacao($evento->imgCoodenacao);
+		$this->setImgChefeBase($evento->imgChefeBase);
       }
   //GET SET
+  	public function getImgChefeBase(){
+		return $this->imgChefeBase;
+	}
+
+	public function setImgChefeBase($imgChefeBase){
+		$this->imgChefeBase = $imgChefeBase;
+	}
+
 	public function getImgParticipante(){
 		return $this->imgParticipante;
 	}

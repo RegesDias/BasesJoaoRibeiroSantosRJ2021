@@ -31,7 +31,13 @@ class Usuario extends UsuarioModel{
             $_SESSION['ativoEvento'] = $evento->getAtivo();
             $_SESSION['imgParticipante'] = $evento->getImgParticipante();
             $_SESSION['imgCoodenacao'] = $evento->getImgCoodenacao();
-        }else{?>
+            $_SESSION['imgChefeBase'] = $evento->getImgChefeBase();
+        }else{
+            $erro = "login";
+            $_SESSION['erro'] = "login";
+            //print_p("teste1");
+            //header('Location:login.php?id=erro2');
+            ?>
             <div class="alert alert-danger">
             <button type="button" class="close" data-dismiss="alert">×</button>
             <h4>Alerta!</h4>
@@ -109,7 +115,7 @@ class Usuario extends UsuarioModel{
     public function usuarioLogado(){
         if($this->getAtivo() == true){
             if($this->usuarioAvaliador()){
-                echo "<a class='navbar-brand' href='#'>Bem vindo Chefe ".$this->getNome()."</a>";
+                echo "<a class='navbar-brand' href='#'><b>Bem vindo!</b> Chefe ".$this->getNome()."</a>";
             }else{
                 echo "<a class='navbar-brand' href='#'> Patrulha ".$this->getNome();
                 if($this->getNotaTotal() > 0){
@@ -124,16 +130,18 @@ class Usuario extends UsuarioModel{
 
         if( $this->getAdmin() == true){?>
             <li class='nav-item'>
-                <a class='nav-link' href='ranking.php'>Ranking</a>
+                <a class='btn btn-outline-success btn-sm' style="margin-right: 5px;" href='ranking.php'>Ranking</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="btn btn-outline-success dropdown-toggle btn-sm" style="margin-right: 5px;" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Administrar
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="administrar.php?tp=Usuários">Usuários</a>
-                <a class="dropdown-item" href="administrar.php?tp=Bases">Bases</a>
-                <a class="dropdown-item" href="administrar.php?tp=Eventos">Eventos</a>
+                <div class="vertical-menu">
+                    <a class="dropdown-item" href="administrar.php?tp=Usuários">Usuários</a>
+                    <a class="dropdown-item" href="administrar.php?tp=Bases">Bases</a>
+                    <a class="dropdown-item" href="administrar.php?tp=Eventos">Eventos</a>
+                </div>
                 </div>
             </li>
         <?php }
@@ -142,17 +150,9 @@ class Usuario extends UsuarioModel{
         if($this->getAtivo() == 1){
             echo"
                 <li class='nav-item'>
-                    <a class='nav-link' href='index.php'>Bases</a>
-                </li>
-                <li class='nav-item'>
-                    <a class='nav-link' href='#'  data-toggle='modal' data-target='#Sair'>Sair</a>
+                    <a class='btn btn-outline-success btn-sm' href='#'  data-toggle='modal' data-target='#Sair'>Sair</a>
                 </li>
             ";
-        }else{
-            echo "
-                <li class='nav-item'>
-                    <a class='nav-link' href='#'  data-toggle='modal' data-target='#Entrar'>Entrar</a>
-                </li>";
         }
     }
 

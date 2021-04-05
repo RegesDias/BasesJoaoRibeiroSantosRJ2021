@@ -3,15 +3,17 @@
 @import url('https://fonts.googleapis.com/css?family=Numans');
 
 html,body{
-    background: url('../img/imgLogin.jpg')no-repeat center top fixed;
+    background: url('../img/imgLoginCinza.jpeg')no-repeat center top fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
     font-family: 'Numans', sans-serif;
 }
+.container{
+    font-family: 'Montserrat', sans-serif;
+}
 .card{
-    height: 370px;
     margin-top: auto;
     margin-bottom: auto;
     background-color: rgba(0,0,0,0.5) !important;
@@ -20,3 +22,40 @@ html,body{
     background-color:transparent;
     opacity : 0.9;
 }
+.banner-evento{
+    border-radius: 20px;
+}
+.navbar{
+    -webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+    -moz-box-shadow:    9px 7px 5px rgba(50, 50, 50, 0.77);
+    box-shadow:         9px 7px 5px rgba(50, 50, 50, 0.77);
+}
+.sombra{
+    -webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+    -moz-box-shadow:    9px 7px 5px rgba(50, 50, 50, 0.77);
+    box-shadow:         9px 7px 5px rgba(50, 50, 50, 0.77);
+    border-radius: 5px;
+    opacity : 0.9;
+}
+
+.vertical-menu {
+    width: 200px;
+  }
+  
+  .vertical-menu a {
+    background-color: #eee; 
+    color: black; 
+    display: block; 
+    padding: 12px; 
+    text-decoration: none; 
+    font-weight: bold;
+  }
+  
+  .vertical-menu a:hover {
+    background-color: #ccc; 
+  }
+
+  .vertical-menu a.active {
+    background-color: #4CAF50;
+    color: white;
+  }

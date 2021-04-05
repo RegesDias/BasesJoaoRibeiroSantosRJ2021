@@ -9,7 +9,7 @@
     <div class="container">        
     <br>
         <!-- DataTales Example -->
-        <div class="card shadow mb-4">
+        <div class="border bg-light sombra">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Ranking</h6>
             </div>

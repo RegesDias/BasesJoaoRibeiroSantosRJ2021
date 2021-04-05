@@ -7,47 +7,40 @@
         require_once('incl/nav.php');
         $tp = tirarAcentos($respGet->tp);
         $ac = tirarAcentos($respGet->ac);
+        if($ac == ""){
+            $ac = 'Buscar';
+            $respGet->ac = 'Buscar'; 
+        }
     ?>      
     <div class="container">        
     <br>
         <!-- DataTales Example -->
-        <div class="card shadow mb-4">
-        <div class="col-lg-12">
-            <div class="card-header py-3">
-                <h5 class="m-0 font-weight-bold text-primary"><?=$respGet->tp?></h5>
+        <div class="container-fluid">
+            <br>
+            <div class="list-group">
+                <div class="row">
+                <div class="col-lg-3">
+                    <div class="vertical-menu sombra">
+                        <a href="#" class="active">Ações</a>
+                        <?php require_once('incl/menu'.$tp.'.php'); ?>
+                    </div>
+                </div>
+                    <div class="col-lg-9 border bg-light p-3 sombra">
+                        <h1> <?=$respGet->ac." ".$respGet->tp?> </h1>
+                        <hr>
+                            <?php 
+                                if(isset($respGet->ac)){
+                                    require_once('incl/'.$ac.$tp.'.php');
+                                }
+                            ?>
+                            <br><br>
+                        </hr>
+                    </div>
+                </div>
             </div>
-        </div><br>
-        <div class="container">
-          <div class="row">
-          <?php require_once('incl/menu'.$tp.'.php'); ?>
-            <div class="col-lg-9">
-            <h1> <?=$respGet->ac." ".$respGet->tp?> </h1>
-            <hr>
-                <?php 
-                    if(isset($respGet->ac)){
-                        require_once('incl/'.$ac.$tp.'.php');
-                    }
-                ?>
-                <br><br>
-            </hr>
         </div>
-    </div>
-    </div>
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
 </body>
 </html>

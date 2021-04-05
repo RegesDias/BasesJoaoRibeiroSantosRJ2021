@@ -6,21 +6,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Semana Escoteira<</title>
+	<title>Semana Escoteira</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="css/login.css">
 </head>
 <body>
+	<?php require_once('incl/config.php'); ?>
 <div class="container">
 	<div class="d-flex justify-content-center h-100">
 		<div class="card">
+		<?php if($respGet->id == 'login'){?>
+			<div class="alert alert-danger">
+				<button type="button" class="close" data-dismiss="alert">×</button>
+				<h4>Alerta!</h4>
+					Usuário ou senha incorretos...
+			</div>
+		<?php }?>
 			<div class="card-header"><br>
-				<h3><b>Semana Escoteira</b></h3>
+				<h3><b><i>Semana Escoteira 2021</i></b></h3>
 				<div class="d-flex justify-content-end social_icon">
-                    <a href="#"><span><i class="fab fa-facebook-square"></i></span></a>
-					<span><i class="fab fa-google-plus-square"></i></span>
-					<span><i class="fab fa-twitter-square"></i></span>
+                    <a href="https://www.facebook.com/escoteirosrj"><span><i class="fab fa-facebook-square"></i></span></a>
 				</div>
 			</div>
 			<div class="card-body">
