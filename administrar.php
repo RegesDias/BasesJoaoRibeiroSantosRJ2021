@@ -2,6 +2,7 @@
 <html lang="en">
   <?php require_once("incl/head.php"); ?>
 <body>
+    <link rel="stylesheet" href="css/select2.min.css">
     <?php 
         require_once('incl/config.php');
         require_once('incl/nav.php');
@@ -65,6 +66,15 @@
         </div>
     </div>
     <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="jquery/jquery.min.js"></script>
+    <script src="js/select2.full.min.js"></script>
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+        })
+    </script>
 </body>
 </html>

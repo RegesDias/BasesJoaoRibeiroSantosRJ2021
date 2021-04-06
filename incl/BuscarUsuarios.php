@@ -26,6 +26,7 @@
       <?php
           require_once('class/Usuario.php');
           $usuario = new Usuario;
+          print_p($respObj);
           if(isset($respObj->alterar)){
             $usuario->setIdUser($respObj->idUser);
             $usuario->setNome($respObj->nome);
@@ -65,5 +66,6 @@ if($respObj->acao == 'alterar'){?>
     <form method="post" method="POST" action="administrar.php?tp=Usuarios&ac=Buscar" enctype="multipart/form-data">
        <?php require_once('incl/FormUsuarios.php'); ?>
     </form>
-  </div>
+</div>
+<?php require_once('incl/alterarUsuariosBase.php'); ?>
 <?php } ?>
