@@ -59,3 +59,28 @@
 
 
 
+  <!-- Select2 -->
+  <link rel="stylesheet" href="css/select2.min.css">
+
+                  <select class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
+                    <option>Alabama</option>
+                    <option>Alaska</option>
+                    <option>California</option>
+                    <option>Delaware</option>
+                    <option>Tennessee</option>
+                    <option>Texas</option>
+                    <option>Washington</option>
+                  </select>
+              
+
+<!-- jQuery -->
+<script src="jquery/jquery.min.js"></script>
+<!-- Select2 -->
+<script src="js/select2.full.min.js"></script>
+
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+  })
+</script>

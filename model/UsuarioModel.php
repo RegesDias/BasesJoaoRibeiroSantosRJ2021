@@ -16,6 +16,7 @@ class UsuarioModel {
 	//CONSTRUTOR
 	public function __construct(){
 		$this->setChefeBase($_SESSION['chefeBase']);
+		$this->setChefeCoord($_SESSION['ChefeCoord']);
 		$this->setIdUser($_SESSION['idUser']);
 		$this->setNome($_SESSION['nome']);
 		$this->setAtivo($_SESSION['ativoUser']);
@@ -23,6 +24,8 @@ class UsuarioModel {
 		$this->setIdEvento($_SESSION['Evento']);
 		$this->setNotaTotal($_SESSION['notaTotal']);
 		$this->setIdBase($_SESSION['idBase']);
+
+		
 	}
 	public function novoUsuario ($usuario){
 		$this->setIdUser($usuario->id);

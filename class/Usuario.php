@@ -33,16 +33,7 @@ class Usuario extends UsuarioModel{
             $_SESSION['imgCoodenacao'] = $evento->getImgCoodenacao();
             $_SESSION['imgChefeBase'] = $evento->getImgChefeBase();
         }else{
-            $erro = "login";
             $_SESSION['erro'] = "login";
-            //print_p("teste1");
-            //header('Location:login.php?id=erro2');
-            ?>
-            <div class="alert alert-danger">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <h4>Alerta!</h4>
-                Usuário ou senha incorretos...
-            </div><?php
         }
     }
     public function sair() {
@@ -127,11 +118,11 @@ class Usuario extends UsuarioModel{
         }
     }
     public function usuarioAdm(){
-
-        if( $this->getAdmin() == true){?>
-            <li class='nav-item'>
-                <a class='btn btn-outline-success btn-sm' style="margin-right: 5px;" href='ranking.php'>Ranking</a>
-            </li>
+            if(($this->getChefeCoord() == true)OR($this->getAdmin() == true)){?>
+                <li class='nav-item'>
+                    <a class='btn btn-outline-success btn-sm' style="margin-right: 5px;" href='ranking.php'>Ranking</a>
+                </li>
+            <?php } if( $this->getAdmin() == true){?>
             <li class="nav-item dropdown">
                 <a class="btn btn-outline-success dropdown-toggle btn-sm" style="margin-right: 5px;" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Administrar
@@ -194,7 +185,8 @@ class Usuario extends UsuarioModel{
                                 chefeCoord,
                                 ativo,
                                 grupo,
-                                chave
+                                chave,
+                                senha
                                 
                     )VALUES(
                             '".$this->getNome()."',
@@ -204,7 +196,8 @@ class Usuario extends UsuarioModel{
                             '".$this->getchefeCoord()."',
                             '".$this->getAtivo()."',
                             '".$this->getGrupo()."',
-                            '".$this->getChave()."'
+                            '".$this->getChave()."',
+                            '".md5($this->getGrupo())."'
                     )
         ";
         $ae = $mysqli->query($slq);

@@ -26,7 +26,7 @@ class Evento extends EventoModel{
     }
     public function buscarBanner() {
         $user = new Usuario;
-        if($user->getAdmin() == 1){
+        if($user->getChefeCoord() == 1){
             return $this->getImgCoodenacao();
         }else if($user->getChefeBase()==1){
             return $this->getImgChefeBase();
