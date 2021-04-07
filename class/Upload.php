@@ -1,9 +1,6 @@
 <?php
-$url = $_SERVER["PHP_SELF"];
-if(preg_match("Upload.php", "$url")){
-    header("Location: ../index.php");
-}
 
+$url = $_SERVER["PHP_SELF"];
 class Upload{
     //Extenções permitidas
     var $ext = array (".gif",".jpg",".jpeg",".png");

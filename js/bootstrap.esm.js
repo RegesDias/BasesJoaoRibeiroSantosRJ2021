@@ -600,7 +600,7 @@ var BaseComponent = /*#__PURE__*/function () {
   /** Static */
   ;
 
-  BaseComponent.getInstance = function getInstance(element) {
+  BaseComponent.$Inst = function $Inst(element) {
     return Data.getData(element, this.DATA_KEY);
   };
 

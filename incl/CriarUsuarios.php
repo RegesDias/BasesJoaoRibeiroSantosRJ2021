@@ -12,9 +12,8 @@
         $usuario->setGrupo($respObj->grupo);
         $usuario->setChave($respObj->chave);
         if($respObj->id > 0){
-            $usuario->Alterar();
             $usuarios = $usuario->buscarUsuarioNomeId($respObj->id);
-            $b = $usuarios->fetch_object();
+            $b = $usuarios->fetchobject();
             $usuario->novoUsuario($b);
         }else{
           $usuario->Cadastrar();

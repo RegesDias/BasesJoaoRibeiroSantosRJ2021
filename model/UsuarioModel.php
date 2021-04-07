@@ -15,17 +15,18 @@ class UsuarioModel {
 
 	//CONSTRUTOR
 	public function __construct(){
-		$this->setChefeBase($_SESSION['chefeBase']);
-		$this->setChefeCoord($_SESSION['ChefeCoord']);
-		$this->setIdUser($_SESSION['idUser']);
-		$this->setNome($_SESSION['nome']);
-		$this->setAtivo($_SESSION['ativoUser']);
-		$this->setAdmin($_SESSION['admin']);
-		$this->setIdEvento($_SESSION['Evento']);
-		$this->setNotaTotal($_SESSION['notaTotal']);
-		$this->setIdBase($_SESSION['idBase']);
-
-		
+		if (isset($_SESSION['usuario'])){
+			$this->setChefeBase(unserialize($_SESSION['usuario'])->getChefeBase());
+			$this->setChefeCoord(unserialize($_SESSION['usuario'])->getChefeCoord());
+			$this->setIdUser(unserialize($_SESSION['usuario'])->getIdUser());
+			$this->setNome(unserialize($_SESSION['usuario'])->getNome());
+			$this->setAtivo(unserialize($_SESSION['usuario'])->getAtivo());
+			$this->setAdmin(unserialize($_SESSION['usuario'])->getAdmin());
+			$this->setIdEvento(unserialize($_SESSION['usuario'])->getIdEvento());
+			$this->setAtivo(unserialize($_SESSION['usuario'])->getAtivo());
+			$this->setNotaTotal(unserialize($_SESSION['usuario'])->getNotaTotal());
+			$this->setIdBase(unserialize($_SESSION['usuario'])->getIdBase());
+		}
 	}
 	public function novoUsuario ($usuario){
 		$this->setIdUser($usuario->id);

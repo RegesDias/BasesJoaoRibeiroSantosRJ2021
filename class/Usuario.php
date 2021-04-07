@@ -1,100 +1,143 @@
 <?php
-require_once('Base.php');
-require_once('model/UsuarioModel.php');
+require_once('class/Conexao.php');
+require_once('class/Base.php');
 require_once('class/Evento.php');
+require_once('model/UsuarioModel.php');
+
 class Usuario extends UsuarioModel{
-    
+  
     public function entrar() {
         global $respObj;
         $this->setSenha(md5($respObj->passwd));
         $this->setChave($respObj->user);
-        $this->buscaUsuarioPorChave();
+        $this->autenticar();
         if($this->getAtivo() == 1){   
-            $_SESSION['idUser'] = $this->getIdUser();
-            $_SESSION['nome'] = $this->getNome();
-            $_SESSION['ativoUser'] = $this->getAtivo();
-            $_SESSION['admin'] = $this->getAdmin();
-            $_SESSION['chefeBase'] = $this->getChefeBase();
-            $_SESSION['ChefeCoord'] = $this->getChefeCoord();
-            $_SESSION['Evento'] = $this->getIdEvento();
-            $_SESSION['notaTotal'] = $this->getNotaTotal();
-            $_SESSION['idBase'] = $this->getIdBase();
+            $_SESSION['usuario'] = serialize($this);
             $evento = new Evento;
             $evento = $evento->buscarEventoId();
-            $_SESSION['id'] = $evento->getId();
-            $_SESSION['nomeEvento'] = $evento->getNome();
-            $_SESSION['inicio'] = $evento->getInicio();	
-            $_SESSION['encerramento'] = $evento->getEncerramento();	
-            $_SESSION['contato'] = $evento->getContato();
-            $_SESSION['inscricoes'] = $evento->getInscricao();
-            $_SESSION['datahora'] = $evento->getDataHora();
-            $_SESSION['ativoEvento'] = $evento->getAtivo();
-            $_SESSION['imgParticipante'] = $evento->getImgParticipante();
-            $_SESSION['imgCoodenacao'] = $evento->getImgCoodenacao();
-            $_SESSION['imgChefeBase'] = $evento->getImgChefeBase();
+            $_SESSION['evento'] = serialize($evento);
         }else{
             $_SESSION['erro'] = "login";
         }
     }
+
     public function sair() {
-        $_SESSION['idUser'] = null;
-        $_SESSION['nome'] = null;
-        $_SESSION['ativo'] = null;
-        $_SESSION['admin'] = null;
-        $_SESSION['chefeBase'] = null;
-        $_SESSION['Evento'] = null;
-        $_SESSION['notaTotal'] = null;
-        $_SESSION['idBase'] = null;
         session_destroy();
         header('Location:login.php');
 
     }
 
-    public function buscaUsuarioPorChave(){
-            global $mysqli;
-            $slq = "SELECT * FROM user WHERE senha = '".$this->getSenha()."' AND chave = '".$this->getChave()."'";
-            $login = $mysqli->query($slq);
-            $acesso = $login->fetch_object();
-            $this->novoUsuario($acesso);
-            return $this;
+    public function autenticar(){
+        $call = "call usuarioAutenticar(?, ?)";
+        $conexao = new Conexao();
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($this->getSenha(),$this->getChave()));
+        $obj = $exec->fetchobject();
+        $this->novoUsuario($obj);
+        return $this;
     }
 
-    public function AtualizaUsuarioNotaTotal(){
-        global $mysqli;
-        $slq = "SELECT notaTotal FROM user WHERE  id = '".$this->getIdUser()."'";
-        $login = $mysqli->query($slq);
-        $acesso = $login->fetch_object();
-        $_SESSION['notaTotal'] = $acesso->notaTotal;
-        return $user = new Usuario;
-    }
-    public function AtualizaUsuarioBaseAtual(){
-        global $mysqli;
-        $slq = "SELECT idBase FROM user WHERE  id = '".$this->getIdUser()."'";
-        $login = $mysqli->query($slq);
-        $acesso = $login->fetch_object();
-        $_SESSION['idBase'] = $acesso->idBase;
-        return $user = new Usuario;
+    public function buscarBaseOcupada(){
+        if(isset($_SESSION['usuario'])){
+            $call = "call usuarioBuscarBaseOcupada(?)";
+            $exec = Conexao::Inst()->prepare($call);
+            $exec->execute(array($this->getIdUser()));
+            $obj = $exec->fetchobject();
+            unserialize($_SESSION['usuario'])->setIdBase($obj->idBase);
+            return $user = new Usuario;
+        }
     }
 
-    public function entrarUsuarioDaBase(){
-        global $mysqli;
-        $updateUserBase="UPDATE user SET idBase = '".$this->getIdBase()."' WHERE id = '".$this->getIdUser()."'";
-        $ub = $mysqli->query($updateUserBase);
-        $_SESSION['idBase'] = $this->getIdBase();
+    public function entrarNaBase(){
+        $call = "call usuarioEntrarNaBase(? ,?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($this->getIdBase(),$this->getIdUser()));
+        unserialize($_SESSION['usuario'])->setIdBase($this->getIdBase());
     }
 
-    public function sairUsuarioDaBase($id){
-        global $mysqli;
-        $updateBase = "UPDATE user SET idBase = NULL WHERE id = '".$id."'";
-        $ub = $mysqli->query($updateBase);
+    public function sairDaBase($id){
+        $call = "call usuarioSairDaBase(?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($id));
     }
 
-    public function listaNotaTotal(){
-        global $mysqli;
+    public function listaRankingPorNota(){
         $evento = new Evento;
-        $patrulhasql = "SELECT * FROM user WHERE admin = '0' AND chefeBase = '0' AND ativo = '1' AND idEvento = '".$evento->getId()."'ORDER BY notaTotal DESC";
-        $result = $mysqli->query($patrulhasql);
-        return $result;
+        $call = "call usuarioListaRankingPorNota(?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($evento->getId()));
+        return $exec;
+    }
+
+    public function buscaNotaTotal($id){
+        $call = "call usuarioBuscaNotaTotal(?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($id));
+        $obj = $exec->fetchobject();
+        return $obj->notaTotal;
+    }
+
+    public function atualizaNotaTotal($nota) {
+        $base = new Base;
+        $base->burcarBasePorId($nota->getIdBase());
+        if($base->getStatus() == 'Fechada'){
+            $notaTotal = $this->buscaNotaTotal($nota->getIdUser());
+            $novoTotal = $notaTotal+$nota->getNota();
+            $call = "call usuarioAtualizaNotaTotal(?,?)";
+            $exec = Conexao::Inst()->prepare($call);
+            $exec->execute(array($novoTotal,$nota->getIdUser()));
+            $obj = $exec->fetchobject();
+            unserialize($_SESSION['usuario'])->setNotaTotal($obj->notaTotal);
+        }
+    }
+
+    public function buscarUsuarioNomeId($id=null) {
+        if($id == null){
+            $call = "call usuarioBuscaNome(?)";
+            $exec = Conexao::Inst()->prepare($call);
+            $exec->execute(array('%'.$this->getNome().'%'));
+        }else{
+            $call = "call usuarioBuscaId(?)";
+            $exec = Conexao::Inst()->prepare($call);
+            $exec->execute(array($id));
+        }
+        return $exec;
+    }
+    public function Alterar(){
+        $call = "call usuarioAtualizar(?,?,?,?,?,?,?,?,?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array(
+            $this->getNome(),
+            $this->getAdmin(),
+            $this->getChefeBase(),
+            $this->getChefeCoord(),
+            $this->getIdEvento(),
+            $this->getChave(),
+            $this->getAtivo(),
+            $this->getGrupo(),
+            $this->getIdUser()
+        ));
+    }
+
+public function Cadastrar(){
+    global $respObj;
+    $call = "call usuarioCadastrar(?,?,?,?,?,?,?,?,?)";
+    $exec = Conexao::Inst()->prepare($call);
+    $exec->execute(array(
+        $this->getNome(),
+        $this->getAdmin(),
+        $this->getChefeBase(),
+        $this->getIdEvento(),
+        $this->getChefeCoord(),
+        $this->getAtivo(),
+        $this->getGrupo(),
+        $this->getChave(),
+        MD5($this->getIdUser())
+    ));
+    echo Conexao::getInst()->lastInsertId();
+    $this->setIdUser(Conexao::Inst()->lastInsertId());
+    echo $this->getIdUser();
+    //$respObj->id = $pdo->lastInsertId();
 }
     public function usuarioAvaliador(){
         if(($this->getAdmin() == true) OR ($this->getChefeBase() == true) OR ($this->getChefeCoord() == true)){
@@ -146,81 +189,6 @@ class Usuario extends UsuarioModel{
             ";
         }
     }
-
-    public function atualizaNotaTotal($nota) {
-        global $mysqli;
-        $base = new Base;
-        $base->burcarBasePorId($nota->getIdBase());
-        if($base->getStatus() == 'Fechada'){
-            $buscaNotaTotal = "SELECT notaTotal FROM user WHERE id ='".$nota->getIdUser()."'";
-            $notaTotal = $mysqli->query($buscaNotaTotal);
-            $evento = $notaTotal->fetch_object();
-            $novoTotal = $evento->notaTotal+$nota->getNota();
-            $atualizaNotaTotal = "UPDATE user SET notaTotal = '$novoTotal' WHERE id = '".$nota->getIdUser()."'";
-            $not = $mysqli->query($atualizaNotaTotal);
-            $_SESSION['notaTotal'] = $not;
-        }
-    }
-
-    public function buscarUsuarioNomeId($id=null) {
-        global $mysqli;
-        if($id == null){
-            $buscaUsuario= "SELECT * FROM user WHERE nome like '%".$this->getNome()."%'";
-            
-        }else{
-            $buscaUsuario= "SELECT * FROM user WHERE id = '$id'";
-        }
-        $usuario = $mysqli->query($buscaUsuario);
-        return $usuario; 
-    }
-
-    public function Cadastrar(){
-        global $mysqli;
-        global $respObj;
-        $slq="INSERT INTO user(
-                                nome,
-                                admin,
-                                chefeBase, 
-                                idEvento, 
-                                chefeCoord,
-                                ativo,
-                                grupo,
-                                chave,
-                                senha
-                                
-                    )VALUES(
-                            '".$this->getNome()."',
-                            '".$this->getAdmin()."',
-                            '".$this->getChefeBase()."',
-                            '".$this->getIdEvento()."',
-                            '".$this->getchefeCoord()."',
-                            '".$this->getAtivo()."',
-                            '".$this->getGrupo()."',
-                            '".$this->getChave()."',
-                            '".md5($this->getGrupo())."'
-                    )
-        ";
-        $ae = $mysqli->query($slq);
-        $this->setIdUser($mysqli->insert_id);
-        $respObj->id = $mysqli->insert_id;
-    }
-
-    public function Alterar(){
-        global $mysqli;
-        $atualizarUsuario = " UPDATE user SET 
-                                            nome = '".$this->getNome()."',
-                                            admin = '".$this->getAdmin()."', 
-                                            chefeBase = '".$this->getChefeBase()."', 
-                                            chefeCoord = '".$this->getChefeCoord()."', 
-                                            idEvento = '".$this->getIdEvento()."', 
-                                            chave = '".$this->getChave()."', 
-                                            ativo = '".$this->getAtivo()."',
-                                            grupo = '".$this->getGrupo()."' 
-                                    WHERE 
-                                            id = '".$this->getIdUser()."'";
-        $ae = $mysqli->query($atualizarUsuario);
-    }
-    
 
 
 }

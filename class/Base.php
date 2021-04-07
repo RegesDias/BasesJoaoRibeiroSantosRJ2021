@@ -91,7 +91,7 @@ class Base extends BaseModel {
       $updateBase="UPDATE base SET status = 'Fechada', idUser = '".$user->getIdUser()."' WHERE id = '".$this->getId()."'";
       $ub = $mysqli->query($updateBase);
       $user->setIdBase($this->getid());
-      $user->entrarUsuarioDaBase();
+      $user->entrarNaBase();
     }
 
     public function abrirAvaliar($id){
@@ -106,7 +106,7 @@ class Base extends BaseModel {
         $nota->setDataHora(date("Y-m-d G:i:s"));
         $nota->setAvaliadoP($user->getIdUser());
         $user->atualizaNotaTotal($nota);
-        $user->sairUsuarioDaBase($this->getIdUser());
+        $user->sairDaBase($this->getIdUser());
         $nota->insereNota();
         $basefeita = new BaseFeita;
         $basefeita->novaBaseFeita(
@@ -130,7 +130,7 @@ class Base extends BaseModel {
  public function exibeNota($idBase){
     $nota = new Nota;
     $nota->burcarNotaPorId($idBase);
-    echo "<button class='btn btn-large btn-block ' disabled href='#'>Nota ".$nota->getNota()."</button>";
+    echo "<button class='btn btn-large btn-block btn-primary' href='#'><b>Nota ".$nota->getNota()."</b></button>";
  }
 
  //BOTOES ##################################################

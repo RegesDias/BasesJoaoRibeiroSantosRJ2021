@@ -25,7 +25,6 @@
     <tbody>
       <?php
           $usuario = new Usuario;
-          print_p($respObj);
           if(isset($respObj->alterar)){
             $usuario->setIdUser($respObj->idUser);
             $usuario->setNome($respObj->nome);
@@ -40,7 +39,7 @@
           }
           $usuario->setNome($respObj->nome);
           $user = $usuario->buscarUsuarioNomeId($respObj->id);
-          while ($b = $user->fetch_object()){
+          while ($b = $user->fetchobject()){
             $usuario->novoUsuario($b);
             echo "<tr><th scope='row'>".$usuario->getIdUser()."</th>";
             echo "<td>".$usuario->getNome()."</td>";
