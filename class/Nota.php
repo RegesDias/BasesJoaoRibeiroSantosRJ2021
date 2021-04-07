@@ -1,6 +1,5 @@
 <?php
 require_once('model/NotaModel.php');
-require_once('Usuario.php');
 class Nota extends NotasModel{
 
     public function setAvaliadoPor($avaliadoPor){

@@ -13,17 +13,19 @@ class EventoModel {
 	  private $imgChefeBase;	
 
 	  public function __construct(){
-        $this->setId($_SESSION['id']);
-        $this->setNome($_SESSION['nomeEvento']);
-        $this->setInicio($_SESSION['inicio']);
-        $this->setEncerramento($_SESSION['encerramento']);
-        $this->setContato($_SESSION['contato']);
-        $this->setInscricao($_SESSION['inscricoes']);
-        $this->setDataHora($_SESSION['datahora']);
-        $this->setAtivo($_SESSION['ativoEvento']);
-        $this->setImgParticipante($_SESSION['imgParticipante']);
-        $this->setImgCoodenacao($_SESSION['imgCoodenacao']);
-		$this->setImgChefeBase($_SESSION['imgChefeBase']);
+		if (isset($_SESSION['evento'])){
+			$this->setId(unserialize($_SESSION['evento'])->getId());
+			$this->setNome(unserialize($_SESSION['evento'])->getNome());
+			$this->setInicio(unserialize($_SESSION['evento'])->getInicio());
+			$this->setEncerramento(unserialize($_SESSION['evento'])->getEncerramento());
+			$this->setContato(unserialize($_SESSION['evento'])->getContato());
+			$this->setInscricao(unserialize($_SESSION['evento'])->getInscricao());
+			$this->setDataHora(unserialize($_SESSION['evento'])->getDataHora());
+			$this->setAtivo(unserialize($_SESSION['evento'])->getAtivo());
+			$this->setImgParticipante(unserialize($_SESSION['evento'])->getImgParticipante());
+			$this->setImgCoodenacao(unserialize($_SESSION['evento'])->getImgCoodenacao());
+			$this->setImgChefeBase(unserialize($_SESSION['evento'])->getImgChefeBase());
+		}
 	}
       public function novoEvento ($evento){
         $this->setId($evento->id);

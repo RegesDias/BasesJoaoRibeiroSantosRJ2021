@@ -9,7 +9,7 @@
       <div class="container">
         <div class="row">
             <div class="col-lg-10">
-                <select class="select2" name="idBases" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
+                <select class="select2" name="idBases[]" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
                   <option value='1'>Alabama</option>
                   <option value='2'>Alaska</option>
                   <option value='3'>California</option>
@@ -26,3 +26,5 @@
     </div>
   <form>
 <?php }?>
+
+

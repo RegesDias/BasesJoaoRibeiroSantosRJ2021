@@ -24,7 +24,6 @@
     </thead>
     <tbody>
       <?php
-          require_once('class/Usuario.php');
           $usuario = new Usuario;
           print_p($respObj);
           if(isset($respObj->alterar)){

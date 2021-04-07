@@ -25,8 +25,8 @@
                         </thead>
                         <tbody>
                         <?php  
-                        $result = $user->listaNotaTotal();
-                        while ($patrulha = $result->fetch_object()) {
+                        $result = $user->listaRankingPorNota();
+                        while ($patrulha = $result->fetchobject()) {
                             $cont++; ?>
                             <tr>
                                 <td><?=$cont?></td>

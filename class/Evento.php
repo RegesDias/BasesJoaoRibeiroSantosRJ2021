@@ -1,6 +1,5 @@
 <?php
 require_once('model/EventoModel.php');
-require_once('Usuario.php');
 require_once("Upload.php");
 class Evento extends EventoModel{
     public function buscarEventoId() {
