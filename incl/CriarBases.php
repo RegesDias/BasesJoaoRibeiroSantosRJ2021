@@ -1,16 +1,31 @@
-<form method="post">
-    <div class="form-group">
-        <label for="Name">Nome</label>
-        <input type="text" name="nome" class="form-control" id="Nome" aria-describedby="nameHelp" placeholder="Digite um nome">
-    </div>
-    <div class="form-group">
-        <label for="Password">Senha</label>
-        <input type="password" name="senha" class="form-control" id="Password" placeholder="Senha">
-    </div>
-    <div class="form-group">
-        <label for="ConfirmPassword"> Confirme sua senha</label>
-        <input type="password" name="confirmSenha" class="form-control" id="ConfirmPassword" placeholder="Confirme sua senha">
-    </div>
-    <input type="hidden" valor="cadastroUsuario" name="acao">
-    <button type="submit" class="btn btn-primary">Enviar</button>
-</form>
+<?php
+    $base = new Base;
+    $base->novaBase($respObj);
+    if(isset($respObj->alterar)){
+        $base->setId($respObj->id);
+        $base->setIdUser($respObj->idUser);
+        $base->setResposavelBase($respObj->resposavelBase);
+        $base->setNome($respObj->nome);
+        $base->setImg($respObj->img);
+        $base->setLink($respObj->link);
+        $base->setStatus($respObj->status);
+        $base->setAtiva($respObj->ativa);
+        $base->setDataHora($respObj->dataHora);
+        $base->setOrdem($respObj->ordem);
+        if($respObj->id > 0){
+            $base->Alterar();
+            $bases = $base-> burcarBasePorId($respObj->id);
+            $b = $Bases->fetch_object();
+            $base->novaBase($b);
+        }else{
+          $base->Cadastrar();
+        }
+        
+      }
+      ?>
+
+<div class="container">
+    <form method="post" method="POST" action="administrar.php?tp=bases&ac=Criar" enctype="multipart/form-data">
+       <?php require_once('incl/FormBases.php'); ?>
+    </form>
+  </div>
