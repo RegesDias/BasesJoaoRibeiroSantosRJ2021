@@ -9,7 +9,7 @@ class Base extends BaseModel {
         $evento = new Evento;
         global $mysqli;
         if($user->getChefeBase() == true){
-          $sql = "SELECT 
+          $basesql = "SELECT 
                                 base.id,
                                 base.ordem,
                                 base.idUser,
@@ -26,11 +26,12 @@ class Base extends BaseModel {
                                   evento
                                 WHERE
                                   base.idevento = evento.id AND
-                                  ResposavelBase = '".$user->getIdUser()."' AND 
+                                  evento.ativo = '1' AND
+                                  ResposavelBase = '$user->getIdUser()' AND 
                                   idEvento = '".$user->getIdEvento()."' 
                                 ORDER BY ordem ";
         }else{
-          $sql = "SELECT 
+          $basesql = "SELECT 
                                 base.id,
                                 base.ordem,
                                 base.idUser,
@@ -47,11 +48,12 @@ class Base extends BaseModel {
                                     evento 
                                   WHERE 
                                     base.idevento = evento.id AND
+                                    evento.ativo = '1' AND
                                     idEvento = '".$user->getIdEvento()."' 
                                   ORDER BY ordem";
         }
-        $bases = $mysqli->query($sql);
-        if($evento->getAtivo() == 0){?>
+        $bases = $mysqli->query($basesql);
+        if($bases->num_rows == 0){?>
           <div class="alert alert-danger">
             <button type="button" class="close" data-dismiss="alert">×</button>
             <h4>Alerta!</h4>
@@ -138,17 +140,17 @@ class Base extends BaseModel {
     if($nota->avaliado($this->getId()) == true){
         $this->exibeNota($this->getId()); 
     }else{
-      if($user->usuarioAvaliador()){
-        $this->botaoVaziaAvaliar();
-      }else{
+      if(($user->getAdmin()!= true)){
         $this->botaoAbertoFechado();
+      }else{
+        $this->botaoVaziaAvaliar();
       }
     }
  }
 
  public function botaoVaziaAvaliar(){
   $user = new Usuario;
-  if(($this->getStatus() == 'Aberta')){
+  if(($this->getStatus() == 'Aberta') and ($user->getAdmin() == true)){
       echo "<button class='btn btn-large btn-block btn-success' disabled href='#'>Vazia</button>";
   }else{ ?>
       <form method="post">
@@ -164,9 +166,8 @@ class Base extends BaseModel {
 
  public function botaoAbertoFechado(){
    $user = new usuario;
-   $evento = new Evento;
   if($user->getIdBase() == Null){
-      if(($this->getStatus() === 'Aberta')AND($evento->getAtivo() == 1)){?>
+      if($this->getStatus() === 'Aberta'){?>
           <form method="post" target="_blank" action="redireciona.php" OnSubmit="recarregar()">
             <input type='hidden' name='acao' value='entrar'>
             <input type='hidden' name='id' value='<?=$this->getId()?>'>
@@ -188,6 +189,77 @@ class Base extends BaseModel {
     $bb = $buscaBase->fetch_object();
     //$base = new Base;
     $this->novaBase($bb);
+
+    
+}
+
+public function Alterar(){
+  global $mysqli;
+  $atualizarBase = " UPDATE base SET 
+                                      nome = '".$this->getNome()."',
+                                      idUser = '".$this->getIdUser()."', 
+                                      resposavelBase = '".$this->getResposavelBase()."', 
+                                      img = '".$this->getImg()."', 
+                                      link = '".$this->getLink()."', 
+                                      ativa = '".$this->getAtiva()."',
+                                      status = '".$this->getStatus()."',
+                                      dataHora = '".$this->getDataHora()."',
+                                      id = '".$this->getId()."',
+                                      ordem = '".$this->getOrdem()."'
+                              WHERE 
+                                      id = '".$this->getId()."'";
+  $ae = $mysqli->query($atualizarBase);
+}
+
+public function Cadastrar(){
+  global $mysqli;
+  global $respObj;
+  $slq="INSERT INTO base(
+                          nome,
+                          idUser,
+                          resposavelBase, 
+                          img, 
+                          link,
+                          ativa,
+                          status,
+                          dataHora,
+                          id,
+                          ordem
+                          
+              )VALUES(
+                      '".$this->getNome()."',
+                      '".$this->getIdUser()."',
+                      '".$this->getresposavelBase()."',
+                      '".$this->getImg()."',
+                      '".$this->getLink()."',
+                      '".$this->getAtiva()."',
+                      '".$this->getStatus()."',
+                      '".$this->getDataHora()."',
+                      '".$this->getId()."',
+                      '".$this->getOrdem()."'
+              )
+              
+  ";
+  
+  $ae = $mysqli->query($slq);
+  $this->setId($mysqli->insert_id);
+  $respObj->id = $mysqli->insert_id;
+
+}
+
+public function carregarImagem(){
+  global $_FILES;
+  global $mysqli;
+  $upImg = new Upload($_FILES['img']);
+  $upImg->pastaDestino = "img";
+  
+  if($upImg->UploadArquivo()){
+      $sql = " UPDATE base SET img = '$upImg->name' WHERE id = '".$this->getId()."'";
+      $ae = $mysqli->query($sql);
+  }
+
+  echo "<br><b><i>".$upImg->msn."</i></b>";
+      
 }
 
 }
