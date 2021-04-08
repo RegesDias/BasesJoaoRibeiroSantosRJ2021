@@ -86,8 +86,7 @@ class Usuario extends UsuarioModel{
             $call = "call usuarioAtualizaNotaTotal(?,?)";
             $exec = Conexao::Inst()->prepare($call);
             $exec->execute(array($novoTotal,$nota->getIdUser()));
-            $obj = $exec->fetchobject();
-            unserialize($_SESSION['usuario'])->setNotaTotal($obj->notaTotal);
+            unserialize($_SESSION['usuario'])->setNotaTotal($notaTotal);
         }
     }
 

@@ -1,8 +1,8 @@
 <?php
 session_start();
 //EXIBIR ERROS
-  //error_reporting(E_ALL);
-  //ini_set("display_errors", 1);
+  error_reporting(E_ERROR | E_WARNING | E_PARSE);
+  ini_set("display_errors", 1);
 //PARAMETROS DE ACESSO
 
     $usr = 'basesgrandejog';

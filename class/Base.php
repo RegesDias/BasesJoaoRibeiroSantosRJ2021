@@ -26,8 +26,7 @@ class Base extends BaseModel {
                                   evento
                                 WHERE
                                   base.idevento = evento.id AND
-                                  evento.ativo = '1' AND
-                                  ResposavelBase = '$user->getIdUser()' AND 
+                                  ResposavelBase = '".$user->getIdUser()."' AND 
                                   idEvento = '".$user->getIdEvento()."' 
                                 ORDER BY ordem ";
         }else{
@@ -48,12 +47,11 @@ class Base extends BaseModel {
                                     evento 
                                   WHERE 
                                     base.idevento = evento.id AND
-                                    evento.ativo = '1' AND
                                     idEvento = '".$user->getIdEvento()."' 
                                   ORDER BY ordem";
         }
         $bases = $mysqli->query($basesql);
-        if($bases->num_rows == 0){?>
+        if($evento->getAtivo() == 0){?>
           <div class="alert alert-danger">
             <button type="button" class="close" data-dismiss="alert">×</button>
             <h4>Alerta!</h4>
@@ -74,7 +72,7 @@ class Base extends BaseModel {
           $user = new Usuario;
           $this->burcarBasePorId($id);
           if(($this->getStatus() == 'Aberta') AND ($user->getIdBase() == Null)){
-              $this->fecharBase();
+              $this->fechar();
               header('Location: '.$this->getLink());
           }else{?>
               <div class="alert alert-warning">
@@ -85,13 +83,18 @@ class Base extends BaseModel {
           }
     }
 
-    public function fecharBase(){
+    public function fechar(){
       global $mysqli;
       $user = new Usuario;
       $updateBase="UPDATE base SET status = 'Fechada', idUser = '".$user->getIdUser()."' WHERE id = '".$this->getId()."'";
       $ub = $mysqli->query($updateBase);
       $user->setIdBase($this->getid());
       $user->entrarNaBase();
+    }
+    public function abrir(){
+      global $mysqli;
+      $atualizarBase = "UPDATE base SET status = 'Aberta', idUser = NULL WHERE id = '".$this->getId()."'";
+      $ab = $mysqli->query($atualizarBase);
     }
 
     public function abrirAvaliar($id){
@@ -115,15 +118,8 @@ class Base extends BaseModel {
         );
         
         $basefeita->insereBaseFeita();
+        $this->abrir();
 
-        $this->setStatus('Aberta');
-        $this->atualizaStatus();
-
-    }
-    public Function atualizaStatus (){
-      global $mysqli;
-      $atualizarBase = "UPDATE base SET status = '".$this->getStatus()."' WHERE id = '".$this->getId()."'";
-      $ab = $mysqli->query($atualizarBase);
     }
 
 
@@ -140,7 +136,7 @@ class Base extends BaseModel {
     if($nota->avaliado($this->getId()) == true){
         $this->exibeNota($this->getId()); 
     }else{
-      if(($user->getAdmin()!= true)){
+      if(($user->usuarioAvaliador()!= true)){
         $this->botaoAbertoFechado();
       }else{
         $this->botaoVaziaAvaliar();
@@ -150,7 +146,7 @@ class Base extends BaseModel {
 
  public function botaoVaziaAvaliar(){
   $user = new Usuario;
-  if(($this->getStatus() == 'Aberta') and ($user->getAdmin() == true)){
+  if(($this->getStatus() == 'Aberta')){
       echo "<button class='btn btn-large btn-block btn-success' disabled href='#'>Vazia</button>";
   }else{ ?>
       <form method="post">
@@ -165,8 +161,9 @@ class Base extends BaseModel {
  }
 
  public function botaoAbertoFechado(){
-   $user = new usuario;
-  if($user->getIdBase() == Null){
+   $user = new Usuario;
+   $evento = new Evento;
+  if(($user->getIdBase() == Null)AND ($evento->getAtivo() == 1)){
       if($this->getStatus() === 'Aberta'){?>
           <form method="post" target="_blank" action="redireciona.php" OnSubmit="recarregar()">
             <input type='hidden' name='acao' value='entrar'>
@@ -176,7 +173,9 @@ class Base extends BaseModel {
       }else{
         echo "<button class='btn btn-large btn-block btn-danger' disabled href='#'>Fechada</button>";
       }
-    }else{
+    }else if($this->getIdUser() == $user->getIdUser()){?>
+      <a class='btn btn-large btn-block btn-primary' style="margin-right: 5px;" href='index.php'>Voltar a Base</a>
+    <?php }else{
         echo "<button class='btn btn-large btn-block btn-danger' disabled href='#'>Fechada</button>";
     }
  }

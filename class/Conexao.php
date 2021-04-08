@@ -2,8 +2,6 @@
 class Conexao{
     public static $instance;
 
-    private function __construct() {}
-
     public static function Inst() {
         $srv = "localhost";
         //$srv = "187.45.196.218";
