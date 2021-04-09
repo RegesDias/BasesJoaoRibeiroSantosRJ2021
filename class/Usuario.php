@@ -5,7 +5,65 @@ require_once('class/Evento.php');
 require_once('model/UsuarioModel.php');
 
 class Usuario extends UsuarioModel{
-  
+    
+    public function burcaPorId($id){
+        $call = "call usuarioBuscaPorId(?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($id));
+        $obj = $exec->fetchobject();
+        $this->novoUsuario($obj);
+      }
+
+    public function buscaPorIdNome($id=null) {
+        if($id == null){
+            $call = "call usuarioBuscaPorNome(?)";
+            $exec = Conexao::Inst()->prepare($call);
+            $exec->execute(array('%'.$this->getNome().'%'));
+        }else{
+            $call = "call usuarioBuscaPorId(?)";
+            $exec = Conexao::Inst()->prepare($call);
+            $exec->execute(array($id));
+        }
+        return $exec;
+    }
+
+    public function cadastrar(){
+        global $respObj;
+        $call = "call usuarioCadastrar(?,?,?,?,?,?,?,?,?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array(
+            $this->getNome(),
+            $this->getAdmin(),
+            $this->getChefeBase(),
+            $this->getIdEvento(),
+            $this->getChefeCoord(),
+            $this->getAtivo(),
+            $this->getGrupo(),
+            $this->getChave(),
+            MD5($this->getIdUser())
+        ));
+        echo Conexao::getInst()->lastInsertId();
+        $this->setIdUser(Conexao::Inst()->lastInsertId());
+        echo $this->getIdUser();
+        //$respObj->id = $pdo->lastInsertId();
+    }
+
+    public function alterar(){
+        $call = "call usuarioAtualizar(?,?,?,?,?,?,?,?,?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array(
+            $this->getNome(),
+            $this->getAdmin(),
+            $this->getChefeBase(),
+            $this->getChefeCoord(),
+            $this->getIdEvento(),
+            $this->getChave(),
+            $this->getAtivo(),
+            $this->getGrupo(),
+            $this->getIdUser()
+        ));
+    }
+
     public function entrar() {
         global $respObj;
         $this->setSenha(md5($respObj->passwd));
@@ -14,7 +72,7 @@ class Usuario extends UsuarioModel{
         if($this->getAtivo() == 1){   
             $_SESSION['usuario'] = serialize($this);
             $evento = new Evento;
-            $evento = $evento->buscarEventoId();
+            $evento = $evento->burcaPorId();
             $_SESSION['evento'] = serialize($evento);
         }else{
             $_SESSION['erro'] = "login";
@@ -39,7 +97,7 @@ class Usuario extends UsuarioModel{
 
     public function buscarBaseOcupada(){
         if(isset($_SESSION['usuario'])){
-            $call = "call usuarioBuscarBaseOcupada(?)";
+            $call = "call usuarioBuscaBaseOcupada(?)";
             $exec = Conexao::Inst()->prepare($call);
             $exec->execute(array($this->getIdUser()));
             $obj = $exec->fetchobject();
@@ -79,7 +137,7 @@ class Usuario extends UsuarioModel{
 
     public function atualizaNotaTotal($nota) {
         $base = new Base;
-        $base->burcarBasePorId($nota->getIdBase());
+        $base->burcaPorId($nota->getIdBase());
         if($base->getStatus() == 'Fechada'){
             $notaTotal = $this->buscaNotaTotal($nota->getIdUser());
             $novoTotal = $notaTotal+$nota->getNota();
@@ -90,54 +148,6 @@ class Usuario extends UsuarioModel{
         }
     }
 
-    public function buscarUsuarioNomeId($id=null) {
-        if($id == null){
-            $call = "call usuarioBuscaNome(?)";
-            $exec = Conexao::Inst()->prepare($call);
-            $exec->execute(array('%'.$this->getNome().'%'));
-        }else{
-            $call = "call usuarioBuscaId(?)";
-            $exec = Conexao::Inst()->prepare($call);
-            $exec->execute(array($id));
-        }
-        return $exec;
-    }
-    public function Alterar(){
-        $call = "call usuarioAtualizar(?,?,?,?,?,?,?,?,?)";
-        $exec = Conexao::Inst()->prepare($call);
-        $exec->execute(array(
-            $this->getNome(),
-            $this->getAdmin(),
-            $this->getChefeBase(),
-            $this->getChefeCoord(),
-            $this->getIdEvento(),
-            $this->getChave(),
-            $this->getAtivo(),
-            $this->getGrupo(),
-            $this->getIdUser()
-        ));
-    }
-
-public function Cadastrar(){
-    global $respObj;
-    $call = "call usuarioCadastrar(?,?,?,?,?,?,?,?,?)";
-    $exec = Conexao::Inst()->prepare($call);
-    $exec->execute(array(
-        $this->getNome(),
-        $this->getAdmin(),
-        $this->getChefeBase(),
-        $this->getIdEvento(),
-        $this->getChefeCoord(),
-        $this->getAtivo(),
-        $this->getGrupo(),
-        $this->getChave(),
-        MD5($this->getIdUser())
-    ));
-    echo Conexao::getInst()->lastInsertId();
-    $this->setIdUser(Conexao::Inst()->lastInsertId());
-    echo $this->getIdUser();
-    //$respObj->id = $pdo->lastInsertId();
-}
     public function usuarioAvaliador(){
         if(($this->getAdmin() == true) OR ($this->getChefeBase() == true) OR ($this->getChefeCoord() == true)){
             return true;

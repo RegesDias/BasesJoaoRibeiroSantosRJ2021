@@ -1,148 +1,172 @@
 <?php
+require_once('class/Conexao.php');
 require_once('Usuario.php');
 require_once('Nota.php');
 require_once('BaseFeita.php');
 require_once('model/BaseModel.php');
 class Base extends BaseModel {
-    public function listar(){
-        $user = new Usuario;
-        $evento = new Evento;
-        global $mysqli;
-        if($user->getChefeBase() == true){
-          $basesql = "SELECT 
-                                base.id,
-                                base.ordem,
-                                base.idUser,
-                                base.idEvento,
-                                base.ResposavelBase,
-                                base.nome,
-                                base.img,
-                                base.link,
-                                base.status,
-                                base.ativa,
-                                base.dataHora
-                             FROM
-                                  base,
-                                  evento
-                                WHERE
-                                  base.idevento = evento.id AND
-                                  ResposavelBase = '".$user->getIdUser()."' AND 
-                                  idEvento = '".$user->getIdEvento()."' 
-                                ORDER BY ordem ";
-        }else{
-          $basesql = "SELECT 
-                                base.id,
-                                base.ordem,
-                                base.idUser,
-                                base.idEvento,
-                                base.ResposavelBase,
-                                base.nome,
-                                base.img,
-                                base.link,
-                                base.status,
-                                base.ativa,
-                                base.dataHora          
-                          FROM
-                                    base,
-                                    evento 
-                                  WHERE 
-                                    base.idevento = evento.id AND
-                                    idEvento = '".$user->getIdEvento()."' 
-                                  ORDER BY ordem";
-        }
-        $bases = $mysqli->query($basesql);
-        if($evento->getAtivo() == 0){?>
-          <div class="alert alert-danger">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <h4>Alerta!</h4>
-            O Evento <b><?=$evento->getNome()?></b> encontra-se fechado.
-          </div><?php
-        }
-        return $bases;
+
+  public function burcaPorId($id){
+    $call = "call baseBurcaPorId(?)";
+    $exec = Conexao::Inst()->prepare($call);
+    $exec->execute(array($this->getId()));
+    $obj = $exec->fetchobject();
+    $this->novaBase($obj);
+  }
+
+  public function cadastrar(){
+    global $respObj;
+    $call = "call baseCadastrar(?,?,?,?,?,?,?)";
+    $exec = Conexao::Inst()->prepare($call);
+    $exec->execute(array(
+        $this->getNome(),
+        $this->getIdUser(),
+        $this->getresposavelBase(),
+        $this->getLink(),
+        $this->getAtiva(),
+        $this->getStatus(),
+        $this->getOrdem(),
+    ));
+  
+    //$this->setId($mysqli->insert_id);
+    //$respObj->id = $mysqli->insert_id;
+  
+  }
+
+  public function alterar(){
+    $call = "call baseAtualizar(?,?,?,?,?,?,?,?,?)";
+    $exec = Conexao::Inst()->prepare($call);
+    $exec->execute(array(
+        $this->getNome(),
+        $this->getIdUser(),
+        $this->getResposavelBase(),
+        $this->getImg(),
+        $this->getLink(),
+        $this->getAtiva(),
+        $this->getStatus(),
+        $this->getDataHora(),
+        $this->getOrdem(),
+        $this->getId()
+
+    ));
+  }
+  
+  public function listar(){
+    $evento = new Evento;
+    if($evento->getAtivo() == 0){?>
+      <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <h4>Alerta!</h4>
+        O Evento <b><?=$evento->getNome()?></b> encontra-se fechado.
+      </div><?php
     }
- 
-    public function imagem(){
-      echo "<a href='#'>";
-      echo "<img height='700' width='50' class='card-img-top img-fluid border-radius img-thumbnail' src='img/".$this->getImg()."' alt=''>";
-      echo "</a>";
+
+    $user = new Usuario;
+    if($user->getChefeBase() == true){
+      $call = "call baseListarChefeBase(?, ?)";
+      $exec = Conexao::Inst()->prepare($call);
+      $exec->execute(array($user->getIdUser(),$user->getIdEvento()));
+    }else{
+      $call = "call baseListar(?)";
+      $exec = Conexao::Inst()->prepare($call);
+      $exec->execute(array($user->getIdEvento()));
     }
+    return $exec;
+  }
     
-    public function entrar($id){
-          global $mysqli;
-          $user = new Usuario;
-          $this->burcarBasePorId($id);
-          if(($this->getStatus() == 'Aberta') AND ($user->getIdBase() == Null)){
-              $this->fechar();
-              header('Location: '.$this->getLink());
-          }else{?>
-              <div class="alert alert-warning">
-              <button type="button" class="close" data-dismiss="alert">×</button>
-              <h4>Alerta!</h4>
-              Foi quase... mas infelizmente esta base já foi acessada
-              </div><?php
-          }
+  public function entrar($id){
+    $user = new Usuario;
+    $this->burcaPorId($id);
+    if(($this->getStatus() == 'Aberta') AND ($user->getIdBase() == Null)){
+        $this->fechar();
+        header('Location: '.$this->getLink());
+    }else{?>
+        <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <h4>Alerta!</h4>
+        Foi quase... mas infelizmente esta base já foi acessada
+        </div><?php
     }
+  }
 
-    public function fechar(){
-      global $mysqli;
-      $user = new Usuario;
-      $updateBase="UPDATE base SET status = 'Fechada', idUser = '".$user->getIdUser()."' WHERE id = '".$this->getId()."'";
-      $ub = $mysqli->query($updateBase);
-      $user->setIdBase($this->getid());
-      $user->entrarNaBase();
-    }
-    public function abrir(){
-      global $mysqli;
-      $atualizarBase = "UPDATE base SET status = 'Aberta', idUser = NULL WHERE id = '".$this->getId()."'";
-      $ab = $mysqli->query($atualizarBase);
-    }
+  public function abrirAvaliar($id){
+    global $respObj;
+    $user = new Usuario;
+    $this->burcaPorId($id);
 
-    public function abrirAvaliar($id){
-        global $respObj;
-        $user = new Usuario;
-        $this->burcarBasePorId($id);
-
-        $nota = new Nota;
-        $nota->setIdBase($this->getId(),);
-        $nota->setidUser($this->getIdUser(),);
-        $nota->setNota($respObj->nota);
-        $nota->setDataHora(date("Y-m-d G:i:s"));
-        $nota->setAvaliadoP($user->getIdUser());
-        $user->atualizaNotaTotal($nota);
-        $user->sairDaBase($this->getIdUser());
-        $nota->insereNota();
-        $basefeita = new BaseFeita;
-        $basefeita->novaBaseFeita(
-          $this->getId(),
-          $this->getIdUser()
-        );
-        
-        $basefeita->insereBaseFeita();
-        $this->abrir();
-
-    }
-
-
- public function exibeNota($idBase){
     $nota = new Nota;
-    $nota->burcarNotaPorId($idBase);
-    echo "<button class='btn btn-large btn-block btn-primary' href='#'><b>Nota ".$nota->getNota()."</b></button>";
- }
+      $nota->setIdBase($this->getId(),);
+      $nota->setidUser($this->getIdUser(),);
+      $nota->setNota($respObj->nota);
+      $nota->setDataHora(date("Y-m-d G:i:s"));
+      $nota->setAvaliadoP($user->getIdUser());
 
- //BOTOES ##################################################
- function botoes(){
+    $user->atualizaNotaTotal($nota);
+      $user->sairDaBase($this->getIdUser());
+      $nota->insereNota();
+
+    $basefeita = new BaseFeita;
+      $basefeita->novaBaseFeita(
+        $this->getId(),
+        $this->getIdUser()
+      );
+      $basefeita->insereBaseFeita();
+    
+    $this->abrir();
+  }
+
+  public function fechar(){
+    $user = new Usuario;
+    $call = "call baseFechar(?, ?)";
+    $exec = Conexao::Inst()->prepare($call);
+    $exec->execute(array($user->getIdUser(),$this->getId()));
+    $user->setIdBase($this->getid());
+    $user->entrarNaBase();
+  }
+    
+  public function abrir(){
+    $call = "call baseAbrir(?)";
+    $exec = Conexao::Inst()->prepare($call);
+    $exec->execute(array($this->getId()));
+  }
+
+public function carregarImagem(){
+  global $_FILES;
+  global $mysqli;
+  $upImg = new Upload($_FILES['img']);
+  $upImg->pastaDestino = "img";
+  
+  if($upImg->UploadArquivo()){
+      $call = "call baseCarregarImagem(?,?)";
+      $exec = Conexao::Inst()->prepare($call);
+      $exec->execute(array($upImg->name,$this->getId()));
+  }
+
+  echo "<br><b><i>".$upImg->msn."</i></b>";
+      
+}
+
+public function exibeNota($idBase){
+  $nota = new Nota;
+  $nota->burcaPorId($idBase);
+  echo "<button class='btn btn-large btn-block btn-primary' href='#'><b>Nota ".$nota->getNota()."</b></button>";
+}
+
+  function botoes(){
     $user = new Usuario;
     $nota = new Nota;
-    if($nota->avaliado($this->getId()) == true){
+    $ativo = $nota->avaliado($this->getId());
+    $ativo = false;
+    if($ativo == true){
         $this->exibeNota($this->getId()); 
     }else{
-      if(($user->usuarioAvaliador()!= true)){
+      if($ativo != true){
         $this->botaoAbertoFechado();
       }else{
         $this->botaoVaziaAvaliar();
       }
     }
- }
+  }
 
  public function botaoVaziaAvaliar(){
   $user = new Usuario;
@@ -161,8 +185,8 @@ class Base extends BaseModel {
  }
 
  public function botaoAbertoFechado(){
-   $user = new Usuario;
-   $evento = new Evento;
+  $user = new Usuario;
+  $evento = new Evento;
   if(($user->getIdBase() == Null)AND ($evento->getAtivo() == 1)){
       if($this->getStatus() === 'Aberta'){?>
           <form method="post" target="_blank" action="redireciona.php" OnSubmit="recarregar()">
@@ -174,92 +198,18 @@ class Base extends BaseModel {
         echo "<button class='btn btn-large btn-block btn-danger' disabled href='#'>Fechada</button>";
       }
     }else if($this->getIdUser() == $user->getIdUser()){?>
-      <a class='btn btn-large btn-block btn-primary' style="margin-right: 5px;" href='index.php'>Voltar a Base</a>
+      <a href='<?=$this->getLink()?>' target="_blank" class='btn btn-large btn-block btn-warning' style="margin-right: 5px;"><b>Voltar a Base!</b></a>
     <?php }else{
         echo "<button class='btn btn-large btn-block btn-danger' disabled href='#'>Fechada</button>";
     }
+
  }
- 
 
- public function burcarBasePorId($id){
-    global $mysqli;
-    $sql = "SELECT * FROM base WHERE id = '$id' ";
-    $buscaBase = $mysqli->query($sql);
-    $bb = $buscaBase->fetch_object();
-    //$base = new Base;
-    $this->novaBase($bb);
-
-    
-}
-
-public function Alterar(){
-  global $mysqli;
-  $atualizarBase = " UPDATE base SET 
-                                      nome = '".$this->getNome()."',
-                                      idUser = '".$this->getIdUser()."', 
-                                      resposavelBase = '".$this->getResposavelBase()."', 
-                                      img = '".$this->getImg()."', 
-                                      link = '".$this->getLink()."', 
-                                      ativa = '".$this->getAtiva()."',
-                                      status = '".$this->getStatus()."',
-                                      dataHora = '".$this->getDataHora()."',
-                                      id = '".$this->getId()."',
-                                      ordem = '".$this->getOrdem()."'
-                              WHERE 
-                                      id = '".$this->getId()."'";
-  $ae = $mysqli->query($atualizarBase);
-}
-
-public function Cadastrar(){
-  global $mysqli;
-  global $respObj;
-  $slq="INSERT INTO base(
-                          nome,
-                          idUser,
-                          resposavelBase, 
-                          img, 
-                          link,
-                          ativa,
-                          status,
-                          dataHora,
-                          id,
-                          ordem
-                          
-              )VALUES(
-                      '".$this->getNome()."',
-                      '".$this->getIdUser()."',
-                      '".$this->getresposavelBase()."',
-                      '".$this->getImg()."',
-                      '".$this->getLink()."',
-                      '".$this->getAtiva()."',
-                      '".$this->getStatus()."',
-                      '".$this->getDataHora()."',
-                      '".$this->getId()."',
-                      '".$this->getOrdem()."'
-              )
-              
-  ";
-  
-  $ae = $mysqli->query($slq);
-  $this->setId($mysqli->insert_id);
-  $respObj->id = $mysqli->insert_id;
-
-}
-
-public function carregarImagem(){
-  global $_FILES;
-  global $mysqli;
-  $upImg = new Upload($_FILES['img']);
-  $upImg->pastaDestino = "img";
-  
-  if($upImg->UploadArquivo()){
-      $sql = " UPDATE base SET img = '$upImg->name' WHERE id = '".$this->getId()."'";
-      $ae = $mysqli->query($sql);
+  public function imagem(){
+    echo "<a href='#'>";
+    echo "<img height='700' width='50' class='card-img-top img-fluid border-radius img-thumbnail' src='img/".$this->getImg()."' alt=''>";
+    echo "</a>";
   }
-
-  echo "<br><b><i>".$upImg->msn."</i></b>";
-      
-}
 
 }
 ?>

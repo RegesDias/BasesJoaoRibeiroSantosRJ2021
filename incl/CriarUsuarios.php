@@ -12,11 +12,11 @@
         $usuario->setGrupo($respObj->grupo);
         $usuario->setChave($respObj->chave);
         if($respObj->id > 0){
-            $usuarios = $usuario->buscarUsuarioNomeId($respObj->id);
+            $usuarios = $usuario->buscaPorIdNome($respObj->id);
             $b = $usuarios->fetchobject();
             $usuario->novoUsuario($b);
         }else{
-          $usuario->Cadastrar();
+          $usuario->cadastrar();
         }
         
       }

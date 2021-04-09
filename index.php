@@ -24,7 +24,7 @@
           if($user->getAtivo() == true){
             $bases = $base->listar();
             echo "<div class='row'>";
-            while ($b = $bases->fetch_object()){
+            while ($b = $bases->fetchobject()){
               $base = new Base;
               $base->novaBase($b);
               ?>

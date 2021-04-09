@@ -34,11 +34,11 @@
             $evento->setContato($respObj->contato);
             $evento->setInscricao($respObj->inscricao);
             $evento->carregarImagem();
-            $evento->Alterar();
+            $evento->alterar();
           }
           $evento = new Evento;
           $evento->setNome($respObj->nome);
-          $eventos = $evento->buscarEventoNomeId($respObj->id);
+          $eventos = $evento->buscaPorIdNome($respObj->id);
           while ($b = $eventos->fetch_object()){
             $evento->novoEvento($b);
             echo "<tr><th scope='row'>".$evento->getId()."</th>";

@@ -1,38 +1,32 @@
 <?php
+require_once('class/Conexao.php');
 require_once('model/NotaModel.php');
 class Nota extends NotasModel{
 
-    public function setAvaliadoPor($avaliadoPor){
-            $this->getAvaliadoPor = $avaliadoPor;
+    function burcaPorId($idBase){
+        $user = new Usuario;
+        $call = "call notaBurcaPorId(?,?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($user->getIdUser(),$idBase));
+        $obj = $exec->fetchobject();
+        $this->novaNota($obj);
+        $exec->closeCursor();
     }
+
     function insereNota(){
-        global $mysqli;
-        $insertNota = "INSERT INTO notas 
-                                (idBase, 
-                                idUser,
-                                nota,
-                                avaliadoPor) 
-                                VALUES 
-                                (
-                                '".$this->getIdBase()."',
-                                '".$this->getIdUser()."',
-                                '".$this->getNota()."',
-                                '".$this->getAvaliadoPor()."'
-                                )";
-        $in = $mysqli->query($insertNota);
+        $call = "call notaCadastrar(?,?,?,?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array(
+            $this->getIdBase(),
+            $this->getIdUser(),
+            $this->getNota(),
+            $this->getAvaliadoPor()
+        ));
     }
-    function burcarNotaPorId($idBase){
-        global $mysqli;
-        $user = new Usuario;
-        $sql = "SELECT * FROM notas WHERE idUser = '".$user->getIdUser()."' and idBase = '".$idBase."'";
-        $buscaNota = $mysqli->query($sql);
-        $bn = $buscaNota->fetch_object();
-        $this->novaNota($bn);
-    }
+    
     public function avaliado($idBase){
-        global $mysqli;
         $user = new Usuario;
-        $this->burcarNotaPorId($idBase);
+        $this->burcaPorId($idBase);
         if($this->getIdBase() != '' ){
             return true;
         }else{

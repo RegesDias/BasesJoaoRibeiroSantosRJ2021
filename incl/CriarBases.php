@@ -13,12 +13,12 @@
         $base->setDataHora($respObj->dataHora);
         $base->setOrdem($respObj->ordem);
         if($respObj->id > 0){
-            $base->Alterar();
-            $bases = $base-> burcarBasePorId($respObj->id);
+            $base->alterar();
+            $bases = $base-> burcaPorId($respObj->id);
             $b = $Bases->fetch_object();
             $base->novaBase($b);
         }else{
-          $base->Cadastrar();
+          $base->cadastrar();
         }
         
       }

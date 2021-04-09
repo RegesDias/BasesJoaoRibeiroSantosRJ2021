@@ -38,12 +38,12 @@
             $base->setAtiva($respObj->ativa);
             $base->setDataHora($respObj->dataHora);
             $base->setOrdem($respObj->ordem);
-            $base->Alterar();
+            $base->alterar();
             
           }
           $base = new Base;
           $base->setNome($respObj->nome);
-          $bases = $base->burcarBasePorId($respObj->id);
+          $bases = $base->burcaPorId($respObj->id);
           while ($b = $Bases->fetch_object()){
             $base->novaBase($b);
             echo "<tr><th scope='row'>".$base->getId()."</th>";

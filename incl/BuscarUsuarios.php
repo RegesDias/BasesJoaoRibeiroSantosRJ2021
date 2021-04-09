@@ -35,10 +35,10 @@
             $usuario->setChefeCoord($respObj->chefeCoord);
             $usuario->setGrupo($respObj->grupo);
             $usuario->setChave($respObj->chave);
-            $usuario->Alterar();
+            $usuario->alterar();
           }
           $usuario->setNome($respObj->nome);
-          $user = $usuario->buscarUsuarioNomeId($respObj->id);
+          $user = $usuario->buscaPorIdNome($respObj->id);
           while ($b = $user->fetchobject()){
             $usuario->novoUsuario($b);
             echo "<tr><th scope='row'>".$usuario->getIdUser()."</th>";

@@ -11,12 +11,12 @@
         $evento->setInscricao($respObj->inscricao);
         if($respObj->id > 0){
           $evento->carregarImagem();
-          $evento->Alterar();
-          $eventos = $evento->buscarEventoNomeId($respObj->id);
+          $evento->alterar();
+          $eventos = $evento->buscaPorIdNome($respObj->id);
           $b = $eventos->fetch_object();
           $evento->novoEvento($b);
         }else{
-          $evento->Cadastrar();
+          $evento->cadastrar();
         }
         
       }

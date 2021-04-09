@@ -7,10 +7,12 @@ class NotasModel{
     private $avaliadoPor;
 
 	public function novaNota($nota){
-        $this->setIdBase($nota->idBase);
-        $this->setidUser($nota->idUser);
-        $this->setNota($nota->nota);
-        $this->setAvaliadoP($nota->avaliadoPor);
+		if(isset($nota)){
+			$this->setIdBase($nota->idBase);
+			$this->setidUser($nota->idUser);
+			$this->setNota($nota->nota);
+			$this->setAvaliadoP($nota->avaliadoPor);
+		}
     }
     //GETSET
     public function getIdBase(){
