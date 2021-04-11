@@ -5,7 +5,13 @@ require_once('class/Evento.php');
 require_once('model/UsuarioModel.php');
 
 class Usuario extends UsuarioModel{
-    
+
+    public function limpar(){
+        $call = "call usuarioLimpar()";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute();
+    }
+
     public function burcaPorId($id){
         $call = "call usuarioBuscaPorId(?)";
         $exec = Conexao::Inst()->prepare($call);
@@ -64,6 +70,14 @@ class Usuario extends UsuarioModel{
         ));
     }
 
+    public function retornaNome($id){
+        $call = "call usuarioRetornaNome(?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($id));
+        $rn = $exec->fetchobject();
+        echo $rn->nome;
+    }
+
     public function entrar() {
         global $respObj;
         $this->setSenha(md5($respObj->passwd));
@@ -72,7 +86,7 @@ class Usuario extends UsuarioModel{
         if($this->getAtivo() == 1){   
             $_SESSION['usuario'] = serialize($this);
             $evento = new Evento;
-            $evento = $evento->burcaPorId();
+            $evento->burcaPorId();
             $_SESSION['evento'] = serialize($evento);
         }else{
             $_SESSION['erro'] = "login";
@@ -184,6 +198,7 @@ class Usuario extends UsuarioModel{
                     <a class="dropdown-item" href="administrar.php?tp=Usuários">Usuários</a>
                     <a class="dropdown-item" href="administrar.php?tp=Bases">Bases</a>
                     <a class="dropdown-item" href="administrar.php?tp=Eventos">Eventos</a>
+                    <a class='dropdown-item' href='#'  data-toggle='modal' data-target='#limpar'>Limpar Eventos</a>
                 </div>
                 </div>
             </li>

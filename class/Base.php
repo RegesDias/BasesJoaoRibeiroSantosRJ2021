@@ -6,7 +6,13 @@ require_once('BaseFeita.php');
 require_once('model/BaseModel.php');
 class Base extends BaseModel {
 
-  public function burcaPorId($id){
+  public function limpar(){
+    $call = "call baseLimpar()";
+    $exec = Conexao::Inst()->prepare($call);
+    $exec->execute();
+  }
+
+  public function burcaPorId(){
     $call = "call baseBurcaPorId(?)";
     $exec = Conexao::Inst()->prepare($call);
     $exec->execute(array($this->getId()));
@@ -28,8 +34,8 @@ class Base extends BaseModel {
         $this->getOrdem(),
     ));
   
-    //$this->setId($mysqli->insert_id);
-    //$respObj->id = $mysqli->insert_id;
+    //$this->setId(Usuarioi->insert_id);
+    //$respObj->id = Usuarioi->insert_id;
   
   }
 
@@ -76,7 +82,8 @@ class Base extends BaseModel {
     
   public function entrar($id){
     $user = new Usuario;
-    $this->burcaPorId($id);
+    $this->setId($id);
+    $this->burcaPorId();
     if(($this->getStatus() == 'Aberta') AND ($user->getIdBase() == Null)){
         $this->fechar();
         header('Location: '.$this->getLink());
@@ -92,7 +99,8 @@ class Base extends BaseModel {
   public function abrirAvaliar($id){
     global $respObj;
     $user = new Usuario;
-    $this->burcaPorId($id);
+    $this->setId($id);
+    $this->burcaPorId();
 
     $nota = new Nota;
       $nota->setIdBase($this->getId(),);
@@ -132,7 +140,6 @@ class Base extends BaseModel {
 
 public function carregarImagem(){
   global $_FILES;
-  global $mysqli;
   $upImg = new Upload($_FILES['img']);
   $upImg->pastaDestino = "img";
   
@@ -155,18 +162,17 @@ public function exibeNota($idBase){
   function botoes(){
     $user = new Usuario;
     $nota = new Nota;
-    $ativo = $nota->avaliado($this->getId());
-    $ativo = false;
-    if($ativo == true){
+    if($nota->avaliado($this->getId()) == true){
         $this->exibeNota($this->getId()); 
     }else{
-      if($ativo != true){
-        $this->botaoAbertoFechado();
-      }else{
+      if($user->usuarioAvaliador() == true){
         $this->botaoVaziaAvaliar();
+      }else{
+        $this->botaoAbertoFechado();
       }
     }
   }
+  
 
  public function botaoVaziaAvaliar(){
   $user = new Usuario;
@@ -174,7 +180,7 @@ public function exibeNota($idBase){
       echo "<button class='btn btn-large btn-block btn-success' disabled href='#'>Vazia</button>";
   }else{ ?>
       <form method="post">
-      <label>Avaliar Patrulha <?=retornaNome($this->getIdUser() ,'user')?></label>
+      <label>Avaliar Patrulha <?=$user->retornaNome($this->getIdUser())?></label>
       <input type="number" min="1" max="10" step="0.5" name='nota' class="form-control" placeholder="Nota">
       <input type='hidden' name='acao' value='abrirAvaliar'>
       <input type='hidden' name='id' value='<?=$this->getId()?>'>
@@ -209,6 +215,24 @@ public function exibeNota($idBase){
     echo "<a href='#'>";
     echo "<img height='700' width='50' class='card-img-top img-fluid border-radius img-thumbnail' src='img/".$this->getImg()."' alt=''>";
     echo "</a>";
+  }
+  public function limparApp(){
+    $user = new Usuario;
+    $nota = new Nota;
+    $baseFeita = new BaseFeita;
+    if($user->getAdmin()){
+      $nota->limpar(); 
+      $this->limpar();
+      $user->limpar();
+      $baseFeita->limpar();?>
+      <br><br>
+        <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <h4>Alerta!</h4>
+          Sistema Limpo e pronto para novo Evento!
+        </div><?php
+    }
+
   }
 
 }

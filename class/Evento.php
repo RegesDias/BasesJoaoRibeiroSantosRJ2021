@@ -38,7 +38,6 @@ class Evento extends EventoModel{
 
     public function carregarImagem(){
         global $_FILES;
-        global $mysqli;
 
         $upImgParticipante = new Upload($_FILES['imgParticipante']);
         $upImgParticipante->pastaDestino = "img";
@@ -70,47 +69,41 @@ class Evento extends EventoModel{
             
     }
     public function alterar(){
-        global $mysqli;
-        $atualizarEvento = " UPDATE evento SET 
-                                            nome = '".$this->getNome()."',
-                                            inicio = '".$this->getInicio()."', 
-                                            encerramento = '".$this->getEncerramento()."', 
-                                            contato = '".$this->getContato()."', 
-                                            inscricao = '".$this->getInscricao()."', 
-                                            ativo = '".$this->getAtivo()."' 
-                                    WHERE 
-                                            id = '".$this->getId()."'";
-        $ae = $mysqli->query($atualizarEvento);
+        $call = "call eventoAlterar(?,?,?,?,?,?,?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array(
+                        $this->getNome(),
+                        $this->getInicio(),
+                        $this->getEncerramento(),
+                        $this->getContato(),
+                        $this->getInscricao(),
+                        $this->getAtivo(),
+                        $this->getId()
+        ));
     }
+
     public function cadastrar(){
-        global $mysqli;
         global $respObj;
-        $slq="INSERT INTO evento(
-                                nome,
-                                inicio,
-                                encerramento, 
-                                inscricao, 
-                                contato,
-                                ativo
-                    )VALUES(
-                            '".$this->getNome()."',
-                            '".$this->getInicio()."',
-                            '".$this->getEncerramento()."',
-                            '".$this->getInscricao()."',
-                            '".$this->getContato()."',
-                            '".$this->getAtivo()."'
-                    )
-        ";
-        $ae = $mysqli->query($slq);
-        $this->setId($mysqli->insert_id);
-        $respObj->id = $mysqli->insert_id;
+        $call = "call eventoCadastrar(?,?,?,?,?,?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array(
+                        $this->getNome(),
+                        $this->getInicio(),
+                        $this->getEncerramento(),
+                        $this->getInscricao(),
+                        $this->getContato(),
+                        $this->getAtivo()
+        ));
+        //$this->setId(Usuarioi->insert_id);
+        //$respObj->id = Usuarioi->insert_id;
     }
     public function htmlSelectEvento($id) {
-        global $mysqli;
-        $buscaEvento= "SELECT * FROM evento";
-        $be = $mysqli->query($buscaEvento);
+        $call = "call eventoListar()";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute();
+
         echo "<select class='form-control' name='idEvento'>";
-        while ($nt = $be->fetch_object()){
+        while ($nt = $exec->fetchobject()){
             $status = null;
             if($id == $nt->id){
                 $status = 'selected';

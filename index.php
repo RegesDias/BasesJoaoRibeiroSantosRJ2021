@@ -49,24 +49,27 @@
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<?php
+ if($user->usuarioAvaliador()){ ?>
+  <script> 
+      setTimeout(function(){
+        window.location.reload(1);
+      }, 50000);
+  </script><?php 
+}?>
 <script>
-  setTimeout(function(){
-    window.location.reload(1);
-  }, 50000);
- function recarregar(){
-    var url_do_post;
-    var data;
-    $.ajax({
-          type: "POST",
-          url: url_do_post,
-          data: data,
-          success: function(){
-            location.reload();  
-          }
-        });
- }
-
+  function recarregar(){
+      var url_do_post;
+      var data;
+      $.ajax({
+            type: "POST",
+            url: url_do_post,
+            data: data,
+            success: function(){
+              location.reload();  
+            }
+          });
+  }
 </script>
 </body>
-
 </html>

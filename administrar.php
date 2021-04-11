@@ -6,6 +6,12 @@
     <?php 
         require_once('incl/config.php');
         require_once('incl/nav.php');
+        $base = new Base;
+        if(isset($respGet->acao)){
+            $base = new Base;
+            $acao = $respGet->acao;
+            $base->$acao();
+        }
         $tp = tirarAcentos($respGet->tp);
         $ac = tirarAcentos($respGet->ac);
         if($ac == ""){

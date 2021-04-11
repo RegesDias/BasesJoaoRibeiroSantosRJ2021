@@ -26,8 +26,6 @@
       <?php
           require_once('class/Base.php');
           if(isset($respObj->alterar)){
-            print_p($respObj);
-            print_p($respObj);
             $base->setId($respObj->id);
             $base->setIdUser($respObj->idUser);
             $base->setResposavelBase($respObj->resposavelBase);

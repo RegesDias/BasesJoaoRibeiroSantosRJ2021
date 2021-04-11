@@ -3,20 +3,6 @@ session_start();
 //EXIBIR ERROS
   error_reporting(E_ERROR | E_WARNING | E_PARSE);
   ini_set("display_errors", 1);
-//PARAMETROS DE ACESSO
-
-    $usr = 'basesgrandejog';
-    $srv = "localhost";
-    //$srv = "187.45.196.218";
-    $db = 'basesgrandejog';
-    $pwd = 'ondeumvai@99T';
-    $dsn = 'mysql:dbname='.$db.';host='.$srv;
-
-    $mysqli = new mysqli($srv,$db,$pwd,$usr);
-    if ($mysqli -> connect_errno) {
-      echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
-      exit();
-    }
 //FILTROS
     $respObj = (object) filter_input_array(INPUT_POST, FILTER_DEFAULT);
     $respGet = (object) filter_input_array(INPUT_GET, FILTER_DEFAULT);
@@ -37,13 +23,6 @@ session_start();
     }
 
 //FUNÇOES GENERICAS
-  function retornaNome($id ,$tabela){
-      global $mysqli;
-      $sql = "SELECT nome FROM $tabela WHERE id = '$id'";
-      $rnome = $mysqli->query($sql);
-      $rn = $rnome->fetch_object();
-      echo $rn->nome;
-  }
 
   function dataHoraBr($data){
     $dt = new DateTime($data);
