@@ -24,7 +24,12 @@ session_start();
 
 //FUNÇOES GENERICAS
 
-    function msn ($i){
+    function msn ($i, $msn=null){
+
+      if(isset($msn[2])){
+        $i = 99;
+      }
+
       switch ($i) {
         case 0:
             return null;
@@ -43,12 +48,27 @@ session_start();
           $titulo ='Alerta!';
           $texto = 'É necessario Preencher a nota';
           break;
-          case 4:
+        case 4:
             $tipo ='success';
             $titulo ='Avaliado';
             $texto = 'Nota lançada com sucesso!';
             break;
-      }     
+        case 5:
+          $tipo ='success';
+          $titulo ='Sucesso';
+          $texto = 'Cadastramento Executado!';
+          break;
+        case 6:
+            $tipo ='success';
+            $titulo ='Sucesso';
+            $texto = 'Alteração Executada!';
+            break;
+        case 99:
+          $tipo ='danger';
+          $titulo ='Erro';
+          $texto = $msn[2];
+          break;
+      }    
       
       echo "<div class='alert alert-$tipo'>";
       echo "<button type='button' class='close' data-dismiss='alert'>×</button>";

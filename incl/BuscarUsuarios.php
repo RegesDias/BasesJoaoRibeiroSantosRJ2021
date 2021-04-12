@@ -54,6 +54,8 @@
               </form>
             </td></tr><?php
           }
+          $aData = $user->fetchAll();
+          $user->closeCursor();
       ?>
   </tbody>
 </table>
@@ -61,7 +63,7 @@
 <?php 
 if($respObj->acao == 'alterar'){?>
 <div class="container">
-    <form method="post" method="POST" action="administrar.php?tp=Usuarios&ac=Buscar" enctype="multipart/form-data">
+    <form method="post" action="administrar.php?tp=Usuarios&ac=Buscar">
        <?php require_once('incl/FormUsuarios.php'); ?>
     </form>
 </div>

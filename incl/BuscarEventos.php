@@ -39,7 +39,7 @@
           $evento = new Evento;
           $evento->setNome($respObj->nome);
           $eventos = $evento->buscaPorIdNome($respObj->id);
-          while ($b = $eventos->fetch_object()){
+          while ($b = $eventos->fetchobject()){
             $evento->novoEvento($b);
             echo "<tr><th scope='row'>".$evento->getId()."</th>";
             echo "<td>".$evento->getNome()."</td>";
@@ -54,6 +54,8 @@
               </form>
             </td></tr><?php
           }
+          $aData = $user->fetchAll();
+          $user->closeCursor();
       ?>
   </tbody>
 </table>

@@ -1,4 +1,5 @@
 <?php
+require_once('class/Conexao.php');
 require_once('model/EventoModel.php');
 require_once("Upload.php");
 class Evento extends EventoModel{
@@ -80,6 +81,7 @@ class Evento extends EventoModel{
                         $this->getAtivo(),
                         $this->getId()
         ));
+        msn(6,$exec->errorInfo());
     }
 
     public function cadastrar(){
@@ -94,9 +96,9 @@ class Evento extends EventoModel{
                         $this->getContato(),
                         $this->getAtivo()
         ));
-        //$this->setId(Usuarioi->insert_id);
-        //$respObj->id = Usuarioi->insert_id;
+        msn(5,$exec->errorInfo());
     }
+    
     public function htmlSelectEvento($id) {
         $call = "call eventoListar()";
         $exec = Conexao::Inst()->prepare($call);

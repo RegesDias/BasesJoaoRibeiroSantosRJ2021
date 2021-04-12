@@ -3,6 +3,7 @@ class BaseModel {
       private $id;
 	  private $ordem;
       private $idUser;
+	  private $idEvento;
       private $ResposavelBase;
       private $nome;	
       private $img;	
@@ -14,7 +15,7 @@ class BaseModel {
   //Construtor
     public function novaBase($base){
       $this->setId($base->id);
-      $this->setidUser($base->idUser);
+      $this->setIdUser($base->idUser);
       $this->setResposavelBase($base->ResposavelBase);
       $this->setNome($base->nome);
       $this->setImg($base->img);
@@ -22,6 +23,8 @@ class BaseModel {
       $this->setStatus($base->status);
       $this->setAtiva($base->ativa);
       $this->setDataHora($base->dataHora);
+	  $this->setIdEvento($base->dataHora);
+	  $this->setOrdem($base->ordem);
     }
 
   //GET SET
@@ -38,7 +41,15 @@ class BaseModel {
 	}
 
 	public function setOrdem($ordem){
-		 $this->id = $ordem;
+		 $this->ordem = $ordem;
+	}
+
+	public function getIdEvento(){
+		return $this->idEvento;
+	}
+
+	public function setIdEvento($idEvento){
+		 $this->idEvento = $idEvento;
 	}
 
 	public function getIdUser(){

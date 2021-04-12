@@ -27,13 +27,12 @@
           require_once('class/Base.php');
           if(isset($respObj->alterar)){
             $base->setId($respObj->id);
-            $base->setIdUser($respObj->idUser);
             $base->setResposavelBase($respObj->resposavelBase);
             $base->setNome($respObj->nome);
             $base->setImg($respObj->img);
             $base->setLink($respObj->link);
             $base->setStatus($respObj->status);
-            $base->setAtiva($respObj->ativa);
+            $base->setAtiva($respObj->ativo);
             $base->setDataHora($respObj->dataHora);
             $base->setOrdem($respObj->ordem);
             $base->alterar();
@@ -41,8 +40,8 @@
           }
           $base = new Base;
           $base->setNome($respObj->nome);
-          $bases = $base->burcaPorId($respObj->id);
-          while ($b = $Bases->fetch_object()){
+          $bases = $base->buscaPorIdNome($respObj->id);
+          while ($b = $bases->fetchobject()){
             $base->novaBase($b);
             echo "<tr><th scope='row'>".$base->getId()."</th>";
             echo "<td>".$base->getNome()."</td>";
@@ -57,6 +56,8 @@
               </form>
             </td></tr><?php
           }
+          $aData = $bases->fetchAll();
+          $bases->closeCursor();
       ?>
   </tbody>
 </table>

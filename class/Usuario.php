@@ -48,10 +48,8 @@ class Usuario extends UsuarioModel{
             $this->getChave(),
             MD5($this->getIdUser())
         ));
-        echo Conexao::getInst()->lastInsertId();
-        $this->setIdUser(Conexao::Inst()->lastInsertId());
-        echo $this->getIdUser();
-        //$respObj->id = $pdo->lastInsertId();
+        msn(5,$exec->errorInfo());
+        
     }
 
     public function alterar(){
@@ -68,6 +66,7 @@ class Usuario extends UsuarioModel{
             $this->getGrupo(),
             $this->getIdUser()
         ));
+        msn(6,$exec->errorInfo());
     }
 
     public function retornaNome($id){

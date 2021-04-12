@@ -25,7 +25,7 @@
       ?>
 
 <div class="container">
-    <form method="post" method="POST" action="administrar.php?tp=bases&ac=Criar" enctype="multipart/form-data">
+    <form method="post" method="POST" action="administrar.php?tp=Bases&ac=Criar" enctype="multipart/form-data">
        <?php require_once('incl/FormBases.php'); ?>
     </form>
   </div>

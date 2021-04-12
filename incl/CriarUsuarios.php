@@ -11,13 +11,7 @@
         $usuario->setChefeCoord($respObj->chefeCoord);
         $usuario->setGrupo($respObj->grupo);
         $usuario->setChave($respObj->chave);
-        if($respObj->id > 0){
-            $usuarios = $usuario->buscaPorIdNome($respObj->id);
-            $b = $usuarios->fetchobject();
-            $usuario->novoUsuario($b);
-        }else{
-          $usuario->cadastrar();
-        }
+        $usuario->cadastrar();
         
       }
       ?>

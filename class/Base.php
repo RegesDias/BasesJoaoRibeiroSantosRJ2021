@@ -20,41 +20,47 @@ class Base extends BaseModel {
     $this->novaBase($obj);
   }
 
+  public function buscaPorIdNome($id=null) {
+    if($id == null){
+        $call = "call baseBuscaPorNome(?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array('%'.$this->getNome().'%'));
+    }else{
+        $call = "call baseBurcaPorId(?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($id));
+    }
+    return $exec;
+}
+
   public function cadastrar(){
     global $respObj;
     $call = "call baseCadastrar(?,?,?,?,?,?,?)";
     $exec = Conexao::Inst()->prepare($call);
     $exec->execute(array(
         $this->getNome(),
-        $this->getIdUser(),
         $this->getresposavelBase(),
         $this->getLink(),
         $this->getAtiva(),
         $this->getStatus(),
         $this->getOrdem(),
     ));
-  
-    //$this->setId(Usuarioi->insert_id);
-    //$respObj->id = Usuarioi->insert_id;
-  
+    msn(5,$exec->errorInfo());
   }
 
   public function alterar(){
-    $call = "call baseAtualizar(?,?,?,?,?,?,?,?,?)";
+    $call = "call baseAtualizar(?,?,?,?,?,?,?)";
     $exec = Conexao::Inst()->prepare($call);
     $exec->execute(array(
         $this->getNome(),
-        $this->getIdUser(),
         $this->getResposavelBase(),
-        $this->getImg(),
         $this->getLink(),
         $this->getAtiva(),
         $this->getStatus(),
-        $this->getDataHora(),
         $this->getOrdem(),
         $this->getId()
-
     ));
+    msn(6,$exec->errorInfo());
   }
   
   public function listar(){
