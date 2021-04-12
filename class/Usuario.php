@@ -74,8 +74,8 @@ class Usuario extends UsuarioModel{
         $call = "call usuarioRetornaNome(?)";
         $exec = Conexao::Inst()->prepare($call);
         $exec->execute(array($id));
-        $rn = $exec->fetchobject();
-        echo $rn->nome;
+        $obj = $exec->fetchobject();
+        return $obj->nome;
     }
 
     public function entrar() {
@@ -88,8 +88,9 @@ class Usuario extends UsuarioModel{
             $evento = new Evento;
             $evento->burcaPorId();
             $_SESSION['evento'] = serialize($evento);
+            header('Location:index.php');
         }else{
-            $_SESSION['erro'] = "login";
+            header('Location:login.php?id=login');
         }
     }
 
@@ -141,18 +142,11 @@ class Usuario extends UsuarioModel{
         return $exec;
     }
 
-    public function buscaNotaTotal($id){
-        $call = "call usuarioBuscaNotaTotal(?)";
-        $exec = Conexao::Inst()->prepare($call);
-        $exec->execute(array($id));
-        $obj = $exec->fetchobject();
-        return $obj->notaTotal;
-    }
-
     public function atualizaNotaTotal($nota) {
         $base = new Base;
-        $base->burcaPorId($nota->getIdBase());
-        if($base->getStatus() == 'Fechada'){
+        $base->setId($nota->getIdBase());
+        $base->burcaPorId();
+        if($base->getIdUser() != NULL){
             $notaTotal = $this->buscaNotaTotal($nota->getIdUser());
             $novoTotal = $notaTotal+$nota->getNota();
             $call = "call usuarioAtualizaNotaTotal(?,?)";
@@ -169,14 +163,24 @@ class Usuario extends UsuarioModel{
             return false;
         }
     }
+
+    public function buscaNotaTotal($id){
+        $call = "call usuarioBuscaNotaTotal(?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($id));
+        $obj = $exec->fetchobject();
+        return $obj->notaTotal;
+    }
+
     public function usuarioLogado(){
         if($this->getAtivo() == true){
             if($this->usuarioAvaliador()){
                 echo "<a class='navbar-brand' href='#'><b>Bem vindo!</b> Chefe ".$this->getNome()."</a>";
             }else{
                 echo "<a class='navbar-brand' href='#'> Patrulha ".$this->getNome();
-                if($this->getNotaTotal() > 0){
-                    echo " Alerta! - <b>Pontos:</b> <i>".$this->getNotaTotal()."</i></a>";
+                $notaTotalMenu = $this->buscaNotaTotal($this->getIdUser());
+                if($notaTotalMenu > 0){
+                    echo " Alerta! - <b>Pontos:</b> <i>".$notaTotalMenu."</i></a>";
                 }else{
                     echo "</a>";
                 }

@@ -62,23 +62,3 @@ if (!$user->getAtivo()){
       </div>
   </div>
 </div>
-<div class="modal fade" id="confirmaNota" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel"> Limpar dados dos Eventos?</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <form method="get" action="administrar.php">
-            <input type="hidden" name='tp' value='Usuários'>
-            <input type="hidden" name='acao' value='limparApp'>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
-            <input type="submit" value='Sim' class="btn btn-primary">
-            </div>
-        </form>
-      </div>
-  </div>
-</div>

@@ -5,6 +5,8 @@
     <?php 
         require_once('incl/config.php');
         require_once('incl/nav.php');
+        require_once('class/Base.php');
+        $base = new Base;
     ?>      
     <div class="container">        
     <br>
@@ -20,17 +22,23 @@
                             <tr>
                                 <th>Posição</th>
                                 <th>Patrulha</th>
+                                <th>Base Atual</th>
                                 <th>Pontos</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php  
                         $result = $user->listaRankingPorNota();
+                        $base = new Base;
+                        $nomeBase3 = $base->retornaNome(1);
                         while ($patrulha = $result->fetchobject()) {
-                            $cont++; ?>
+                            $cont++; 
+                            $nomeBase = $base->retornaNome($patrulha->idBase);
+                            ?>
                             <tr>
                                 <td><?=$cont?></td>
                                 <td><?=$patrulha->nome?></td>
+                                <td><?=$nomeBase?></td>
                                 <td><?=$patrulha->notaTotal?></td>
                             </tr>
                         <?php }?>

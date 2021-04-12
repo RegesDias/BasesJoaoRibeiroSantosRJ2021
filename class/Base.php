@@ -87,40 +87,41 @@ class Base extends BaseModel {
     if(($this->getStatus() == 'Aberta') AND ($user->getIdBase() == Null)){
         $this->fechar();
         header('Location: '.$this->getLink());
-    }else{?>
-        <div class="alert alert-warning">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        <h4>Alerta!</h4>
-        Foi quase... mas infelizmente esta base já foi acessada
-        </div><?php
+    }else{
+        msn(1);
     }
   }
 
   public function abrirAvaliar($id){
     global $respObj;
-    $user = new Usuario;
-    $this->setId($id);
-    $this->burcaPorId();
+    if($respObj->nota >0){
+      $user = new Usuario;
+      $this->setId($id);
+      $this->burcaPorId();
+      if($this->getidUser()>0){
+          $nota = new Nota;
+            $nota->setIdBase($this->getId(),);
+            $nota->setidUser($this->getIdUser(),);
+            $nota->setNota($respObj->nota);
+            $nota->setDataHora(date("Y-m-d G:i:s"));
+            $nota->setAvaliadoP($user->getIdUser());
 
-    $nota = new Nota;
-      $nota->setIdBase($this->getId(),);
-      $nota->setidUser($this->getIdUser(),);
-      $nota->setNota($respObj->nota);
-      $nota->setDataHora(date("Y-m-d G:i:s"));
-      $nota->setAvaliadoP($user->getIdUser());
-
-    $user->atualizaNotaTotal($nota);
-      $user->sairDaBase($this->getIdUser());
-      $nota->insereNota();
-
-    $basefeita = new BaseFeita;
-      $basefeita->novaBaseFeita(
-        $this->getId(),
-        $this->getIdUser()
-      );
-      $basefeita->insereBaseFeita();
-    
-    $this->abrir();
+          $user->atualizaNotaTotal($nota);
+          $user->sairDaBase($this->getIdUser());
+          $nota->insereNota();
+          $basefeita = new BaseFeita;
+            $basefeita->novaBaseFeita(
+              $this->getId(),
+              $this->getIdUser()
+            );
+            $basefeita->insereBaseFeita();
+          
+          $this->abrir();
+          msn(4);
+       }
+    }else{
+      msn(3);
+    }
   }
 
   public function fechar(){
@@ -172,21 +173,60 @@ public function exibeNota($idBase){
       }
     }
   }
+
+  public function retornaNome($id){
+    if($id>0){
+      $call = "call baseRetornaNome(?)";
+      $exec = Conexao::Inst()->prepare($call);
+      $exec->execute(array($id));
+      $obj = $exec->fetchobject();
+      return $obj->nome;
+    }
+  }
   
 
  public function botaoVaziaAvaliar(){
   $user = new Usuario;
   if(($this->getStatus() == 'Aberta')){
       echo "<button class='btn btn-large btn-block btn-success' disabled href='#'>Vazia</button>";
-  }else{ ?>
+  }else{
+    $userNomeBase = $user->retornaNome($this->getIdUser());
+    ?>
+
       <form method="post">
-      <label>Avaliar Patrulha <?=$user->retornaNome($this->getIdUser())?></label>
-      <input type="number" min="1" max="10" step="0.5" name='nota' class="form-control" placeholder="Nota">
-      <input type='hidden' name='acao' value='abrirAvaliar'>
-      <input type='hidden' name='id' value='<?=$this->getId()?>'>
-      <label></label>
-      <input type='submit' value='Abrir e Avaliar' class="btn btn-large btn-block btn-primary">
-      </form><?php
+        <label><b><font color="#FFF">Avaliar Patrulha <?=$userNomeBase?></font></b></label>
+        <input type="number" min="1" max="10" step="0.5" name='nota' class="form-control" placeholder="Nota"><br>
+
+        <button type="button" class="btn btn-large btn-block btn-primary" data-toggle="modal" data-target="#avaliar<?=$this->getId()?>">
+          Abrir e Avaliar
+        </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="avaliar<?=$this->getId()?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Avaliar</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Lança nota da patrulha <?=$userNomeBase?>?
+            </div>
+            <div class="modal-footer">
+              <input type='hidden' name='acao' value='abrirAvaliar'>
+              <input type='hidden' name='id' value='<?=$this->getId()?>'>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+              <input type='submit' value='Sim' class="btn btn-primary">
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      
+      <?php
   }
  }
 
@@ -204,7 +244,7 @@ public function exibeNota($idBase){
         echo "<button class='btn btn-large btn-block btn-danger' disabled href='#'>Fechada</button>";
       }
     }else if($this->getIdUser() == $user->getIdUser()){?>
-      <a href='<?=$this->getLink()?>' target="_blank" class='btn btn-large btn-block btn-warning' style="margin-right: 5px;"><b>Voltar a Base!</b></a>
+      <a href='<?=$this->getLink()?>' target="_blank" class='btn btn-large btn-block btn-warning' style="margin-right: 5px;"><b>Entrar na base</b></a>
     <?php }else{
         echo "<button class='btn btn-large btn-block btn-danger' disabled href='#'>Fechada</button>";
     }
@@ -216,6 +256,7 @@ public function exibeNota($idBase){
     echo "<img height='700' width='50' class='card-img-top img-fluid border-radius img-thumbnail' src='img/".$this->getImg()."' alt=''>";
     echo "</a>";
   }
+
   public function limparApp(){
     $user = new Usuario;
     $nota = new Nota;

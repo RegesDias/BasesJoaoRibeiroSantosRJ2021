@@ -24,6 +24,39 @@ session_start();
 
 //FUNÇOES GENERICAS
 
+    function msn ($i){
+      switch ($i) {
+        case 0:
+            return null;
+        case 1:
+          $tipo ='warning';
+          $titulo ='Alerta!';
+          $texto = 'Foi quase... mas infelizmente esta base já foi acessada';
+          break;
+        case 2:
+          $tipo ='danger';
+          $titulo ='Alerta!';
+          $texto = 'Usuário ou senha incorretos...';
+          break;
+        case 3:
+          $tipo ='danger';
+          $titulo ='Alerta!';
+          $texto = 'É necessario Preencher a nota';
+          break;
+          case 4:
+            $tipo ='success';
+            $titulo ='Avaliado';
+            $texto = 'Nota lançada com sucesso!';
+            break;
+      }     
+      
+      echo "<div class='alert alert-$tipo'>";
+      echo "<button type='button' class='close' data-dismiss='alert'>×</button>";
+      echo "<h4>$titulo</h4>";
+      echo  $texto;
+      echo "</div>";
+    }
+
   function dataHoraBr($data){
     $dt = new DateTime($data);
     return $dt->format('Y-m-d\TH:i:s');
@@ -31,7 +64,7 @@ session_start();
 
   function exibeDataHoraBr($data){
     $dt = new DateTime($data);
-    return $dt->format('d-m-Y H:i:s');
+    return $dt->format('d-m-Y H:i');
   }
 
   function print_p($obj){

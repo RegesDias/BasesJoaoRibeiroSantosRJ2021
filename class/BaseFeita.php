@@ -14,8 +14,7 @@ class BaseFeita extends BaseFeitaModel{
         $exec = Conexao::Inst()->prepare($call);
         $exec->execute(array(
             $this->getIdBase(),
-            $this->getIdUser(),
-            '1'
+            $this->getIdUser()
         ));
     }
 }
