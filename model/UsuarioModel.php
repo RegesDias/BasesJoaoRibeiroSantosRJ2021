@@ -24,8 +24,8 @@ class UsuarioModel {
 			$this->setAdmin(unserialize($_SESSION['usuario'])->getAdmin());
 			$this->setIdEvento(unserialize($_SESSION['usuario'])->getIdEvento());
 			$this->setAtivo(unserialize($_SESSION['usuario'])->getAtivo());
-			$this->setNotaTotal(unserialize($_SESSION['usuario'])->getNotaTotal());
-			$this->setIdBase(unserialize($_SESSION['usuario'])->getIdBase());
+			$this->setNotaTotal($_SESSION['NotaTotal']);
+			$this->setIdBase($_SESSION['IdBase']);
 		}
 	}
 	public function novoUsuario ($usuario){

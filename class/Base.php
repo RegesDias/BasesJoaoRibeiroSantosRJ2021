@@ -169,6 +169,7 @@ public function exibeNota($idBase){
   function botoes(){
     $user = new Usuario;
     $nota = new Nota;
+    $valor = $nota->avaliado($this->getId());
     if($nota->avaliado($this->getId()) == true){
         $this->exibeNota($this->getId()); 
     }else{
@@ -196,42 +197,15 @@ public function exibeNota($idBase){
   if(($this->getStatus() == 'Aberta')){
       echo "<button class='btn btn-large btn-block btn-success' disabled href='#'>Vazia</button>";
   }else{
-    $userNomeBase = $user->retornaNome($this->getIdUser());
-    ?>
-
+    $userNomeBase = $user->retornaNome($this->getIdUser());?>
       <form method="post">
         <label><b><font color="#FFF">Avaliar Patrulha <?=$userNomeBase?></font></b></label>
         <input type="number" min="1" max="10" step="0.5" name='nota' class="form-control" placeholder="Nota"><br>
-
         <button type="button" class="btn btn-large btn-block btn-primary" data-toggle="modal" data-target="#avaliar<?=$this->getId()?>">
           Abrir e Avaliar
         </button>
-
-      <!-- Modal -->
-      <div class="modal fade" id="avaliar<?=$this->getId()?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Avaliar</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              Lança nota da patrulha <?=$userNomeBase?>?
-            </div>
-            <div class="modal-footer">
-              <input type='hidden' name='acao' value='abrirAvaliar'>
-              <input type='hidden' name='id' value='<?=$this->getId()?>'>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
-              <input type='submit' value='Sim' class="btn btn-primary">
-            </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      
-      
+        <?=htmlModal( "avaliar".$this->getId(),"Lança nota da patrulha ".$userNomeBase,$this->getId())?>
+      </form>
       <?php
   }
  }

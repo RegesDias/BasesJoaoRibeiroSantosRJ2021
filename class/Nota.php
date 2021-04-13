@@ -16,7 +16,6 @@ class Nota extends NotasModel{
         $exec->execute(array($user->getIdUser(),$idBase));
         $obj = $exec->fetchobject();
         $this->novaNota($obj);
-        $exec->closeCursor();
     }
 
     function insereNota(){

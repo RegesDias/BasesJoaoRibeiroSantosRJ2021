@@ -131,6 +131,30 @@ session_start();
           </select>";
     return $Html;
   }
+  function htmlModal($idModal, $texto, $id){?>
+      <div class="modal fade" id="<?=$idModal?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Avaliar</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <?=$texto?>
+            </div>
+            <div class="modal-footer">
+              <input type='hidden' name='acao' value='abrirAvaliar'>
+              <input type='hidden' name='id' value='<?=$id?>'>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+              <input type='submit' value='Sim' class="btn btn-primary">
+            </div>
+          </div>
+        </div>
+      </div>
+  <?php }
+
   function status($status){
     if($status == 1){
         $status = 'Ativo';

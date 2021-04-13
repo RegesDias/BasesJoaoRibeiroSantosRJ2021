@@ -84,6 +84,8 @@ class Usuario extends UsuarioModel{
         $this->autenticar();
         if($this->getAtivo() == 1){   
             $_SESSION['usuario'] = serialize($this);
+            $_SESSION['NotaTotal'] = $this->getNotaTotal();
+			$_SESSION['IdBase'] = $this->getIdBase();
             $evento = new Evento;
             $evento->burcaPorId();
             $_SESSION['evento'] = serialize($evento);
@@ -115,7 +117,7 @@ class Usuario extends UsuarioModel{
             $exec = Conexao::Inst()->prepare($call);
             $exec->execute(array($this->getIdUser()));
             $obj = $exec->fetchobject();
-            unserialize($_SESSION['usuario'])->setIdBase($obj->idBase);
+            $_SESSION['IdBase'] = $obj->idBase;
             return $user = new Usuario;
         }
     }
@@ -151,7 +153,7 @@ class Usuario extends UsuarioModel{
             $call = "call usuarioAtualizaNotaTotal(?,?)";
             $exec = Conexao::Inst()->prepare($call);
             $exec->execute(array($novoTotal,$nota->getIdUser()));
-            unserialize($_SESSION['usuario'])->setNotaTotal($notaTotal);
+            $_SESSION['NotaTotal'] = $notaTotal;
         }
     }
 
