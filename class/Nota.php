@@ -18,6 +18,7 @@ class Nota extends NotasModel{
         $this->novaNota($obj);
     }
 
+
     function insereNota(){
         $call = "call notaCadastrar(?,?,?,?)";
         $exec = Conexao::Inst()->prepare($call);
@@ -28,15 +29,18 @@ class Nota extends NotasModel{
             $this->getAvaliadoPor()
         ));
     }
-    
-    public function avaliado($idBase){
-        $user = new Usuario;
-        $this->burcaPorId($idBase);
+
+    function avaliado($idBase,$idUser){
+        $call = "call notaBurcaPorId(?,?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($idUser,$idBase));
+        $obj = $exec->fetchobject();
+        $this->novaNota($obj);
         if($this->getIdBase() != '' ){
             return true;
         }else{
             return false;
         }
-   }
+    }
 }
 ?>

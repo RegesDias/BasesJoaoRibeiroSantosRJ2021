@@ -63,6 +63,11 @@ session_start();
             $titulo ='Sucesso';
             $texto = 'Alteração Executada!';
             break;
+        case 7:
+          $tipo ='danger';
+          $titulo ='ERRO';
+          $texto = 'Relançamento de nota identificado';
+          break;
         case 99:
           $tipo ='danger';
           $titulo ='Erro';

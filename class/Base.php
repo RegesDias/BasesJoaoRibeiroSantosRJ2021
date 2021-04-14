@@ -102,29 +102,31 @@ class Base extends BaseModel {
     global $respObj;
     if($respObj->nota >0){
       $user = new Usuario;
+      $nota = New Nota;
       $this->setId($id);
       $this->burcaPorId();
-      if($this->getidUser()>0){
           $nota = new Nota;
-            $nota->setIdBase($this->getId(),);
-            $nota->setidUser($this->getIdUser(),);
-            $nota->setNota($respObj->nota);
-            $nota->setDataHora(date("Y-m-d G:i:s"));
-            $nota->setAvaliadoP($user->getIdUser());
+          if($nota->avaliado($this->getId(),$respObj->idUser )){
+              $nota->setIdBase($this->getId());
+              $nota->setidUser($respObj->idUser);
+              $nota->setNota($respObj->nota);
+              $nota->setDataHora(date("Y-m-d G:i:s"));
+              $nota->setAvaliadoP($user->getIdUser());
 
-          $user->atualizaNotaTotal($nota);
-          $user->sairDaBase($this->getIdUser());
-          $nota->insereNota();
-          $basefeita = new BaseFeita;
-            $basefeita->novaBaseFeita(
-              $this->getId(),
-              $this->getIdUser()
-            );
-            $basefeita->insereBaseFeita();
-          
-          $this->abrir();
-          msn(4);
-       }
+              $user->atualizaNotaTotal($nota);
+              $user->sairDaBase($this->getIdUser());
+              $nota->insereNota();
+              $basefeita = new BaseFeita;
+                $basefeita->novaBaseFeita(
+                  $this->getId(),
+                  $this->getIdUser()
+                );
+              $basefeita->insereBaseFeita();
+              $this->abrir();
+              msn(4);
+          }else{
+            msn(7);
+          }
     }else{
       msn(3);
     }
@@ -169,8 +171,8 @@ public function exibeNota($idBase){
   function botoes(){
     $user = new Usuario;
     $nota = new Nota;
-    $valor = $nota->avaliado($this->getId());
-    if($nota->avaliado($this->getId()) == true){
+    $valor = $nota->avaliado($this->getId(), $user->getIdUser());
+    if($nota->avaliado($this->getId(),$this->getIdUser()) == true){
         $this->exibeNota($this->getId()); 
     }else{
       if($user->usuarioAvaliador() == true){
@@ -200,6 +202,7 @@ public function exibeNota($idBase){
     $userNomeBase = $user->retornaNome($this->getIdUser());?>
       <form method="post">
         <label><b><font color="#FFF">Avaliar Patrulha <?=$userNomeBase?></font></b></label>
+        <input type='hidden' name='idUser' value='<?=$this->getIdUser()?>'>
         <input type="number" min="1" max="10" step="0.5" name='nota' class="form-control" placeholder="Nota"><br>
         <button type="button" class="btn btn-large btn-block btn-primary" data-toggle="modal" data-target="#avaliar<?=$this->getId()?>">
           Abrir e Avaliar
