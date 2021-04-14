@@ -64,8 +64,8 @@
 if($respObj->acao == 'alterar'){?>
 <div class="container">
     <form method="post" action="administrar.php?tp=Usuarios&ac=Buscar">
-       <?php require_once('incl/FormUsuarios.php'); ?>
+       <?php require_once('front/FormUsuarios.php'); ?>
     </form>
 </div>
-<?php require_once('incl/alterarUsuariosBase.php'); ?>
+<?php require_once('front/alterarUsuariosBase.php'); ?>
 <?php } ?>

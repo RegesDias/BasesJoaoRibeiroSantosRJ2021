@@ -66,7 +66,7 @@
 if($respObj->acao == 'alterar'){?>
 <div class="container">
     <form method="post" method="POST" action="administrar.php?tp=Bases&ac=Buscar" enctype="multipart/form-data">
-       <?php require_once('incl/FormBases.php'); ?>
+       <?php require_once('front/FormBases.php'); ?>
     </form>
   </div>
 <?php } ?>

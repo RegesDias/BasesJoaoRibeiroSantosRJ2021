@@ -65,14 +65,9 @@ class Base extends BaseModel {
   
   public function listar(){
     $evento = new Evento;
-    if($evento->getAtivo() == 0){?>
-      <div class="alert alert-danger">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        <h4>Alerta!</h4>
-        O Evento <b><?=$evento->getNome()?></b> encontra-se fechado.
-      </div><?php
+    if($evento->getAtivo() == 0){
+      msn(8);
     }
-
     $user = new Usuario;
     if($user->getChefeBase() == true){
       $call = "call baseListarChefeBase(?, ?)";

@@ -13,6 +13,7 @@ session_start();
     $user = new Usuario;
     $user->buscarBaseOcupada();
     $evento = new Evento;
+    $evento->status();
 
 //TESTE DE SESSAO
     if($respObj->entrarSair == '1'){
@@ -25,7 +26,6 @@ session_start();
 //FUNÇOES GENERICAS
 
     function msn ($i, $msn=null){
-
       if(isset($msn[2])){
         $i = 99;
       }
@@ -67,6 +67,17 @@ session_start();
           $tipo ='danger';
           $titulo ='ERRO';
           $texto = 'Relançamento de nota identificado';
+          break;
+        case 8:
+          $evento = new Evento;
+          $tipo ='danger';
+          $titulo ='Alerta!';
+          $texto = "O ".$evento->getNome()." encontra-se fechado.";
+          break;
+        case 98:
+          $tipo ='Alerta!';
+          $titulo =' Sistema Limpo e pronto para novo Evento!';
+          $texto = $msn[2];
           break;
         case 99:
           $tipo ='danger';

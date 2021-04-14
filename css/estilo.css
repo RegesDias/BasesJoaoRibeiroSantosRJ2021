@@ -59,3 +59,25 @@ html,body{
     background-color: #4CAF50;
     color: white;
   }
+
+  
+.contador {
+        text-align:center
+}
+
+.contador .label {
+        text-transform:uppercase; 
+        position:relative;
+    }
+
+.contador .block {
+        display: inline-block; 
+        height: 1px; 
+        width: 15%; 
+        font-weight:bold; 
+}
+.rodape{
+    font-weight:bold;
+    color: white;
+
+}

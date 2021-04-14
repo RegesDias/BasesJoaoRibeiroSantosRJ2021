@@ -22,5 +22,5 @@
       }
       ?>
     <form method="post" method="POST" action="administrar.php?tp=Eventos&ac=Criar" enctype="multipart/form-data">
-        <?php require_once('incl/FormEventos.php'); ?>
+        <?php require_once('front/FormEventos.php'); ?>
     </form>

@@ -13,6 +13,15 @@ class Evento extends EventoModel{
         $this->novoEvento($obj); 
     }
 
+    public function status() {
+        $call = "call eventoStatus(?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($this->getId()));
+        $obj = $exec->fetchobject();
+        $_SESSION['eventoAtivo']=$obj->Ativo;
+    }
+
+
     public function buscaPorIdNome($id=null) {
         if($id == null){
             $call = "call eventoBuscarPorNome(?)";

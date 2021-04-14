@@ -21,7 +21,7 @@ class EventoModel {
 			$this->setContato(unserialize($_SESSION['evento'])->getContato());
 			$this->setInscricao(unserialize($_SESSION['evento'])->getInscricao());
 			$this->setDataHora(unserialize($_SESSION['evento'])->getDataHora());
-			$this->setAtivo(unserialize($_SESSION['evento'])->getAtivo());
+			$this->setAtivo($_SESSION['eventoAtivo']);
 			$this->setImgParticipante(unserialize($_SESSION['evento'])->getImgParticipante());
 			$this->setImgCoodenacao(unserialize($_SESSION['evento'])->getImgCoodenacao());
 			$this->setImgChefeBase(unserialize($_SESSION['evento'])->getImgChefeBase());

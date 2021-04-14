@@ -54,8 +54,8 @@
               </form>
             </td></tr><?php
           }
-          $aData = $user->fetchAll();
-          $user->closeCursor();
+          $aData = $eventos->fetchAll();
+          $eventos->closeCursor();
       ?>
   </tbody>
 </table>
@@ -64,7 +64,7 @@
 if($respObj->acao == 'alterar'){?>
 <div class="container">
     <form method="post" method="POST" action="administrar.php?tp=Eventos&ac=Buscar" enctype="multipart/form-data">
-       <?php require_once('incl/FormEventos.php'); ?>
+       <?php require_once('front/FormEventos.php'); ?>
     </form>
   </div>
 <?php } ?>

@@ -61,7 +61,7 @@
                         <hr>
                             <?php 
                                 if(isset($respGet->ac)){
-                                    require_once('incl/'.$ac.$tp.'.php');
+                                    require_once('front/'.$ac.$tp.'.php');
                                 }
                             ?>
                             <br><br>

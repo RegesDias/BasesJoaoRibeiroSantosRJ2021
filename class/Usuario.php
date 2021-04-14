@@ -89,6 +89,7 @@ class Usuario extends UsuarioModel{
             $evento = new Evento;
             $evento->burcaPorId();
             $_SESSION['evento'] = serialize($evento);
+            $_SESSION['eventoAtivo'] = $evento->getAtivo();
             header('Location:index.php');
         }else{
             header('Location:login.php?id=login');

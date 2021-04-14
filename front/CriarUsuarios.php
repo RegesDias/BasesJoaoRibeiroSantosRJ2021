@@ -18,6 +18,6 @@
 
 <div class="container">
     <form method="post" method="POST" action="administrar.php?tp=Usuarios&ac=Criar" enctype="multipart/form-data">
-       <?php require_once('incl/FormUsuarios.php'); ?>
+       <?php require_once('front/FormUsuarios.php'); ?>
     </form>
   </div>

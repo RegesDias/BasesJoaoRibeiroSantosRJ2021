@@ -40,8 +40,8 @@
     </div>
   </div>
   <?php
- if(!$user->usuarioAvaliador()){ 
-    require_once('incl/footer.php');?>
+require_once('incl/footer.php');
+ if(!$user->usuarioAvaliador()){ ?>
     <script> 
         setTimeout(function(){
           window.location.reload(1);
