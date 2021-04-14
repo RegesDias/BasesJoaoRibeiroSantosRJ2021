@@ -106,7 +106,7 @@ class Base extends BaseModel {
       $this->setId($id);
       $this->burcaPorId();
           $nota = new Nota;
-          if($nota->avaliado($this->getId(),$respObj->idUser )){
+          if(!$nota->avaliado($this->getId(),$respObj->idUser )){
               $nota->setIdBase($this->getId());
               $nota->setidUser($respObj->idUser);
               $nota->setNota($respObj->nota);
@@ -124,8 +124,6 @@ class Base extends BaseModel {
               $basefeita->insereBaseFeita();
               $this->abrir();
               msn(4);
-          }else{
-            msn(7);
           }
     }else{
       msn(3);
@@ -162,18 +160,14 @@ public function carregarImagem(){
       
 }
 
-public function exibeNota($idBase){
-  $nota = new Nota;
-  $nota->burcaPorId($idBase);
-  echo "<button class='btn btn-large btn-block btn-primary' href='#'><b>Nota ".$nota->getNota()."</b></button>";
-}
+
 
   function botoes(){
     $user = new Usuario;
     $nota = new Nota;
     $valor = $nota->avaliado($this->getId(), $user->getIdUser());
-    if($nota->avaliado($this->getId(),$this->getIdUser()) == true){
-        $this->exibeNota($this->getId()); 
+    if($nota->avaliado($this->getId(),$user->getIdUser()) == true){
+        $nota->exibeNota($this->getId()); 
     }else{
       if($user->usuarioAvaliador() == true){
         $this->botaoVaziaAvaliar();
