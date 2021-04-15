@@ -9,13 +9,37 @@ class BaseFeita extends BaseFeitaModel{
         $exec->execute();
     }
 
-    function insereBaseFeita(){
-        $call = "call baseFeitasCadastrar(?,?)";
+    function cadastrar(){
+        $date = new DateTime();
+        $date->getTimestamp();
+        $data = $date->format('Y-m-d H:i:s');
+        $call = "call baseFeitasCadastrar(?,?,?)";
         $exec = Conexao::Inst()->prepare($call);
         $exec->execute(array(
             $this->getIdBase(),
-            $this->getIdUser()
+            $this->getIdUser(),
+            $data
         ));
+    }
+    function sair(){
+        $date = new DateTime();
+        $date->getTimestamp();
+        $data = $date->format('Y-m-d H:i:s');
+        $call = "call baseFeitaSaida(?,?,?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array(
+            $this->getIdBase(),
+            $this->getIdUser(),
+            $data
+        ));
+    }
+
+    function contarPatrulhas($idBase){
+        $call = "call baseFeitaContarPatrulhas(?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($idBase));
+        $obj = $exec->fetchobject();
+        return $obj;
     }
 }
 ?>

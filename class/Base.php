@@ -87,6 +87,12 @@ class Base extends BaseModel {
     $this->burcaPorId();
     if(($this->getStatus() == 'Aberta') AND ($user->getIdBase() == Null)){
         $this->fechar();
+        $basefeita = new BaseFeita;
+        $basefeita->novaBaseFeita(
+          $this->getId(),
+          $user->getIdUser()
+        );
+      $basefeita->cadastrar();
         header('Location: '.$this->getLink());
     }else{
         msn(1);
@@ -114,9 +120,9 @@ class Base extends BaseModel {
               $basefeita = new BaseFeita;
                 $basefeita->novaBaseFeita(
                   $this->getId(),
-                  $this->getIdUser()
+                  $respObj->idUser
                 );
-              $basefeita->insereBaseFeita();
+              $basefeita->sair();
               $this->abrir();
               msn(4);
           }

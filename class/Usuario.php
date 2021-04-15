@@ -194,6 +194,9 @@ class Usuario extends UsuarioModel{
                 <li class='nav-item'>
                     <a class='btn btn-outline-success btn-sm' style="margin-right: 5px;" href='ranking.php'>Ranking</a>
                 </li>
+                <li class='nav-item'>
+                    <a class='btn btn-outline-success btn-sm' style="margin-right: 5px;" href='evolucao.php'>Evolução</a>
+                </li>
             <?php } if( $this->getAdmin() == true){?>
             <li class="nav-item dropdown">
                 <a class="btn btn-outline-success dropdown-toggle btn-sm" style="margin-right: 5px;" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

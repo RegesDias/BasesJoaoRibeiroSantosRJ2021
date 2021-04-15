@@ -17,7 +17,6 @@
         }
         $evento = new Evento;
         require_once('incl/nav.php');
-
           if($user->getAtivo() == true){
             $bases = $base->listar();
             echo "<div class='row'>";
