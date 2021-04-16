@@ -191,24 +191,29 @@ class Usuario extends UsuarioModel{
     }
     public function usuarioAdm(){
             if(($this->getChefeCoord() == true)OR($this->getAdmin() == true)){?>
-                <li class='nav-item'>
-                    <a class='btn btn-outline-success btn-sm' style="margin-right: 5px;" href='ranking.php'>Ranking</a>
-                </li>
-                <li class='nav-item'>
-                    <a class='btn btn-outline-success btn-sm' style="margin-right: 5px;" href='evolucao.php'>Evolução</a>
-                </li>
+            <li class="nav-item dropdown">
+                <a class="btn btn-outline-success dropdown-toggle btn-sm" style="margin-right: 5px;" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Acompanhar
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                    <div class="vertical-menu">
+                        <a class="dropdown-item" href="ranking.php">Ranking</a>
+                        <a class="dropdown-item" href="evolucao.php">Evolução</a>
+                    </div>
+                </div>
+            </li>
             <?php } if( $this->getAdmin() == true){?>
             <li class="nav-item dropdown">
-                <a class="btn btn-outline-success dropdown-toggle btn-sm" style="margin-right: 5px;" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="btn btn-outline-success dropdown-toggle btn-sm" style="margin-right: 5px;" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Administrar
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <div class="vertical-menu">
-                    <a class="dropdown-item" href="administrar.php?tp=Usuários">Usuários</a>
-                    <a class="dropdown-item" href="administrar.php?tp=Bases">Bases</a>
-                    <a class="dropdown-item" href="administrar.php?tp=Eventos">Eventos</a>
-                    <a class='dropdown-item' href='#'  data-toggle='modal' data-target='#limpar'>Limpar Eventos</a>
-                </div>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                    <div class="vertical-menu">
+                        <a class="dropdown-item" href="administrar.php?tp=Usuários">Usuários</a>
+                        <a class="dropdown-item" href="administrar.php?tp=Bases">Bases</a>
+                        <a class="dropdown-item" href="administrar.php?tp=Eventos">Eventos</a>
+                        <a class='dropdown-item' href='#'  data-toggle='modal' data-target='#limpar'>Limpar Eventos</a>
+                    </div>
                 </div>
             </li>
         <?php }

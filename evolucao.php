@@ -15,8 +15,9 @@
         <!-- DataTales Example -->
         <div class="border bg-light sombra">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Ranking</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Evolução</h6>
             </div>
+            <?php if(!isset($respGet->idBase)){?>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -36,7 +37,7 @@
                             ?>
                             <tr>
                                 <td><?=$obj->ordem?></td>
-                                <td><?=$obj->nome?></td>
+                                <td><a href="evolucao.php?idBase=<?=$obj->id?>"><?=$obj->nome?></td>
                                 <td><?=$total->total?></td>
                             </tr>
                         <?php }?>
@@ -44,6 +45,63 @@
                     </table>
                 </div>
             </div>
+            <?php }else{ ?>
+
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Base</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Responsavel</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            require_once('class/Base.php');
+                            $base = new Base;
+                            $base->setNome($respObj->nome);
+                            $bases = $base->buscaPorIdNome($respGet->idBase);
+                            while ($b = $bases->fetchobject()){
+                                $user->retornaNome(1);
+                                $base->novaBase($b);
+                                echo "<tr><th scope='row'>".$base->getId()."</th>";
+                                echo "<td>".$base->getNome()."</td>";
+                                echo "<td>".$user->retornaNome($base->getResposavelBase())."</td>";
+                            }
+                            $aData = $bases->fetchAll();
+                            $bases->closeCursor();
+                        ?>
+                        </tbody>
+                    </table>
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Patrulha</th>
+                            <th scope="col">Grupo</th>
+                            <th scope="col">Entrada</th>
+                            <th scope="col">Saída</th>
+                            <th scope="col">Minutos</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            require_once('class/Base.php');
+                            $baseFeita = new BaseFeita;
+                            $basesFeita = $baseFeita->buscaPorIdBase($respGet->idBase);
+                            while ($b = $basesFeita->fetchobject()){
+                                echo "<tr><th scope='row'>".$b->nome."</th>";
+                                echo "<td>".$b->grupo."</td>";
+                                echo "<td>".exibeDataHoraBr($b->entrada)."</td>";
+                                echo "<td>".exibeDataHoraBr($b->saida)."</td>";
+                                echo "<td>".$b->minutos."</td>";
+                            }
+                            $aData = $bases->fetchAll();
+                            $bases->closeCursor();
+                        ?>
+                        </tbody>
+                    </table>
+
+            <?php }?>
         </div>
     </div>
     <script>

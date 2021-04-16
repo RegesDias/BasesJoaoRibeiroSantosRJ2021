@@ -21,6 +21,14 @@ class BaseFeita extends BaseFeitaModel{
             $data
         ));
     }
+
+    public function buscaPorIdBase($idBase) {
+        $call = "call baseFeitaBuscaPorIdBase(?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($idBase));
+        return $exec;
+    }
+
     function sair(){
         $date = new DateTime();
         $date->getTimestamp();
