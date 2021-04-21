@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $evento = new Evento;
 
   if ($evento->getAtivo() == true){

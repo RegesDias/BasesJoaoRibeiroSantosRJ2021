@@ -6,6 +6,7 @@
         require_once('incl/config.php');
         require_once('incl/nav.php');
         require_once('class/Base.php');
+        require_once('class/Nota.php');
         $base = new Base;
     ?>      
     <div class="container">        
@@ -15,12 +16,14 @@
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Ranking</h6>
             </div>
+            <?php if(!isset($respGet->idUser)){?>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Posição</th>
+                                <th>Grupo</th>
                                 <th>Patrulha</th>
                                 <th>Base Atual</th>
                                 <th>Pontos</th>
@@ -37,7 +40,8 @@
                             ?>
                             <tr>
                                 <td><?=$cont?></td>
-                                <td><?=$patrulha->nome?></td>
+                                <td><?=$patrulha->grupo?></td>
+                                <td><a href="ranking.php?idUser=<?=$patrulha->id?>"><?=$patrulha->nome?></td>
                                 <td><?=$nomeBase?></td>
                                 <td><?=$patrulha->notaTotal?></td>
                             </tr>
@@ -46,6 +50,49 @@
                     </table>
                 </div>
             </div>
+            <?php }else{ ?>
+                <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Patrulha</th>
+                            <th scope="col">Grupo</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            $user = new Usuario;
+                            $user->burcaPorId($respGet->idUser);
+                            echo "<tr><th scope='row'>".$user->getNome()."</th>";
+                            echo "<td>".$user->getGrupo()."</td>";
+                        ?>
+                        </tbody>
+                    </table>
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Avaliando em</th>
+                            <th scope="col">Avaliado por</th>
+                            <th scope="col">Base</th>
+                            <th scope="col">Nota</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            $nota = new Nota;
+                            $nota = $nota->listaPatrulha($respGet->idUser);
+                            while ($n = $nota->fetchobject()){
+                                echo "<tr><th scope='row'>".exibeDataHoraBr($n->dataHora)."</th>";
+                                echo "<td>".$n->avaliador."</td>";
+                                echo "<td>".$n->base."</td>";
+                                echo "<td>".$n->nota."</td>";
+                            }
+                            //$aData = $bases->fetchAll();
+                            //$bases->closeCursor();
+                        ?>
+                        </tbody>
+                    </table>
+
+            <?php }?>
         </div>
     </div>
     <script>

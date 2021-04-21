@@ -57,7 +57,6 @@
                         </thead>
                         <tbody>
                         <?php
-                            require_once('class/Base.php');
                             $base = new Base;
                             $base->setNome($respObj->nome);
                             $bases = $base->buscaPorIdNome($respGet->idBase);
@@ -85,7 +84,6 @@
                         </thead>
                         <tbody>
                         <?php
-                            require_once('class/Base.php');
                             $baseFeita = new BaseFeita;
                             $basesFeita = $baseFeita->buscaPorIdBase($respGet->idBase);
                             while ($b = $basesFeita->fetchobject()){

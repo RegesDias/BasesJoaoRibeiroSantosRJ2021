@@ -194,9 +194,12 @@ public function carregarImagem(){
   if(($this->getStatus() == 'Aberta')){
       echo "<button class='btn btn-large btn-block btn-success' disabled href='#'>Vazia</button>";
   }else{
-    $userNomeBase = $user->retornaNome($this->getIdUser());?>
+    //$userNomeBase = $user->retornaNome($this->getIdUser());
+    $user->burcaPorId($this->getIdUser())
+    
+    ?>
       <form method="post">
-        <label><b><font color="#FFF">Avaliar Patrulha <?=$userNomeBase?></font></b></label>
+        <label><b><font color="#FFF">Avaliar Patrulha <?=$user->getNome().$user->getGrupo()?></font></b></label>
         <input type='hidden' name='idUser' value='<?=$this->getIdUser()?>'>
         <input type="number" min="1" max="10" step="0.5" name='nota' class="form-control" placeholder="Nota"><br>
         <button type="button" class="btn btn-large btn-block btn-primary" data-toggle="modal" data-target="#avaliar<?=$this->getId()?>">

@@ -17,6 +17,15 @@ class Nota extends NotasModel{
         $obj = $exec->fetchobject();
         $this->novaNota($obj);
     }
+
+    function listaPatrulha($idUser){
+        $user = new Usuario;
+        $call = "call notaListaPatrulha(?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($idUser));
+        return $exec;
+    }
+
     public function exibeNota($idBase){
         $this->burcaPorId($idBase);
         echo "<button class='btn btn-large btn-block btn-primary' href='#'><b>Nota ".$this->getNota()."</b></button>";
