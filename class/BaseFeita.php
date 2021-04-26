@@ -49,5 +49,13 @@ class BaseFeita extends BaseFeitaModel{
         $obj = $exec->fetchobject();
         return $obj;
     }
+
+    function contarPorUsuario($idUser){
+        $call = "call basesFeitasContarPorUsuario(?)";
+        $exec = Conexao::Inst()->prepare($call);
+        $exec->execute(array($idUser));
+        $obj = $exec->fetchobject();
+        return $obj->total;
+    }
 }
 ?>

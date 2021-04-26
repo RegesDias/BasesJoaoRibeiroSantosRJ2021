@@ -7,7 +7,9 @@
         require_once('incl/nav.php');
         require_once('class/Base.php');
         require_once('class/Nota.php');
+        require_once('class/BaseFeita.php');
         $base = new Base;
+        $baseFeita = new BaseFeita;
     ?>      
     <div class="container">        
     <br>
@@ -27,6 +29,7 @@
                                 <th>Patrulha</th>
                                 <th>Base Atual</th>
                                 <th>Pontos</th>
+                                <th>Total de Bases</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -37,6 +40,7 @@
                         while ($patrulha = $result->fetchobject()) {
                             $cont++; 
                             $nomeBase = $base->retornaNome($patrulha->idBase);
+                            $total = $baseFeita->contarPorUsuario($patrulha->id);
                             ?>
                             <tr>
                                 <td><?=$cont?></td>
@@ -44,6 +48,7 @@
                                 <td><a href="ranking.php?idUser=<?=$patrulha->id?>"><?=$patrulha->nome?></td>
                                 <td><?=$nomeBase?></td>
                                 <td><?=$patrulha->notaTotal?></td>
+                                <td><?=$total?></td>
                             </tr>
                         <?php }?>
                         </tbody>

@@ -80,6 +80,7 @@
                             <th scope="col">Entrada</th>
                             <th scope="col">Saída</th>
                             <th scope="col">Minutos</th>
+                            <th scope="col">Nota</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -87,11 +88,19 @@
                             $baseFeita = new BaseFeita;
                             $basesFeita = $baseFeita->buscaPorIdBase($respGet->idBase);
                             while ($b = $basesFeita->fetchobject()){
+                                $datatime1 = new DateTime($b->entrada);
+                                $datatime2 = new DateTime($b->saida);
+
+                                $data1  = $datatime1->format('Y-m-d H:i:s');
+                                $data2  = $datatime2->format('Y-m-d H:i:s');
+
+                                $diff = $datatime1->diff($datatime2);
                                 echo "<tr><th scope='row'>".$b->nome."</th>";
                                 echo "<td>".$b->grupo."</td>";
                                 echo "<td>".exibeDataHoraBr($b->entrada)."</td>";
                                 echo "<td>".exibeDataHoraBr($b->saida)."</td>";
-                                echo "<td>".$b->minutos."</td>";
+                                echo "<td>".$diff->i."</td>";
+                                echo "<td>".$b->nota."</td>";
                             }
                             $aData = $bases->fetchAll();
                             $bases->closeCursor();
